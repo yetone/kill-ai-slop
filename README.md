@@ -52,7 +52,11 @@ Code, Cursor, etc.) and it fetches the skill and drops it into its own skills
 directory for you.
 
 ```
-Install the kill-ai-slop skill from https://github.com/yetone/kill-ai-slop/tree/main/skill — copy everything in that directory into a kill-ai-slop/ folder inside your agent's skills directory, then confirm it's registered.
+Install the kill-ai-slop skill from
+https://github.com/yetone/kill-ai-slop/tree/main/skill
+
+Copy everything in that directory into a kill-ai-slop/ folder
+inside your agent's skills directory, then confirm it's registered.
 ```
 
 Then just tell it to "kill the AI slop in this project". Prefer to install by hand?
