@@ -1,5 +1,7 @@
 # Kill AI Slop
 
+**[killaislop.com](https://killaislop.com)**
+
 Vibe-coded products are ugly in the same specific way: indigo gradients, glowing
 cards, emoji everywhere, a mascot in every corner, ALL-CAPS stat-cards. It's what
 a machine reaches for when it has no taste but wants to look impressive, and it's
@@ -27,6 +29,8 @@ skill/     the kill-ai-slop Agent Skill (SKILL.md + references + scanner)
 ```
 
 ## The website
+
+Live at **[killaislop.com](https://killaislop.com)**. To run it locally:
 
 ```bash
 cd website
