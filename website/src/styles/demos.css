@@ -794,9 +794,13 @@
    purpose (the tell only exists in dark UIs). */
 .demo-atmosphere-gradient .bg {
   width: 100%;
-  max-width: 20rem;
+  max-width: 34rem;
   margin-inline: auto;
-  padding: 1.5rem 1.4rem;
+  /* Thick glow frame: the card keeps ~its original width, but the backdrop
+     around it grows a lot — so the atmosphere itself reads bigger (the whole
+     point of the tell), instead of everything just scaling up together. The
+     slop glow is anchored up top, so the deep top band gets more dramatic. */
+  padding: 4.8rem 4.4rem;
   border-radius: var(--radius-lg);
   overflow: clip;
 }
@@ -986,14 +990,19 @@
   border: 1px solid #1e5d3c;
   background: #152724;
 }
-/* clean: Linear's real dark surfaces — each row is #191a1c with a #212224 ring
-   (measured off the app), standing on the stage with no enclosing panel. The
-   state is carried by a bold neutral label, colour reduced to one small muted
-   dot. */
+/* clean: this is how Linear actually does it. Linear's toasts are the `sonner`
+   library run with rich-colours OFF — a neutral surface (var(--normal-bg)), a
+   neutral 1px ring (var(--normal-border)), neutral text, 8px radius and one soft
+   float shadow (0 4px 12px rgba(0,0,0,.1)). No per-type colour fill; the type is
+   carried by a bold word + a single small muted dot. (The slop side above is
+   literally sonner's `richColors` default: same-hue bg + border + text.) Surface
+   values are Linear's own measured dark ramp: row #191a1c on a #212224 ring. */
 .demo-mono-hue-alert .clean .al {
   color: #d4d4d6;
   border: 1px solid #212224;
   background: #191a1c;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 .demo-mono-hue-alert .clean b {
   color: #e3e3e5;
