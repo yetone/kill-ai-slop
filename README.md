@@ -47,7 +47,18 @@ shared with the skill).
 
 ## The skill
 
-Point it at any web project:
+Install it without touching a single file: paste this to your coding agent (Claude
+Code, Cursor, etc.) and it fetches the skill and drops it into its own skills
+directory for you.
+
+```
+Install the kill-ai-slop skill from https://github.com/yetone/kill-ai-slop/tree/main/skill — copy everything in that directory into a kill-ai-slop/ folder inside your agent's skills directory, then confirm it's registered.
+```
+
+Then just tell it to "kill the AI slop in this project". Prefer to install by hand?
+See `skill/README.md`.
+
+You can also run the scanner directly. Point it at any web project:
 
 ```bash
 node skill/scripts/scan.mjs path/to/project          # grouped report
