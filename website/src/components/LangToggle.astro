@@ -55,8 +55,12 @@ const langs = [
   .langtoggle {
     display: inline-flex;
     align-items: center;
-    gap: var(--s-2);
+    /* Tighten between phone and desktop so all four labels stay on one line. */
+    gap: clamp(0.25rem, 1.2vw, 0.5rem);
     font-size: var(--step--1);
+    /* The switcher is a single row — never let CJK labels reflow. */
+    flex-wrap: nowrap;
+    white-space: nowrap;
   }
   .langtoggle button {
     appearance: none;
@@ -67,6 +71,8 @@ const langs = [
     cursor: pointer;
     font: inherit;
     letter-spacing: 0.02em;
+    /* Keep "中文", "日本語", "한국어" intact — no break between characters. */
+    white-space: nowrap;
   }
   .langtoggle button[aria-pressed="true"] {
     color: var(--ink);

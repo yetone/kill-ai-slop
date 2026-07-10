@@ -1,0 +1,111 @@
+---
+/** A sound switch for the Slop → Clean sweep sound. A speaker icon in the
+ *  top-right, next to the language toggle. The choice persists in localStorage
+ *  and is mirrored onto <html data-sound> — the single source of truth the
+ *  sweep sound reads before playing. Resolved pre-paint in Base.astro, so a
+ *  muted visitor never hears a stray sound and the icon never flashes.
+ *  Default is on. No emoji, no dropdown chrome — just the speaker, like the
+ *  rest of the nav. */
+---
+
+<button
+  class="soundtoggle"
+  type="button"
+  data-sound-toggle
+  aria-pressed="false"
+  aria-label="Sound effects / 音效 / サウンド / 사운드"
+>
+  <svg
+    class="ic ic-on"
+    viewBox="0 0 24 24"
+    width="18"
+    height="18"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.6"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M4 9v6h3.5L12 18.5V5.5L7.5 9H4z" fill="currentColor" stroke="none" />
+    <path d="M15.6 9.3a3.8 3.8 0 0 1 0 5.4" />
+    <path d="M18 7a7 7 0 0 1 0 10" />
+  </svg>
+  <svg
+    class="ic ic-off"
+    viewBox="0 0 24 24"
+    width="18"
+    height="18"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.6"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M4 9v6h3.5L12 18.5V5.5L7.5 9H4z" fill="currentColor" stroke="none" />
+    <path d="M16.5 10l4 4M20.5 10l-4 4" />
+  </svg>
+</button>
+
+<script>
+  const root = document.documentElement;
+  const KEY = "kas-sound";
+
+  // Reflect the source of truth (<html data-sound>) onto the button's pressed
+  // state — pressed means muted.
+  function reflect() {
+    const muted = root.dataset.sound === "off";
+    document
+      .querySelectorAll<HTMLButtonElement>("[data-sound-toggle]")
+      .forEach((b) => b.setAttribute("aria-pressed", String(muted)));
+  }
+
+  document
+    .querySelectorAll<HTMLButtonElement>("[data-sound-toggle]")
+    .forEach((b) => {
+      b.addEventListener("click", () => {
+        const on = root.dataset.sound === "off"; // flip current state
+        root.dataset.sound = on ? "on" : "off";
+        try {
+          localStorage.setItem(KEY, on ? "on" : "off");
+        } catch {}
+        reflect();
+      });
+    });
+
+  // Sync to whatever the pre-paint head script already resolved.
+  reflect();
+</script>
+
+{/* The icon is driven by the source of truth on <html>, set pre-paint, so the
+    right glyph shows on first paint — no flash before this module runs. */}
+<style is:global>
+  :root[data-sound="off"] .soundtoggle .ic-on {
+    display: none;
+  }
+  :root:not([data-sound="off"]) .soundtoggle .ic-off {
+    display: none;
+  }
+</style>
+
+<style>
+  .soundtoggle {
+    appearance: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: 0;
+    padding: 0.15rem;
+    color: var(--ink-3);
+    cursor: pointer;
+    line-height: 0;
+  }
+  .soundtoggle:hover {
+    color: var(--ink);
+  }
+  .soundtoggle .ic {
+    display: block;
+  }
+</style>

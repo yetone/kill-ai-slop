@@ -840,21 +840,30 @@
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02));
   border: 1px solid rgba(255, 255, 255, 0.11);
 }
-/* after: flat backdrop, flat card, hairline + whisper shadow */
+/* after: Linear's real dark surface stack, measured off the running app — not a
+   guessed "dark blue". Page = lch(4.52 .3 272) → #0f1010; the card is raised one
+   step to lch(9 2.1 272) → #191a1c; its ring is lch(13 1.38 272) → #212224; the
+   inset field drops to lch(11 3 272) → #1d1e22. Depth is a hairline ring + Linear's
+   tight contact shadow, nothing more. Text is Linear's neutral ramp
+   (#e3e3e5 / #949496), faintly cool — no bluish tint of its own. */
 .demo-atmosphere-gradient .clean {
-  background: #0f141c;
+  background: #0f1010;
 }
 .demo-atmosphere-gradient .clean .card {
   border-radius: 8px;
-  background: #171d27;
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+  background: #191a1c;
+  border: 1px solid #212224;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5), 0 4px 4px -1px rgba(0, 0, 0, 0.3);
 }
+.demo-atmosphere-gradient .clean .h { color: #e3e3e5; }
+.demo-atmosphere-gradient .clean .s { color: #949496; }
 .demo-atmosphere-gradient .clean .field {
   border-radius: 6px;
-  background: #1e2530;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #1d1e22;
+  border: 1px solid #212224;
+  color: #e3e3e5;
 }
+.demo-atmosphere-gradient .clean .chev { color: #949496; }
 
 /* 07d AI-drawn SVG icon (component) ----------------------------------------
    before: a crude generated blob mascot on a dark app-icon tile. after: a
@@ -976,15 +985,20 @@
   border: 1px solid rgba(41, 163, 90, 0.5);
   background: rgba(41, 163, 90, 0.12);
 }
-/* clean: neutral surface, bold label, small muted dot */
+/* clean: Linear's real dark surfaces — panel = #0f1010, each row raised to
+   #191a1c with a #212224 ring (measured off the app). The state is carried by a
+   bold neutral label, colour reduced to one small muted dot. */
+.demo-mono-hue-alert .alerts.clean {
+  background: #0f1010;
+}
 .demo-mono-hue-alert .clean .al {
-  color: #c6cedb;
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  background: rgba(255, 255, 255, 0.03);
+  color: #d4d4d6;
+  border: 1px solid #212224;
+  background: #191a1c;
 }
 .demo-mono-hue-alert .clean b {
-  color: #eef2f7;
-  font-weight: 640;
+  color: #e3e3e5;
+  font-weight: 620;
 }
 .demo-mono-hue-alert .clean .d {
   width: 0.5rem;
@@ -1040,8 +1054,17 @@
     0 6px 18px 2px rgba(0, 0, 0, 0.5),
     0 16px 44px 16px rgba(0, 0, 0, 0.48);
 }
-/* after: a hairline + one tight contact shadow, believable on the surface. */
-.demo-oversized-shadow .clean .card {
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.45), 0 4px 12px -6px rgba(0, 0, 0, 0.5);
+/* after: Linear's real dark surfaces + its actual elevation — stage #0f1010,
+   card raised to #1d1e22 with a #212224 ring, lifted by the same tight contact
+   shadow Linear uses (a 4px blur pulled in with negative spread + a 1px seat).
+   Believable elevation, no fog, no banding. */
+.demo-oversized-shadow .clean.sha {
+  background: #0f1010;
 }
+.demo-oversized-shadow .clean .card {
+  background: #1d1e22;
+  border: 1px solid #212224;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5), 0 4px 4px -1px rgba(0, 0, 0, 0.3);
+}
+.demo-oversized-shadow .clean .h { color: #e3e3e5; }
+.demo-oversized-shadow .clean .s { color: #949496; }

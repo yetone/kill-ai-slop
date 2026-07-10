@@ -75,16 +75,22 @@
   /* --- Structure --------------------------------------------------------- */
   --measure: 68ch;         /* readable prose width */
   --container: 76rem;
-  --radius: 6px;           /* small, consistent — never a pill for chrome */
-  --radius-lg: 10px;       /* cards / surfaces */
+  --radius: 8px;           /* Linear's control radius. Reverse-engineered from
+                              the running app: 8px is by far its dominant corner
+                              (buttons, segmented controls, list rows, nav).
+                              Not a pill for chrome — a modest, consistent 8. */
+  --radius-lg: 12px;        /* Linear's larger surfaces — its modal/dialog radius */
   --hair: 1px;
 
-  /* Elevation — the way Linear lifts a panel: a hairline plus a tight contact
-     shadow, sitting on a faintly recessed canvas. Never a diffuse drop, never
-     a glow. */
-  --shadow-e1: 0 1px 2px rgba(18, 19, 22, 0.06);
+  /* Elevation — measured off the live Linear app, not guessed. Linear lifts a
+     panel with a 1px ring (here: the card's hairline border) plus a *tight*
+     contact shadow — a small 4px blur pulled in with a negative spread, over a
+     faintly recessed canvas. Never a diffuse drop, never a glow. Its own popover
+     shadow resolves to `0 4px 4px -1px rgba(0,0,0,.04), 0 1px 1px rgba(0,0,0,.08)`;
+     e2 mirrors that shape. */
+  --shadow-e1: 0 1px 1px rgba(18, 19, 22, 0.06);
   --shadow-e2:
-    0 1px 1px rgba(18, 19, 22, 0.04), 0 4px 10px -6px rgba(18, 19, 22, 0.1);
+    0 1px 1px rgba(18, 19, 22, 0.08), 0 4px 4px -1px rgba(18, 19, 22, 0.05);
 
   --ease: cubic-bezier(0.2, 0, 0, 1);
 }
@@ -105,7 +111,7 @@
     --rule-strong: #3d3e45;
     --mark: #6faa8e;
     --mark-soft: #1e2f28;
-    --shadow-e1: 0 1px 2px rgba(0, 0, 0, 0.45);
-    --shadow-e2: 0 1px 1px rgba(0, 0, 0, 0.4), 0 4px 10px -6px rgba(0, 0, 0, 0.55);
+    --shadow-e1: 0 1px 1px rgba(0, 0, 0, 0.4);
+    --shadow-e2: 0 1px 1px rgba(0, 0, 0, 0.5), 0 4px 4px -1px rgba(0, 0, 0, 0.3);
   }
 }

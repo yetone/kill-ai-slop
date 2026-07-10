@@ -1,6 +1,7 @@
 ---
 import T from "./T.astro";
 import LangToggle from "./LangToggle.astro";
+import SoundToggle from "./SoundToggle.astro";
 
 const links = [
   { href: "#what", zh: "什么是 slop", en: "What it is", ja: "slop とは", ko: "slop 이란" },
@@ -29,6 +30,7 @@ const links = [
 
     <div class="right">
       <LangToggle />
+      <SoundToggle />
     </div>
   </div>
 </header>
@@ -45,7 +47,9 @@ const links = [
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--s-5);
+    /* Tight on phones, generous on desktop — the gap is the first thing to
+       give when the language switcher + speaker crowd the brand. */
+    gap: clamp(0.5rem, 3vw, 1.5rem);
     height: 3.75rem;
   }
   .brand {
@@ -74,6 +78,8 @@ const links = [
   }
   .wordmark {
     font-size: var(--step-0);
+    /* Two words, one line — never let it break to "Kill AI / Slop". */
+    white-space: nowrap;
   }
   .links {
     display: none;
@@ -91,6 +97,9 @@ const links = [
   .right {
     display: flex;
     align-items: center;
+    gap: clamp(0.5rem, 2.5vw, 1rem);
+    /* The controls keep their natural width; the brand yields space first. */
+    flex-shrink: 0;
   }
   @media (min-width: 52rem) {
     .links {

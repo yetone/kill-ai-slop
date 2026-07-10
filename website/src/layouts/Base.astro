@@ -76,6 +76,17 @@ const ogAlt =
         } catch (e) {}
       })();
     </script>
+    {/* Pre-paint: resolve the sweep-sound preference before first render, so a
+        muted visitor never hears a stray sound and the speaker icon shows the
+        right glyph immediately. Default is on. */}
+    <script is:inline>
+      (function () {
+        try {
+          document.documentElement.dataset.sound =
+            localStorage.getItem("kas-sound") === "off" ? "off" : "on";
+        } catch (e) {}
+      })();
+    </script>
     {/* Deep-link landing: scroll-behavior is `auto` until this runs, so an
         incoming /#entry link jumps straight to the entry. After the page has
         loaded and we've re-landed on the target (correcting for any layout

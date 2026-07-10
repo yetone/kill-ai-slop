@@ -87,7 +87,9 @@ if (!demo) throw new Error(`No demo for id "${id}"`);
     border: 0;
     background: none;
     padding: 0.35rem 0.7rem;
-    border-radius: 3px;
+    /* Concentric with the track: outer radius (--radius, 8px) minus the 3px
+       track padding, so the inner corner runs parallel to the outer one. */
+    border-radius: 5px;
     font: inherit;
     font-size: var(--step--1);
     color: var(--ink-2);
@@ -289,6 +291,157 @@ if (!demo) throw new Error(`No demo for id "${id}"`);
 <script>
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
+  /* ── Sweep sound ─────────────────────────────────────────────────────────
+     An elegant broom "whoosh" synthesised on the fly — no audio asset. A
+     band-passed noise swell brightens and pans left → right to mirror the
+     visual wipe front, then a light shimmer of bell partials rings out as the
+     surface comes clean (the 灵动 lift). Built lazily inside the click handler
+     so the AudioContext starts from a real user gesture, and shared across
+     every BeforeAfter on the page. Only called when the sweep actually plays,
+     so it inherits the reduced-motion gate too. */
+  let audioCtx: AudioContext | null = null;
+
+  function playSweepSound() {
+    // Muted by the top-right speaker toggle? Stay silent. (data-sound is the
+    // single source of truth, resolved pre-paint and persisted to localStorage.)
+    if (document.documentElement.dataset.sound === "off") return;
+    try {
+      const AC = window.AudioContext || (window as any).webkitAudioContext;
+      if (!AC) return;
+      if (!audioCtx) audioCtx = new AC();
+      const ctx = audioCtx;
+      if (ctx.state === "suspended") void ctx.resume();
+
+      const now = ctx.currentTime;
+      const out = ctx.createGain();
+      out.gain.value = 0.85; // gentle master — this is UI ambience, not a game
+      out.connect(ctx.destination);
+
+      // One soft, lightly low-passed noise bed, reused by every layer below at
+      // different read offsets — so nothing is a raw hiss and no two strokes
+      // sound identical.
+      const secs = 1.4;
+      const frames = Math.floor(ctx.sampleRate * secs);
+      const buf = ctx.createBuffer(1, frames, ctx.sampleRate);
+      const ch = buf.getChannelData(0);
+      let lp = 0;
+      for (let i = 0; i < frames; i++) {
+        const w = Math.random() * 2 - 1;
+        lp = lp * 0.55 + w * 0.45; // gentle low-pass — airy "shhh", not harsh hiss
+        ch[i] = lp;
+      }
+      const pan = (node: AudioNode, amount: number): AudioNode => {
+        if (!ctx.createStereoPanner) return node;
+        const p = ctx.createStereoPanner();
+        p.pan.value = amount;
+        node.connect(p);
+        return p;
+      };
+
+      // ── Three brush strokes ──────────────────────────────────────────────
+      // Real sweeping isn't one whoosh — it's shhk · shhk · shhk. Each stroke is
+      // a short noise burst, band-passed with a centre that rises as the bristles
+      // catch then falls as they lift, softly enveloped so there's no click, and
+      // nudged further right than the last — a hand brushing across, left → right,
+      // in time with the wipe front.
+      const strokes = [
+        { at: 0.0,  dur: 0.26, off: 0.1,  span: -0.5, peak: 2100, gain: 0.14 },
+        { at: 0.18, dur: 0.25, off: 0.5,  span: 0.0,  peak: 2500, gain: 0.13 },
+        { at: 0.35, dur: 0.28, off: 0.95, span: 0.5,  peak: 2900, gain: 0.12 },
+      ];
+      for (const s of strokes) {
+        const at = now + s.at;
+        const src = ctx.createBufferSource();
+        src.buffer = buf;
+
+        const hp = ctx.createBiquadFilter();
+        hp.type = "highpass";
+        hp.frequency.value = 650; // keep it airy, drop the low rumble
+
+        const band = ctx.createBiquadFilter();
+        band.type = "bandpass";
+        band.Q.value = 0.9;
+        band.frequency.setValueAtTime(s.peak * 0.55, at);
+        band.frequency.linearRampToValueAtTime(s.peak, at + s.dur * 0.45);
+        band.frequency.exponentialRampToValueAtTime(s.peak * 0.6, at + s.dur);
+
+        const g = ctx.createGain();
+        g.gain.setValueAtTime(0.0001, at);
+        g.gain.exponentialRampToValueAtTime(s.gain, at + 0.03); // soft attack
+        g.gain.exponentialRampToValueAtTime(0.0001, at + s.dur); // gentle release
+
+        src.connect(hp).connect(band).connect(g);
+        pan(g, s.span).connect(out);
+        src.start(at, s.off, s.dur + 0.05);
+        src.stop(at + s.dur + 0.06);
+      }
+
+      // ── Low body ─────────────────────────────────────────────────────────
+      // A warm low "whoom" under the strokes — the weight of the surface being
+      // brushed — so the sweep has body instead of thin top-end hiss.
+      {
+        const src = ctx.createBufferSource();
+        src.buffer = buf;
+        const low = ctx.createBiquadFilter();
+        low.type = "lowpass";
+        low.Q.value = 0.4;
+        low.frequency.setValueAtTime(480, now);
+        low.frequency.linearRampToValueAtTime(820, now + 0.42);
+        low.frequency.linearRampToValueAtTime(380, now + 0.72);
+        const g = ctx.createGain();
+        g.gain.setValueAtTime(0.0001, now);
+        g.gain.exponentialRampToValueAtTime(0.055, now + 0.12);
+        g.gain.exponentialRampToValueAtTime(0.0001, now + 0.72);
+        src.connect(low).connect(g).connect(out);
+        src.start(now, 0.2, 0.75);
+        src.stop(now + 0.76);
+      }
+
+      // ── Clean gleam ──────────────────────────────────────────────────────
+      // A light, airy two-note lift as the dust clears — soft and consonant, a
+      // gentle "all clean", not a bell ping.
+      const gleam = [
+        { f: 2093.0, t: 0.46 }, // C7
+        { f: 2637.0, t: 0.55 }, // E7
+      ];
+      for (const { f, t } of gleam) {
+        const at = now + t;
+        const osc = ctx.createOscillator();
+        osc.type = "sine";
+        osc.frequency.value = f;
+        const g = ctx.createGain();
+        g.gain.setValueAtTime(0.0001, at);
+        g.gain.exponentialRampToValueAtTime(0.03, at + 0.04); // soft, no ping
+        g.gain.exponentialRampToValueAtTime(0.0001, at + 0.5); // airy decay
+        osc.connect(g).connect(out);
+        osc.start(at);
+        osc.stop(at + 0.52);
+      }
+    } catch {
+      /* audio is a nicety — never let it break the toggle */
+    }
+  }
+
+  /* Warm the AudioContext on the first user gesture anywhere on the page, so
+     the first sweep isn't swallowed by cold-start latency (a fresh context +
+     async resume + audio-hardware wake-up can lag the very first sound). By the
+     time the user reaches a toggle it's already running, and playback is tight.
+     Browsers only allow audio to start from a gesture — pointerdown/keydown
+     both qualify — so we prime once, on whichever comes first. */
+  function primeAudio() {
+    if (document.documentElement.dataset.sound === "off") return;
+    try {
+      const AC = window.AudioContext || (window as any).webkitAudioContext;
+      if (!AC) return;
+      if (!audioCtx) audioCtx = new AC();
+      if (audioCtx.state === "suspended") void audioCtx.resume();
+    } catch {
+      /* priming is best-effort; playSweepSound still creates one lazily */
+    }
+  }
+  window.addEventListener("pointerdown", primeAudio, { once: true });
+  window.addEventListener("keydown", primeAudio, { once: true });
+
   document.querySelectorAll<HTMLElement>(".ba").forEach((ba) => {
     // Remove the sweeping state once the dust-erase overlay fades out.
     ba.addEventListener("animationend", (e) => {
@@ -310,6 +463,7 @@ if (!demo) throw new Error(`No demo for id "${id}"`);
           ba.classList.remove("sweeping");
           void ba.offsetWidth; // reflow so the animation restarts on re-click
           ba.classList.add("sweeping");
+          playSweepSound(); // whoosh + gleam, timed to the visual wipe
         }
       });
     });
