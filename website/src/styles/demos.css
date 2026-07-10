@@ -858,7 +858,8 @@
 
 /* 07d AI-drawn SVG icon (component) ----------------------------------------
    before: a crude generated blob mascot on a dark app-icon tile. after: a
-   flat, single-colour, deliberate monogram — a mark that was decided, not
+   real, high-quality icon — the kind a designer, or a good image model used
+   with care, produces. Crisp, flat, on-brand; a mark that was made, not
    guessed at. */
 .demo-ai-svg-icon .ic {
   text-align: center;
@@ -879,16 +880,12 @@
   height: 62%;
   display: block;
 }
-.demo-ai-svg-icon .clean .tile {
+.demo-ai-svg-icon .clean .shot {
+  display: inline-block;
+  width: 78px;
+  height: 78px;
   border-radius: 18px;
-  background: var(--ink);
-}
-.demo-ai-svg-icon .clean .mono {
-  color: var(--paper);
-  font-weight: 640;
-  font-size: 2.3rem;
-  line-height: 1;
-  letter-spacing: -0.02em;
+  object-fit: cover;
 }
 .demo-ai-svg-icon .cap {
   margin: 0.75rem 0 0;
@@ -1000,23 +997,27 @@
 .demo-mono-hue-alert .clean .d.ok { background: #4e9d74; }
 
 /* 07f oversized drop shadow (component) ------------------------------------
-   before: a small card casting a room-sized, near-symmetric soft shadow — a
-   big blur at low opacity with almost no offset, so it fogs out in every
-   direction instead of dropping downward, corresponding to no real height.
-   after: elevation you can believe — a hairline edge plus a 1px contact
-   shadow and one restrained ambient shadow, the blur sized to a plausible
-   lift. Extra vertical room on the stage so the bloated shadow can bloom. */
+   This tell is worst in dark UIs: a big soft shadow on a near-black surface
+   doesn't just read as too large, it *bands* — the gradient posterises into
+   visible concentric steps, a blocky halo behind the card that no real light
+   would cast. So (like the atmosphere/alert demos) this one pins a fixed DARK
+   surface in both site themes; literal colours, not tokens, so the sample
+   never flips to light. before: a small dark card under a huge, spread-out
+   pure-black shadow that blocks up into banded rings. after: a hairline plus
+   one tight contact shadow — believable elevation, no fog. */
 .demo-oversized-shadow .sha {
   width: 100%;
   display: grid;
   place-items: center;
-  padding: 2.25rem 0.5rem;
+  padding: clamp(2.75rem, 9vw, 4.5rem) 1.5rem;
+  background: #1a1b21;
+  border-radius: var(--radius-lg);
 }
 .demo-oversized-shadow .card {
   width: 100%;
   max-width: 15rem;
   padding: 1rem 1.15rem;
-  background: var(--card);
+  background: #24262e;
   border-radius: var(--radius-lg);
   text-align: left;
 }
@@ -1025,22 +1026,22 @@
   font-size: var(--step-1);
   font-weight: 640;
   letter-spacing: -0.01em;
-  color: var(--ink);
+  color: #eaeef5;
 }
 .demo-oversized-shadow .s {
   margin: 0.3rem 0 0;
   font-size: var(--step--1);
-  color: var(--ink-2);
+  color: #98a1b2;
 }
-/* before: the render range is far bigger than the card — a faint, barely
-   offset 80px blur that hangs a symmetric cloud around it. */
+/* before: a big spread + blur pure-black shadow on near-black renders as an
+   oversized dark rounded-rect whose fade posterises into visible steps. */
 .demo-oversized-shadow .slop .card {
   box-shadow:
-    0 6px 20px rgba(18, 19, 22, 0.12),
-    0 16px 80px 10px rgba(18, 19, 22, 0.36);
+    0 6px 18px 2px rgba(0, 0, 0, 0.5),
+    0 16px 44px 16px rgba(0, 0, 0, 0.48);
 }
-/* after: a hairline + the site's own tight elevation token. */
+/* after: a hairline + one tight contact shadow, believable on the surface. */
 .demo-oversized-shadow .clean .card {
-  border: 1px solid var(--rule);
-  box-shadow: var(--shadow-e2);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.45), 0 4px 12px -6px rgba(0, 0, 0, 0.5);
 }

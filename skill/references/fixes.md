@@ -174,14 +174,14 @@ Delete decorative pills; keep at most a real status tag.
 ```
 
 ### 20 AI-drawn SVG icons
-Replace the generated blob/mascot with a real mark: a drawn icon-set glyph, a
-considered geometric shape, or the product's initial in good type.
+Get a real, high-quality icon: commission a designer, or generate one with the
+best image model and refine it until it's crisp and on-brand.
 ```diff
 - <svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="20"/><circle cx="18" cy="20" r="2"/>…</svg>
-+ <span class="logo">Kn</span>          /* the product's initials in the brand type */
++ <img src="/icon.svg" alt="" />        /* a real icon: a designer, or a strong image model, refined */
 ```
-If you want a mascot, commission one; a crude generated blob is worse than no
-picture at all.
+Don't ship the crude blob the model sketched, and don't fall back to a bare
+letter; a crude generated icon is worse than no picture at all.
 
 ### 21 Icon in a tint of itself
 Let the icon inherit the text color with no container; if it truly needs one,

@@ -140,7 +140,7 @@ const TELLS = [
       /rounded-full[\s\S]{0,40}?bg-(indigo|purple|green|amber|pink)-(50|100|200)/i,
       />\s*(?:[✨🔥🎉🚀]\s*)?(new|beta|hot|popular|pro|coming soon)\s*</i,
     ] },
-  { id: "20", group: "component", name: "AI-drawn SVG icon", fix: "a real mark or initials in good type",
+  { id: "20", group: "component", name: "AI-drawn SVG icon", fix: "a real, high-quality icon (a designer, or a strong image model)",
     patterns: [
       /<circle[^>]*\br="[1-9]/i,
       /(?:mascot|blob)\.svg/i,

@@ -199,7 +199,7 @@ const rawEntries: Omit<Entry, "n">[] = [
       en: "The font-swap is cheap drama. It cosplays ‘editorial’ while actually staging a fight between two voices in one sentence. It's the most viral AI headline tic right now.",
     },
     fix: {
-      zh: "要强调就靠字重、位置或断行,让整句保持一种嗓音。真需要斜体时,用同一字体家族的斜体。",
+      zh: "要强调就靠字重、位置或断行，让整句保持一种嗓音。真需要斜体时，用同一字体家族的斜体。",
       en: "Emphasise with weight, position, or a line break, and keep one voice. If you truly need italic, use the same family's italic.",
     },
     detect: ["font-serif italic inside a sans <h1>", 'style="font-family: Georgia"', "<em> with a display serif"],
@@ -215,7 +215,7 @@ const rawEntries: Omit<Entry, "n">[] = [
       en: "A dev tool or SaaS page dressed in Playfair / Lora display serif for body copy.",
     },
     why: {
-      zh: "模型把「高级」等同于「衬线」。但展示衬线在小字号、密信息的界面里既难读又跑题,像给终端穿了燕尾服。",
+      zh: "模型把「高级」等同于「衬线」。但展示衬线在小字号、密信息的界面里既难读又跑题，像给终端穿了燕尾服。",
       en: "The model equates ‘premium’ with ‘serif’. Display serifs are hard to read at UI sizes and tonally off — a tuxedo on a terminal.",
     },
     fix: {
@@ -469,8 +469,8 @@ const rawEntries: Omit<Entry, "n">[] = [
       en: "A model has no hand and no idea what your product is, so its SVG is a guess at ‘cute icon’: off proportions, wobbly paths, a generic creature that could belong to anything. It looks like placeholder art that never got replaced. The icon is a product's first impression; it shouldn't be this.",
     },
     fix: {
-      zh: "用一个真正的标识：一个考究的几何符号、一套真正画过的图标里的一个，或者干脆把产品首字母用好字体排出来。想要吉祥物或插画，就找人认真做一个——粗糙的生成图，比没有图还糟。",
-      en: "Use a real mark: a considered geometric glyph, one from an icon set that was actually drawn, or just the product's initial set in good type. If you want a mascot, have one made — a crude generated blob is worse than no picture at all.",
+      zh: "用一个真正的、高质量的图标：找设计师做，或者用最好的生图模型生成一个，再打磨到干净、贴合品牌为止。让模型随手画的粗糙 SVG，或者退而求其次摆一个首字母，都配不上产品的标识。",
+      en: "Get a real, high-quality icon. Commission a designer, or generate one with the best image model and refine it until it's crisp and on brand. A crude SVG the model sketched, or a bare fallback letter, isn't a mark worth shipping.",
     },
     detect: ["hand-generated <svg> blob/mascot", "primitive shapes + dot eyes as a logo", "generic cartoon-creature app icon", "AI-drawn vector art shipped as the mark"],
     demo: "ai-svg-icon",

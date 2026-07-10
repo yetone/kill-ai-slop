@@ -277,8 +277,8 @@ export const demos: Record<string, { before: string; after: string }> = {
         <p class="cap">generated blob mascot</p>
       </div>`,
     after: `<div class="ic clean">
-        <div class="tile"><span class="mono">N</span></div>
-        <p class="cap">a considered flat mark</p>
+        <img class="shot" src="/demo/clean-icon.png" alt="" width="78" height="78" decoding="async" />
+        <p class="cap">designed, or generated with care</p>
       </div>`,
   },
 

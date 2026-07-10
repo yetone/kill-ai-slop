@@ -150,9 +150,9 @@ comes back: a round blob with two dot eyes, a mascot of primitive shapes, a logo
 that's a rounded square with a face. Vector art the machine can't really draw,
 used as the product's mark; it looks like placeholder art that never got
 replaced.
-*Fix:* use a real mark — a considered geometric glyph, one from a set that was
-actually drawn, or the product's initial in good type. If you want a mascot,
-have one made.
+*Fix:* get a real, high-quality icon. Commission a designer, or generate one
+with the best image model and refine it until it's crisp and on-brand. A crude
+SVG the model sketched, or a bare fallback letter, isn't a mark worth shipping.
 
 **21 · Icon in a tint of itself** — every icon wrapped in a rounded square
 filled with a see-through tint of its own color: a blue icon on faint blue, a
