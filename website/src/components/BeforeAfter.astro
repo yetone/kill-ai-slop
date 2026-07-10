@@ -13,13 +13,20 @@ if (!demo) throw new Error(`No demo for id "${id}"`);
 <figure class="ba" data-demo={id} data-show="before">
   <div class="ba-head">
     <div class="ba-switch" role="tablist" aria-label="Before / after">
+      <span class="ba-thumb no-anim" aria-hidden="true"></span>
       <button type="button" role="tab" data-ba="before" aria-selected="true">
         <span class="dot slop" aria-hidden="true"></span>
-        <T zh="slop" en="Slop" ja="Slop" ko="Slop" />
+        <span class="ba-lbl">
+          <span class="ba-lbl-live"><T zh="slop" en="Slop" ja="Slop" ko="Slop" /></span>
+          <span class="ba-lbl-ghost" aria-hidden="true"><T zh="slop" en="Slop" ja="Slop" ko="Slop" /></span>
+        </span>
       </button>
       <button type="button" role="tab" data-ba="after" aria-selected="false">
         <span class="dot clean" aria-hidden="true"></span>
-        <T zh="清理后" en="Clean" ja="クリーン" ko="정리 후" />
+        <span class="ba-lbl">
+          <span class="ba-lbl-live"><T zh="清理后" en="Clean" ja="クリーン" ko="정리 후" /></span>
+          <span class="ba-lbl-ghost" aria-hidden="true"><T zh="清理后" en="Clean" ja="クリーン" ko="정리 후" /></span>
+        </span>
       </button>
     </div>
     <span class="ba-hint">
@@ -76,6 +83,7 @@ if (!demo) throw new Error(`No demo for id "${id}"`);
     background: var(--paper-2);
   }
   .ba-switch {
+    position: relative;
     display: inline-flex;
     padding: 3px;
     gap: 2px;
@@ -83,7 +91,34 @@ if (!demo) throw new Error(`No demo for id "${id}"`);
     /* card radius (12) − head gap (6) = 6 → concentric with the card corner */
     border-radius: calc(var(--radius-lg) - 6px);
   }
+  /* The sliding thumb: one white pill that glides between the two tabs, so
+     switching reads as a smooth motion rather than a hard background swap. Its
+     x-offset and width are measured off the active tab in JS (the labels differ
+     in width per language), then animated by the transition below. */
+  .ba-thumb {
+    position: absolute;
+    top: 3px;
+    left: 0;
+    height: calc(100% - 6px);
+    width: var(--thumb-w, 0);
+    transform: translateX(var(--thumb-x, 0));
+    background: var(--card);
+    /* same concentric radius the selected tab used to carry */
+    border-radius: calc(var(--radius-lg) - 6px - 3px);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
+    transition:
+      transform 260ms cubic-bezier(0.32, 0.72, 0, 1),
+      width 260ms cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  /* Suppress the glide before the first measurement (initial paint) so the
+     thumb doesn't fly in from the left. JS drops this class after positioning. */
+  .ba-thumb.no-anim {
+    transition: none;
+  }
   .ba-switch button {
+    /* sit above the thumb so the label stays crisp as the pill slides under it */
+    position: relative;
+    z-index: 1;
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
@@ -97,12 +132,32 @@ if (!demo) throw new Error(`No demo for id "${id}"`);
     font-size: var(--step--1);
     color: var(--ink-2);
     cursor: pointer;
+    transition: color 180ms ease;
   }
   .ba-switch button[aria-selected="true"] {
-    background: var(--card);
     color: var(--ink);
-    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
     font-weight: 600;
+  }
+  /* Reserve each label's *bold* width in both states, so selecting a tab (which
+     bolds it) never changes that tab's width — otherwise the whole switch would
+     twitch wider/narrower on every toggle. A hidden, always-bold ghost fixes the
+     width; the live copy stacks on top and carries the real (normal/bold) weight.
+     Both run through <T>, so the reserved width tracks the active language. */
+  .ba-lbl {
+    display: inline-grid;
+  }
+  .ba-lbl-live,
+  .ba-lbl-ghost {
+    grid-area: 1 / 1;
+  }
+  .ba-lbl-ghost {
+    font-weight: 600;
+    visibility: hidden;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ba-thumb {
+      transition: none;
+    }
   }
   .dot {
     width: 0.5rem;
@@ -118,6 +173,10 @@ if (!demo) throw new Error(`No demo for id "${id}"`);
   .ba-hint {
     font-size: var(--step--1);
     color: var(--ink-3);
+    /* Right-align the hint's edge with the SLOP tag below it: the head's 6px
+       padding puts the hint 6px from the card edge, but the tag sits 0.6rem
+       from the stage edge — close that gap so both right edges line up. */
+    margin-right: calc(0.6rem - 6px);
   }
   @media (max-width: 34rem) {
     .ba-hint {
@@ -453,6 +512,32 @@ if (!demo) throw new Error(`No demo for id "${id}"`);
       }
     });
 
+    // ── Sliding thumb ─────────────────────────────────────────────────────
+    // Park the white pill over whichever tab is selected. Measured live, since
+    // the tab labels change width between languages (and across a resize).
+    const thumb = ba.querySelector<HTMLElement>(".ba-thumb");
+    function positionThumb() {
+      const active = ba.querySelector<HTMLElement>(
+        '[data-ba][aria-selected="true"]',
+      );
+      if (!thumb || !active) return;
+      // offsetLeft/Width are relative to .ba-switch (the positioned ancestor),
+      // which is exactly the thumb's containing block — so no extra math.
+      thumb.style.setProperty("--thumb-x", `${active.offsetLeft}px`);
+      thumb.style.setProperty("--thumb-w", `${active.offsetWidth}px`);
+    }
+    // Place it without animating on first paint, then enable the glide.
+    positionThumb();
+    requestAnimationFrame(() => thumb?.classList.remove("no-anim"));
+    // Fonts can load after first paint and reflow the labels — realign then.
+    document.fonts?.ready.then(positionThumb);
+    // Keep aligned as the viewport or the active language (label widths) change.
+    window.addEventListener("resize", positionThumb);
+    new MutationObserver(positionThumb).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-lang"],
+    });
+
     ba.querySelectorAll<HTMLButtonElement>("[data-ba]").forEach((btn) => {
       btn.addEventListener("click", () => {
         const mode = btn.dataset.ba!;
@@ -461,6 +546,7 @@ if (!demo) throw new Error(`No demo for id "${id}"`);
         ba.querySelectorAll<HTMLButtonElement>("[data-ba]").forEach((b) =>
           b.setAttribute("aria-selected", String(b.dataset.ba === mode)),
         );
+        positionThumb(); // glide the pill onto the newly selected tab
         // Sweep only when actually cleaning (slop → clean), never in reverse.
         if (mode === "after" && !wasClean && !reduceMotion.matches) {
           ba.classList.remove("sweeping");
