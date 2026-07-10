@@ -20,11 +20,12 @@ description: >-
 
 # Kill AI Slop
 
-AI slop is **ugly**. It's the specific ugliness of a machine with no taste
-piling every default on at once: a gradient, a glow, a mascot, emoji, a wall of
-glowing cards, until every product looks like the same garish template. It reads
-as "designed" in a thumbnail and falls apart the moment anyone looks. Your job
-is to strip it back to something a person would actually choose.
+AI slop is **ugly** in a specific way: it piles on every possible style and
+detail without settling on a focus. A gradient, a glow, a mascot, emoji, a wall
+of glowing cards, every default switched on at once, until every product looks
+like the same garish template. It reads as "designed" in a thumbnail and falls
+apart the moment anyone looks. Your job is to strip it back to something a
+person would actually choose.
 
 The principles, held on every fix you make:
 
