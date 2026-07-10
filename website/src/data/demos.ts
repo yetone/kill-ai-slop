@@ -246,19 +246,76 @@ export const demos: Record<string, { before: string; after: string }> = {
       </div>`,
   },
 
+  /* An original "premium dark SaaS" overview panel — the atmosphere-gradient
+     tell applied to our own invented UI (not a clone of any real product): a
+     glowing near-black page holding a glass card whose surface is a top-lighter
+     gradient, with gradient stat tiles, a gradient bar chart, a glassy segmented
+     control, and a glowing gradient CTA. before wears the whole atmosphere;
+     after keeps the identical layout but flattens every surface to Linear's real
+     dark stack (flat page, flat card, hairline + tight shadow, one accent). */
   "atmosphere-gradient": {
-    before: `<div class="bg slop">
+    before: `<div class="page slop">
         <div class="card">
-          <p class="h">Panel</p>
-          <p class="s">deep-blue glow, gradient card</p>
-          <div class="field">Hangzhou <span class="chev">⌄</span></div>
+          <div class="chead">
+            <div class="htxt">
+              <p class="ttl">Overview</p>
+              <p class="csub">Last 30 days</p>
+            </div>
+            <div class="seg">
+              <span>7d</span><span>30d</span><span class="on">90d</span>
+            </div>
+          </div>
+          <div class="tiles">
+            <div class="tile">
+              <p class="tl">Revenue</p>
+              <p class="tv">$48.2k</p>
+              <span class="delta">▲ 12.4%</span>
+            </div>
+            <div class="tile">
+              <p class="tl">Active users</p>
+              <p class="tv">3,914</p>
+              <span class="delta">▲ 5.1%</span>
+            </div>
+          </div>
+          <div class="chart">
+            <i style="--h:34%"></i><i style="--h:52%"></i><i style="--h:41%"></i><i style="--h:68%"></i><i style="--h:55%"></i><i style="--h:84%" class="hi"></i><i style="--h:63%"></i>
+          </div>
+          <div class="cfoot">
+            <span class="upd">Updated 2m ago</span>
+            <button class="btn">Export report</button>
+          </div>
         </div>
       </div>`,
-    after: `<div class="bg clean">
+    after: `<div class="page clean">
         <div class="card">
-          <p class="h">Panel</p>
-          <p class="s">flat background, flat card</p>
-          <div class="field">Hangzhou <span class="chev">⌄</span></div>
+          <div class="chead">
+            <div class="htxt">
+              <p class="ttl">Overview</p>
+              <p class="csub">Last 30 days</p>
+            </div>
+            <div class="seg">
+              <span>7d</span><span>30d</span><span class="on">90d</span>
+            </div>
+          </div>
+          <div class="tiles">
+            <div class="tile">
+              <p class="tl">Revenue</p>
+              <p class="tv">$48.2k</p>
+              <span class="delta">▲ 12.4%</span>
+            </div>
+            <div class="tile">
+              <p class="tl">Active users</p>
+              <p class="tv">3,914</p>
+              <span class="delta">▲ 5.1%</span>
+            </div>
+          </div>
+          <div class="chart">
+            <i style="--h:34%"></i><i style="--h:52%"></i><i style="--h:41%"></i><i style="--h:68%"></i><i style="--h:55%"></i><i style="--h:84%" class="hi"></i><i style="--h:63%"></i>
+          </div>
+          <div class="cfoot">
+            <span class="upd">Updated 2m ago</span>
+            <button class="btn">Export report</button>
+          </div>
         </div>
       </div>`,
   },

@@ -788,86 +788,221 @@
 }
 
 /* 03c atmosphere gradient (color) ------------------------------------------
-   before: near-black navy page with a top glow + a gradient-filled glassy
-   card — the "premium dark mode" default. after: one flat background, a flat
-   card, depth from a hairline + a whisper shadow. Both panes are dark on
-   purpose (the tell only exists in dark UIs). */
-.demo-atmosphere-gradient .bg {
+   Our own invented "premium dark SaaS" overview panel — the tell applied to an
+   original UI, not a clone of a real product. before: a glowing near-black page
+   holding a glass card whose surface is itself a gradient (lighter top, darker
+   bottom), with gradient stat tiles, a gradient bar chart, a glassy segmented
+   control, and a glowing gradient CTA — every surface is mood. after: the exact
+   same layout flattened to Linear's real dark stack — one flat page, a flat
+   card, depth from a hairline + a tight contact shadow, one accent you can
+   justify. Both panes are dark on purpose (the tell only exists in dark UIs). */
+.demo-atmosphere-gradient .page {
   width: 100%;
   max-width: 34rem;
   margin-inline: auto;
-  /* Thick glow frame: the card keeps ~its original width, but the backdrop
-     around it grows a lot — so the atmosphere itself reads bigger (the whole
-     point of the tell), instead of everything just scaling up together. The
-     slop glow is anchored up top, so the deep top band gets more dramatic. */
-  padding: 4.8rem 4.4rem;
+  /* Generous frame so the atmosphere itself reads big around the card. */
+  padding: clamp(2.2rem, 7vw, 4rem) clamp(1.5rem, 5vw, 3.2rem);
   border-radius: var(--radius-lg);
   overflow: clip;
+  font-size: clamp(10px, 2.4vw, 12.5px);
 }
 .demo-atmosphere-gradient .card {
-  padding: 1rem 1.1rem;
+  padding: 1.15rem 1.2rem;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.95rem;
 }
-.demo-atmosphere-gradient .h {
+/* header: title block + a segmented time-range control */
+.demo-atmosphere-gradient .chead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.demo-atmosphere-gradient .ttl {
   margin: 0;
-  font-size: var(--step-1);
-  font-weight: 640;
+  font-size: 1.25em;
+  font-weight: 660;
+  letter-spacing: -0.02em;
+}
+.demo-atmosphere-gradient .csub {
+  margin: 0.2em 0 0;
+  font-size: 0.86em;
+}
+.demo-atmosphere-gradient .seg {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+.demo-atmosphere-gradient .seg span {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.82em;
+  font-weight: 560;
   letter-spacing: -0.01em;
-  color: #eaeef5;
 }
-.demo-atmosphere-gradient .s {
-  margin: 0.3rem 0 0;
-  font-size: var(--step--1);
-  color: #97a1b2;
+/* two stat tiles */
+.demo-atmosphere-gradient .tiles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
 }
-.demo-atmosphere-gradient .field {
+.demo-atmosphere-gradient .tile {
+  padding: 0.7rem 0.8rem;
+  border-radius: 12px;
+}
+.demo-atmosphere-gradient .tl {
+  margin: 0;
+  font-size: 0.82em;
+  letter-spacing: -0.005em;
+}
+.demo-atmosphere-gradient .tv {
+  margin: 0.28em 0 0;
+  font-size: 1.5em;
+  font-weight: 680;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.demo-atmosphere-gradient .delta {
+  display: inline-block;
+  margin-top: 0.45em;
+  font-size: 0.72em;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+/* mini bar chart */
+.demo-atmosphere-gradient .chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+  height: 3rem;
+  padding: 0 0.1rem;
+}
+.demo-atmosphere-gradient .chart i {
+  flex: 1;
+  height: var(--h);
+  border-radius: 3px 3px 2px 2px;
+}
+/* footer: timestamp + primary action */
+.demo-atmosphere-gradient .cfoot {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 0.85rem;
-  padding: 0.5rem 0.7rem;
-  font-size: var(--step--1);
-  color: #cfd6e2;
+  gap: 12px;
 }
-.demo-atmosphere-gradient .chev { color: #7f8a9c; }
-/* before: glow backdrop + gradient surfaces */
-.demo-atmosphere-gradient .slop {
-  background: radial-gradient(120% 85% at 50% -12%, #2b3c66 0%, #0b1120 55%);
+.demo-atmosphere-gradient .upd {
+  font-size: 0.78em;
+  letter-spacing: -0.005em;
+}
+.demo-atmosphere-gradient .btn {
+  border: 0;
+  padding: 8px 15px;
+  border-radius: 10px;
+  font: inherit;
+  font-size: 0.86em;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  cursor: default;
+}
+
+/* ── before: gradients as atmosphere ──────────────────────────────────────
+   Cool ambient glow anchored up top over a near-black blue base; a card whose
+   surface is a top-lighter gradient with a hairline highlight; gradient tiles,
+   bars, segment pill, and a glowing gradient button. */
+.demo-atmosphere-gradient .page.slop {
+  background:
+    radial-gradient(115% 80% at 50% -12%, rgba(96, 118, 196, 0.42) 0%, transparent 52%),
+    radial-gradient(90% 70% at 88% 8%, rgba(126, 104, 200, 0.24) 0%, transparent 55%),
+    linear-gradient(180deg, #0e1424 0%, #090d18 60%, #070a12 100%);
 }
 .demo-atmosphere-gradient .slop .card {
-  border-radius: 16px;
-  background: linear-gradient(180deg, rgba(48, 62, 100, 0.7), rgba(19, 25, 42, 0.55));
+  background: linear-gradient(180deg, rgba(54, 70, 116, 0.55) 0%, rgba(20, 26, 44, 0.55) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.12) inset,
+    0 24px 60px -18px rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+}
+.demo-atmosphere-gradient .slop .ttl { color: #eef2fb; }
+.demo-atmosphere-gradient .slop .csub { color: rgba(200, 214, 240, 0.6); }
+.demo-atmosphere-gradient .slop .seg {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.demo-atmosphere-gradient .slop .seg span { color: rgba(214, 226, 248, 0.6); }
+.demo-atmosphere-gradient .slop .seg span.on {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(202, 216, 244, 0.78));
+  color: #16203a;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset, 0 2px 8px rgba(120, 150, 220, 0.35);
+}
+.demo-atmosphere-gradient .slop .tile {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.025));
   border: 1px solid rgba(255, 255, 255, 0.09);
-  box-shadow: 0 22px 50px -22px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.07) inset;
 }
-.demo-atmosphere-gradient .slop .field {
-  border-radius: 8px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02));
-  border: 1px solid rgba(255, 255, 255, 0.11);
+.demo-atmosphere-gradient .slop .tl { color: rgba(200, 214, 240, 0.62); }
+.demo-atmosphere-gradient .slop .tv { color: #f2f5fc; }
+.demo-atmosphere-gradient .slop .delta { color: #7ee0b0; }
+.demo-atmosphere-gradient .slop .chart i {
+  background: linear-gradient(180deg, rgba(150, 180, 240, 0.85), rgba(96, 120, 205, 0.35));
 }
-/* after: Linear's real dark surface stack, measured off the running app — not a
-   guessed "dark blue". Page = lch(4.52 .3 272) → #0f1010; the card is raised one
-   step to lch(9 2.1 272) → #191a1c; its ring is lch(13 1.38 272) → #212224; the
-   inset field drops to lch(11 3 272) → #1d1e22. Depth is a hairline ring + Linear's
-   tight contact shadow, nothing more. Text is Linear's neutral ramp
-   (#e3e3e5 / #949496), faintly cool — no bluish tint of its own. */
-.demo-atmosphere-gradient .clean {
-  background: #0f1010;
+.demo-atmosphere-gradient .slop .chart i.hi {
+  background: linear-gradient(180deg, #cfe0fb, #8fa9ea);
+  box-shadow: 0 0 14px rgba(150, 180, 240, 0.5);
 }
+.demo-atmosphere-gradient .slop .upd { color: rgba(200, 214, 240, 0.5); }
+.demo-atmosphere-gradient .slop .btn {
+  background: linear-gradient(180deg, #a9c2f2 0%, #7d97dd 100%);
+  color: #131c34;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.45) inset,
+    0 0 0 0.5px rgba(170, 200, 245, 0.5),
+    0 8px 22px rgba(130, 160, 235, 0.4);
+}
+
+/* ── after: Linear's real dark stack ──────────────────────────────────────
+   One flat page (#0f1010), a flat card raised one step (#191a1c) with a hairline
+   ring (#212224) and Linear's tight contact shadow; inset tiles a step down
+   (#1d1e22). No glow, no glass, no gradient. Neutral text ramp (#e3e3e5/#949496).
+   The most restrained move: no accent hue at all — a warm porcelain (#ecebe6)
+   solid carries the one primary action, the peak bar is just a bright neutral,
+   and the only colour left is the green ▲ delta, where it's a real signal. */
+.demo-atmosphere-gradient .page.clean { background: #0f1010; }
 .demo-atmosphere-gradient .clean .card {
-  border-radius: 8px;
   background: #191a1c;
   border: 1px solid #212224;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5), 0 4px 4px -1px rgba(0, 0, 0, 0.3);
 }
-.demo-atmosphere-gradient .clean .h { color: #e3e3e5; }
-.demo-atmosphere-gradient .clean .s { color: #949496; }
-.demo-atmosphere-gradient .clean .field {
-  border-radius: 6px;
-  background: #1d1e22;
+.demo-atmosphere-gradient .clean .ttl { color: #e3e3e5; }
+.demo-atmosphere-gradient .clean .csub { color: #949496; }
+.demo-atmosphere-gradient .clean .seg {
+  background: #141517;
   border: 1px solid #212224;
+}
+.demo-atmosphere-gradient .clean .seg span { color: #949496; }
+.demo-atmosphere-gradient .clean .seg span.on {
+  background: #26272b;
   color: #e3e3e5;
 }
-.demo-atmosphere-gradient .clean .chev { color: #949496; }
+.demo-atmosphere-gradient .clean .tile {
+  background: #1d1e22;
+  border: 1px solid #212224;
+}
+.demo-atmosphere-gradient .clean .tl { color: #949496; }
+.demo-atmosphere-gradient .clean .tv { color: #e3e3e5; }
+.demo-atmosphere-gradient .clean .delta { color: #6faa8e; }
+.demo-atmosphere-gradient .clean .chart i { background: #2c2d31; }
+.demo-atmosphere-gradient .clean .chart i.hi { background: #c9cace; }
+.demo-atmosphere-gradient .clean .upd { color: #949496; }
+.demo-atmosphere-gradient .clean .btn {
+  background: #ecebe6;
+  color: #191a1c;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+}
 
 /* 07d AI-drawn SVG icon (component) ----------------------------------------
    before: a crude generated blob mascot on a dark app-icon tile. after: a
@@ -992,17 +1127,26 @@
 }
 /* clean: this is how Linear actually does it. Linear's toasts are the `sonner`
    library run with rich-colours OFF — a neutral surface (var(--normal-bg)), a
-   neutral 1px ring (var(--normal-border)), neutral text, 8px radius and one soft
-   float shadow (0 4px 12px rgba(0,0,0,.1)). No per-type colour fill; the type is
-   carried by a bold word + a single small muted dot. (The slop side above is
-   literally sonner's `richColors` default: same-hue bg + border + text.) Surface
-   values are Linear's own measured dark ramp: row #191a1c on a #212224 ring. */
+   neutral 1px ring (var(--normal-border)), neutral text, 8px radius. No per-type
+   colour fill; the type is carried by a bold word + a single small muted dot.
+   (The slop side above is literally sonner's `richColors` default: same-hue bg +
+   border + text.) Surface values are Linear's own measured dark ramp: row #191a1c
+   on a #212224 ring.
+
+   Elevation: sonner's literal default is a diffuse `0 4px 12px rgba(0,0,0,.1)`,
+   which reads fine floating over lit app content — but on this isolated near-black
+   stage (nothing behind the rows) that soft dark drop just bands into a halo, the
+   exact tell the oversized-shadow demo flags. So we lift the rows with Linear's
+   *own* elevation instead: a tight 1px contact shadow pulled in with a negative
+   spread. Same lift, no banding. */
 .demo-mono-hue-alert .clean .al {
   color: #d4d4d6;
   border: 1px solid #212224;
   background: #191a1c;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow:
+    0 1px 1px rgba(0, 0, 0, 0.35),
+    0 4px 4px -2px rgba(0, 0, 0, 0.25);
 }
 .demo-mono-hue-alert .clean b {
   color: #e3e3e5;
