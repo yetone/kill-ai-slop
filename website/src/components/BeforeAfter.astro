@@ -56,6 +56,9 @@ if (!demo) throw new Error(`No demo for id "${id}"`);
   .ba {
     margin: 0;
     border: var(--hair) solid var(--rule);
+    /* Concentric corners: each inner radius = outer radius − its gap, so the
+       gap at every corner matches the gap along the straight edges. Card is the
+       outermost, so it gets the largest radius. */
     border-radius: var(--radius-lg);
     overflow: clip;
     background: var(--card);
@@ -66,9 +69,9 @@ if (!demo) throw new Error(`No demo for id "${id}"`);
     align-items: center;
     justify-content: space-between;
     gap: var(--s-4);
-    /* Uniform padding so the toggle is evenly inset — equal gap top, left,
-       and bottom. */
-    padding: var(--s-3);
+    /* Uniform 6px gap around the switch — this is the gap the switch's radius
+       is derived from, so the corner stays concentric with the card. */
+    padding: 6px;
     border-bottom: var(--hair) solid var(--rule);
     background: var(--paper-2);
   }
@@ -77,7 +80,8 @@ if (!demo) throw new Error(`No demo for id "${id}"`);
     padding: 3px;
     gap: 2px;
     background: color-mix(in oklab, var(--ink) 7%, transparent);
-    border-radius: var(--radius);
+    /* card radius (12) − head gap (6) = 6 → concentric with the card corner */
+    border-radius: calc(var(--radius-lg) - 6px);
   }
   .ba-switch button {
     display: inline-flex;
@@ -87,9 +91,8 @@ if (!demo) throw new Error(`No demo for id "${id}"`);
     border: 0;
     background: none;
     padding: 0.35rem 0.7rem;
-    /* Concentric with the track: outer radius (--radius, 8px) minus the 3px
-       track padding, so the inner corner runs parallel to the outer one. */
-    border-radius: 5px;
+    /* switch radius (6) − switch padding (3) = 3 → concentric with the track */
+    border-radius: calc(var(--radius-lg) - 6px - 3px);
     font: inherit;
     font-size: var(--step--1);
     color: var(--ink-2);

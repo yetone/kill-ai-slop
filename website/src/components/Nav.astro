@@ -48,8 +48,9 @@ const links = [
     align-items: center;
     justify-content: space-between;
     /* Tight on phones, generous on desktop — the gap is the first thing to
-       give when the language switcher + speaker crowd the brand. */
-    gap: clamp(0.5rem, 3vw, 1.5rem);
+       give when the language switcher + speaker crowd the brand. Kept lean
+       enough that even a 320px phone fits everything on one line. */
+    gap: clamp(0.25rem, 2vw, 1.5rem);
     height: 3.75rem;
   }
   .brand {

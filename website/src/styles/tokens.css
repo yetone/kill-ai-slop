@@ -19,16 +19,19 @@
 
 :root {
   /* --- Paper & ink -------------------------------------------------------
-     A near-neutral paper (a hair cool, so it never reads as the "warm brown
-     cozy" slop). Ink is close to black but not pure, for a printed feel. */
-  --paper: #f5f4f1;        /* refined neutral paper, a hair off pure white */
-  --paper-2: #ecebe7;      /* recessed panels */
-  --card: #fcfcfa;         /* soft white — never clinical pure #fff */
-  --ink: #1c1b19;          /* rich near-black, faintly warm */
-  --ink-2: #625f59;        /* secondary text */
-  --ink-3: #928f88;        /* meta, captions */
-  --rule: #e5e3dd;         /* hairline rules & borders */
-  --rule-strong: #cac7bf;
+     A near-neutral paper pulled a hair cool — enough to shed the old warm
+     cast (never the "warm brown cozy" slop), not so far it reads as clinical
+     grey. Each value keeps its original lightness; only the hue shifts from a
+     faint yellow to a faint blue. Ink is close to black but not pure, for a
+     printed feel. (Dark mode is intentionally left as-is.) */
+  --paper: #f2f4f6;        /* refined neutral paper, a hair cool off pure white */
+  --paper-2: #e9ebed;      /* recessed panels */
+  --card: #fafcfe;         /* soft white — never clinical pure #fff */
+  --ink: #1a1b1d;          /* rich near-black, faintly cool */
+  --ink-2: #5e5f61;        /* secondary text */
+  --ink-3: #8e8f91;        /* meta, captions */
+  --rule: #e1e3e5;         /* hairline rules & borders */
+  --rule-strong: #c5c7c9;
 
   /* --- The mark ---------------------------------------------------------
      Ink on bone paper is the identity; the one colour is a deep, muted pine
@@ -36,7 +39,12 @@
      only to mark the slop, never as chrome. Deliberately clear of the specimen's
      coral and of every slop family (no violet, no amber, no bright anything).
      "Clean" carries no colour of its own; clean is simply unmarked. */
-  --mark: #2c4a3d;         /* deep pine green — flags the slop */
+  --mark: #246a50;         /* deep emerald-pine — flags the slop. Lifted from the
+                              old #2c4a3d, which read near-black on light paper:
+                              that value was both dark (L≈29) and desaturated
+                              (C≈15), so its green was invisible. Same pine hue,
+                              now L≈40 / C≈30 — legibly green, still deep and
+                              refined (white text on it clears ~6:1). */
   --mark-soft: #dde7e0;    /* faint green wash */
   /* The specimen's own coral, used deliberately as commentary: in a before/after,
      the slop side is coloured in the colour of slop, the clean side in ours. */

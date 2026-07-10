@@ -418,6 +418,12 @@ const principles = [
     margin-top: var(--s-5);
     align-items: start;
   }
+  /* Let the columns shrink below their content's intrinsic width so the code
+     block's own overflow-x:auto scrolls internally instead of pushing the
+     whole card (and the page) wider than a phone. */
+  .skill-grid > * {
+    min-width: 0;
+  }
   @media (min-width: 58rem) {
     .skill-grid { grid-template-columns: 1.05fr 0.95fr; gap: var(--s-8); }
   }
