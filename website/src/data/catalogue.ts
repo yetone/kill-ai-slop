@@ -109,8 +109,8 @@ const rawEntries: Omit<Entry, "n">[] = [
       en: "The amber / stone / orange wash on a soft beige background.",
     },
     why: {
-      zh: "这是模型对「温暖、亲和」最偷懒的翻译。它把 Tailwind 的 warm 色阶原样端上来，结果每个「有温度」的产品长得一模一样。OpenClaw 的珊瑚橙就在这个家族边缘。",
-      en: "It's the model's laziest translation of ‘warm and friendly’: Tailwind's warm ramp served raw, so every ‘human’ product looks identical. OpenClaw's coral sits on the edge of this family.",
+      zh: "这是模型对「温暖、亲和」最偷懒的翻译。它把 Tailwind 的 warm 色阶原样端上来，结果每个「有温度」的产品长得一模一样。",
+      en: "It's the model's laziest translation of ‘warm and friendly’: Tailwind's warm ramp served raw, so every ‘human’ product looks identical.",
     },
     fix: {
       zh: "温度来自内容和文字，不是来自把所有东西刷成焦糖色。用中性底 + 一个克制的暖点缀。",
@@ -524,8 +524,8 @@ const rawEntries: Omit<Entry, "n">[] = [
     group: "evolved",
     title: { zh: "「优雅终端」新型 slop", en: "The ‘tasteful terminal’" },
     what: {
-      zh: "全站等宽字体、近黑背景、单一暖色点缀、ASCII 艺术，一种「看过 Vercel 博客的 AI」审美。OpenClaw 整站就是它。",
-      en: "Mono everywhere, a near-black background, one warm accent, ASCII art: the look of ‘an AI that read one Vercel blog post’. OpenClaw's whole site is this.",
+      zh: "全站等宽字体、近黑背景、单一暖色点缀、ASCII 艺术，一种「看过 Vercel 博客的 AI」审美。",
+      en: "Mono everywhere, a near-black background, one warm accent, ASCII art: the look of ‘an AI that read one Vercel blog post’.",
     },
     why: {
       zh: "它不难看，恰恰因为它好看到成了新的默认。当「黑客感终端风」变成一键套用的模板，它就和当年的蓝紫渐变一样，是在回避设计决策，只是换了件更潮的外套。",
