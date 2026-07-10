@@ -106,9 +106,27 @@
 /*
   A deliberately restrained dark mode: still paper-and-ink logic, just
   inverted. We keep the single red accent. No neon glow.
+
+  The palette follows the OS by default, but the header's theme toggle can force
+  it: dark applies when the OS prefers dark AND the user hasn't forced light, OR
+  when the user has forced dark. Light is the :root default above, so "force
+  light" simply means "don't apply dark." The two selectors below must carry the
+  identical token set — CSS can't OR a media query with a plain selector.
+  `color-scheme` is set so native controls (the language <select>'s option list,
+  scrollbars) follow the forced theme too.
 */
+:root {
+  color-scheme: light dark;
+}
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --paper: #131316;
     --paper-2: #1b1c20;
     --card: #202127;
@@ -122,4 +140,18 @@
     --shadow-e1: 0 1px 1px rgba(0, 0, 0, 0.4);
     --shadow-e2: 0 1px 1px rgba(0, 0, 0, 0.5), 0 4px 4px -1px rgba(0, 0, 0, 0.3);
   }
+}
+:root[data-theme="dark"] {
+  --paper: #131316;
+  --paper-2: #1b1c20;
+  --card: #202127;
+  --ink: #ecebe6;
+  --ink-2: #a9a8a2;
+  --ink-3: #74736e;
+  --rule: #2c2d33;
+  --rule-strong: #3d3e45;
+  --mark: #6faa8e;
+  --mark-soft: #1e2f28;
+  --shadow-e1: 0 1px 1px rgba(0, 0, 0, 0.4);
+  --shadow-e2: 0 1px 1px rgba(0, 0, 0, 0.5), 0 4px 4px -1px rgba(0, 0, 0, 0.3);
 }

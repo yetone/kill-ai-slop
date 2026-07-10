@@ -1,6 +1,7 @@
 ---
 import T from "./T.astro";
 import LangToggle from "./LangToggle.astro";
+import ThemeToggle from "./ThemeToggle.astro";
 import SoundToggle from "./SoundToggle.astro";
 
 const links = [
@@ -30,7 +31,27 @@ const links = [
 
     <div class="right">
       <LangToggle />
+      <ThemeToggle />
       <SoundToggle />
+      <a
+        class="gh"
+        href="https://github.com/yetone/kill-ai-slop"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="GitHub repository / 源代码 / ソース / 소스"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          width="18"
+          height="18"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58 0-.29-.01-1.05-.02-2.06-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.84 2.81 1.31 3.5 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.34-5.47-5.95 0-1.31.47-2.39 1.24-3.23-.13-.3-.54-1.53.12-3.19 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.25 2.89.12 3.19.77.84 1.24 1.92 1.24 3.23 0 4.62-2.81 5.64-5.49 5.94.43.37.81 1.1.81 2.22 0 1.6-.01 2.89-.01 3.29 0 .32.22.7.83.58C20.56 22.29 24 17.8 24 12.5 24 5.87 18.63.5 12 .5z"
+          ></path>
+        </svg>
+      </a>
     </div>
   </div>
 </header>
@@ -49,7 +70,8 @@ const links = [
     justify-content: space-between;
     /* Tight on phones, generous on desktop — the gap is the first thing to
        give when the language switcher + speaker crowd the brand. Kept lean
-       enough that even a 320px phone fits everything on one line. */
+       enough that even a 280px foldable fits everything on one line; below
+       ~360px the wordmark folds to just the mark to make room. */
     gap: clamp(0.25rem, 2vw, 1.5rem);
     height: 3.75rem;
   }
@@ -82,6 +104,15 @@ const links = [
     /* Two words, one line — never let it break to "Kill AI / Slop". */
     white-space: nowrap;
   }
+  /* Only on the very narrowest screens (≤304px, i.e. a folded foldable) does the
+     row need the space: there the wordmark folds down to just the proof-mark,
+     which still links home. It returns on every ordinary phone (≥320px). With
+     the language switch now a compact <select>, the bar has room to spare. */
+  @media (max-width: 19rem) {
+    .wordmark {
+      display: none;
+    }
+  }
   .links {
     display: none;
     gap: clamp(1rem, 2.5vw, 2rem);
@@ -101,6 +132,22 @@ const links = [
     gap: clamp(0.5rem, 2.5vw, 1rem);
     /* The controls keep their natural width; the brand yields space first. */
     flex-shrink: 0;
+  }
+  /* GitHub link — a compact icon matching the speaker, not a text link, so it
+     never crowds the row on a phone. */
+  .gh {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.15rem;
+    color: var(--ink-3);
+    line-height: 0;
+  }
+  .gh:hover {
+    color: var(--ink);
+  }
+  .gh svg {
+    display: block;
   }
   @media (min-width: 52rem) {
     .links {

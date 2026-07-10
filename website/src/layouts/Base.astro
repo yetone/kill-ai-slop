@@ -87,6 +87,18 @@ const ogAlt =
         } catch (e) {}
       })();
     </script>
+    {/* Pre-paint: resolve the theme before first render so there's no flash of
+        the wrong palette. Only an explicit stored choice is applied; with none,
+        data-theme stays unset and the page follows the OS via @media. */}
+    <script is:inline>
+      (function () {
+        try {
+          var t = localStorage.getItem("kas-theme");
+          if (t === "light" || t === "dark")
+            document.documentElement.dataset.theme = t;
+        } catch (e) {}
+      })();
+    </script>
     {/* Deep-link landing: scroll-behavior is `auto` until this runs, so an
         incoming /#entry link jumps straight to the entry. After the page has
         loaded and we've re-landed on the target (correcting for any layout

@@ -1,0 +1,120 @@
+---
+/** Theme switch. The site follows the OS by default; this forces an explicit
+ *  light/dark and persists it. Resolved pre-paint in Base.astro so there is no
+ *  flash. The icon shows the *current* theme — a sun in light, a moon in dark —
+ *  and clicking flips to the other. */
+---
+
+<button
+  class="themetoggle"
+  type="button"
+  data-theme-toggle
+  aria-label="Theme / 主题 / テーマ / 테마"
+>
+  <svg
+    class="ic ic-sun"
+    viewBox="0 0 24 24"
+    width="18"
+    height="18"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.6"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <circle cx="12" cy="12" r="4"></circle>
+    <path
+      d="M12 2.5v2M12 19.5v2M4.6 4.6l1.4 1.4M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4l1.4-1.4M18 6l1.4-1.4"
+    ></path>
+  </svg>
+  <svg
+    class="ic ic-moon"
+    viewBox="0 0 24 24"
+    width="18"
+    height="18"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.6"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M20 14.2A7.5 7.5 0 1 1 9.8 4 6 6 0 0 0 20 14.2z"></path>
+  </svg>
+</button>
+
+<script>
+  const root = document.documentElement;
+  const KEY = "kas-theme";
+  const mq = window.matchMedia("(prefers-color-scheme: dark)");
+
+  // The effective theme: an explicit choice if set, otherwise the OS.
+  function effective(): "light" | "dark" {
+    const t = root.dataset.theme;
+    if (t === "light" || t === "dark") return t;
+    return mq.matches ? "dark" : "light";
+  }
+
+  document
+    .querySelectorAll<HTMLButtonElement>("[data-theme-toggle]")
+    .forEach((b) => {
+      b.addEventListener("click", () => {
+        const next = effective() === "dark" ? "light" : "dark";
+        root.dataset.theme = next;
+        try {
+          localStorage.setItem(KEY, next);
+        } catch {}
+      });
+    });
+</script>
+
+{/* Icon visibility is driven entirely here (global, unscoped) so nothing
+    competes on specificity. The current effective theme wins: sun in light,
+    moon in dark, following the OS until an explicit choice is stored. */}
+<style is:global>
+  .themetoggle .ic {
+    display: block;
+  }
+  .themetoggle .ic-moon {
+    display: none;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .themetoggle .ic-sun {
+      display: none;
+    }
+    :root:not([data-theme="light"]) .themetoggle .ic-moon {
+      display: block;
+    }
+  }
+  :root[data-theme="light"] .themetoggle .ic-sun {
+    display: block;
+  }
+  :root[data-theme="light"] .themetoggle .ic-moon {
+    display: none;
+  }
+  :root[data-theme="dark"] .themetoggle .ic-sun {
+    display: none;
+  }
+  :root[data-theme="dark"] .themetoggle .ic-moon {
+    display: block;
+  }
+</style>
+
+<style>
+  .themetoggle {
+    appearance: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: 0;
+    padding: 0.15rem;
+    color: var(--ink-3);
+    cursor: pointer;
+    line-height: 0;
+  }
+  .themetoggle:hover {
+    color: var(--ink);
+  }
+</style>

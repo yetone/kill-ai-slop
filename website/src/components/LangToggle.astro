@@ -1,6 +1,9 @@
 ---
-/** A language switch. No emoji flags, no dropdown chrome — just the native
- *  labels, with the active one marked. English leads (the default). */
+/** Language switch as a custom dropdown (NOT a native <select>, whose popup the
+ *  browser renders in its own chrome and CSS can't touch). A square trigger
+ *  opens a square, ink-on-card menu that matches the rest of the site. Writes
+ *  the choice to <html data-lang> — the source of truth the <T> component and
+ *  global.css read — and persists it. Pre-resolved pre-paint in Base.astro. */
 const langs = [
   { code: "en", label: "EN" },
   { code: "zh", label: "中文" },
@@ -9,79 +12,205 @@ const langs = [
 ];
 ---
 
-<div class="langtoggle" role="group" aria-label="Language / 语言 / 言語 / 언어">
-  {
-    langs.map((l, i) => (
-      <>
-        {i > 0 && <span class="sep" aria-hidden="true">·</span>}
-        <button type="button" data-set-lang={l.code} aria-pressed={l.code === "en"}>
+<div class="langmenu" data-langmenu>
+  <button
+    class="lm-trigger"
+    type="button"
+    aria-haspopup="true"
+    aria-expanded="false"
+    aria-label="Language / 语言 / 言語 / 언어"
+  >
+    <span data-lm-current>EN</span>
+    <svg
+      class="chev"
+      viewBox="0 0 12 12"
+      width="12"
+      height="12"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.4"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M2.75 4.5 6 7.75 9.25 4.5"></path>
+    </svg>
+  </button>
+
+  <div class="lm-list" role="menu" hidden>
+    {
+      langs.map((l) => (
+        <button
+          type="button"
+          role="menuitemradio"
+          data-lm-opt={l.code}
+          aria-checked={l.code === "en" ? "true" : "false"}
+        >
           {l.label}
         </button>
-      </>
-    ))
-  }
+      ))
+    }
+  </div>
 </div>
 
 <script>
   const root = document.documentElement;
   const KEY = "kas-lang";
   const TAGS: Record<string, string> = { en: "en", zh: "zh-Hans", ja: "ja", ko: "ko" };
+  const LABELS: Record<string, string> = { en: "EN", zh: "中文", ja: "日本語", ko: "한국어" };
 
-  function apply(lang: string) {
-    root.dataset.lang = lang;
-    root.setAttribute("lang", TAGS[lang] ?? "en");
-    document
-      .querySelectorAll<HTMLButtonElement>("[data-set-lang]")
-      .forEach((b) =>
-        b.setAttribute("aria-pressed", String(b.dataset.setLang === lang)),
+  document.querySelectorAll<HTMLElement>("[data-langmenu]").forEach((menu) => {
+    const trigger = menu.querySelector<HTMLButtonElement>(".lm-trigger")!;
+    const list = menu.querySelector<HTMLElement>(".lm-list")!;
+    const current = menu.querySelector<HTMLElement>("[data-lm-current]")!;
+    const opts = Array.from(
+      menu.querySelectorAll<HTMLButtonElement>("[data-lm-opt]"),
+    );
+
+    function onDocClick(e: MouseEvent) {
+      if (!menu.contains(e.target as Node)) close(false);
+    }
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        close(true);
+      } else if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+        e.preventDefault();
+        const i = opts.indexOf(document.activeElement as HTMLButtonElement);
+        const n =
+          e.key === "ArrowDown"
+            ? (i + 1) % opts.length
+            : (i - 1 + opts.length) % opts.length;
+        opts[n].focus({ preventScroll: true });
+      }
+    }
+    function open() {
+      list.hidden = false;
+      trigger.setAttribute("aria-expanded", "true");
+      (opts.find((o) => o.getAttribute("aria-checked") === "true") ?? opts[0]).focus({
+        preventScroll: true,
+      });
+      // Defer so the click that opened the menu doesn't immediately close it.
+      setTimeout(() => {
+        document.addEventListener("click", onDocClick);
+        document.addEventListener("keydown", onKey);
+      }, 0);
+    }
+    function close(focusTrigger: boolean) {
+      list.hidden = true;
+      trigger.setAttribute("aria-expanded", "false");
+      document.removeEventListener("click", onDocClick);
+      document.removeEventListener("keydown", onKey);
+      if (focusTrigger) trigger.focus({ preventScroll: true });
+    }
+
+    function apply(lang: string) {
+      root.dataset.lang = lang;
+      root.setAttribute("lang", TAGS[lang] ?? "en");
+      current.textContent = LABELS[lang] ?? "EN";
+      opts.forEach((o) =>
+        o.setAttribute("aria-checked", String(o.dataset.lmOpt === lang)),
       );
-  }
+    }
 
-  document.querySelectorAll<HTMLButtonElement>("[data-set-lang]").forEach((b) => {
-    b.addEventListener("click", () => {
-      const lang = b.dataset.setLang!;
-      try {
-        localStorage.setItem(KEY, lang);
-      } catch {}
-      apply(lang);
-    });
+    trigger.addEventListener("click", () => (list.hidden ? open() : close(false)));
+    opts.forEach((o) =>
+      o.addEventListener("click", () => {
+        const lang = o.dataset.lmOpt!;
+        try {
+          localStorage.setItem(KEY, lang);
+        } catch {}
+        apply(lang);
+        close(true);
+      }),
+    );
+
+    // Reflect whatever the pre-paint head script already resolved.
+    apply(root.dataset.lang || "en");
   });
-
-  // Sync buttons to whatever the pre-paint head script already resolved.
-  apply(root.dataset.lang || "en");
 </script>
 
 <style>
-  .langtoggle {
+  .langmenu {
+    position: relative;
+    display: inline-flex;
+  }
+  .lm-trigger {
+    appearance: none;
     display: inline-flex;
     align-items: center;
-    /* Tighten between phone and desktop so all four labels stay on one line. */
-    gap: clamp(0.25rem, 1.2vw, 0.5rem);
+    gap: 0.4rem;
+    background: none;
+    border: var(--hair) solid var(--rule);
+    border-radius: 0;
+    color: var(--ink);
+    font: inherit;
     font-size: var(--step--1);
-    /* The switcher is a single row — never let CJK labels reflow. */
-    flex-wrap: nowrap;
-    white-space: nowrap;
+    letter-spacing: 0.01em;
+    padding: 0.3rem 0.5rem;
+    cursor: pointer;
   }
-  .langtoggle button {
+  .lm-trigger:hover {
+    border-color: var(--rule-strong);
+  }
+  .lm-trigger .chev {
+    color: var(--ink-3);
+    transition: transform 0.15s var(--ease);
+  }
+  .lm-trigger[aria-expanded="true"] .chev {
+    transform: rotate(180deg);
+  }
+
+  /* The menu — a square, ink-on-card panel, matching the site's chrome. */
+  .lm-list {
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0;
+    z-index: 60;
+    display: flex;
+    flex-direction: column;
+    min-width: 100%;
+    background: var(--card);
+    border: var(--hair) solid var(--rule);
+    border-radius: 0;
+    box-shadow: var(--shadow-e2);
+  }
+  .lm-list[hidden] {
+    display: none;
+  }
+  .lm-list button {
     appearance: none;
     background: none;
     border: 0;
-    padding: 0.15rem 0.1rem;
-    color: var(--ink-3);
-    cursor: pointer;
-    font: inherit;
-    letter-spacing: 0.02em;
-    /* Keep "中文", "日本語", "한국어" intact — no break between characters. */
+    border-radius: 0;
+    position: relative;
+    text-align: left;
     white-space: nowrap;
+    font: inherit;
+    font-size: var(--step--1);
+    color: var(--ink-2);
+    padding: 0.4rem 0.9rem 0.4rem 1.6rem;
+    cursor: pointer;
   }
-  .langtoggle button[aria-pressed="true"] {
+  .lm-list button:hover,
+  .lm-list button:focus-visible {
+    background: color-mix(in oklab, var(--ink) 6%, transparent);
     color: var(--ink);
-    font-weight: 640;
+    outline: none;
   }
-  .langtoggle button:hover {
+  .lm-list button[aria-checked="true"] {
     color: var(--ink);
+    font-weight: 600;
   }
-  .langtoggle .sep {
-    color: var(--rule-strong);
+  /* A small ink check on the active language. */
+  .lm-list button[aria-checked="true"]::before {
+    content: "";
+    position: absolute;
+    left: 0.65rem;
+    top: 50%;
+    width: 0.28rem;
+    height: 0.52rem;
+    border: solid var(--ink);
+    border-width: 0 1.5px 1.5px 0;
+    transform: translate(0, -60%) rotate(45deg);
   }
 </style>
