@@ -22,10 +22,13 @@ You don't need to configure anything by hand. Tell your coding agent, in plain
 language, to fetch it from this repo and install it wherever that agent keeps
 its skills. Paste something like this:
 
-> Install the **kill-ai-slop** skill from
-> `https://github.com/yetone/kill-ai-slop/tree/main/skill`. Put everything in
-> that directory into a `kill-ai-slop/` folder inside your skills directory,
-> then confirm it's registered.
+```
+Install the kill-ai-slop skill from
+https://github.com/yetone/kill-ai-slop/tree/main/skill
+
+Copy everything in that directory into a kill-ai-slop/ folder
+inside your agent's skills directory, then confirm it's registered.
+```
 
 You don't have to name the files or spell out the path. Your agent knows where
 its own skills live and copies the whole directory in as it is. (Claude Code,
