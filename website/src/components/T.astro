@@ -1,0 +1,26 @@
+---
+/**
+ * Inline localized text. Renders ONE span per language (no wrapper tag, no
+ * class). global.css shows only the active language via <html data-lang>.
+ *
+ * English is the source of truth and the only required prop; any language left
+ * out falls back to English, so the page stays complete while translations are
+ * still being filled in.
+ *
+ * Why no `as`/`class`: an element rendered here would carry *this* component's
+ * style scope, so a parent's scoped rules (`.lede`, `.what`, gaps, colors…)
+ * would silently not match it. The caller always owns the element; T only
+ * fills in the words.
+ *
+ *   <p class="lede"><T en="…" zh="…" ja="…" ko="…" /></p>
+ */
+interface Props {
+  en: string;
+  zh?: string;
+  ja?: string;
+  ko?: string;
+}
+const { en, zh, ja, ko } = Astro.props;
+---
+
+<span data-t="en" set:html={en} /><span data-t="zh" set:html={zh ?? en} /><span data-t="ja" set:html={ja ?? en} /><span data-t="ko" set:html={ko ?? en} />

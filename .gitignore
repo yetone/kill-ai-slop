@@ -1,0 +1,23 @@
+# dependencies
+node_modules/
+
+# build output
+website/dist/
+.astro/
+.wrangler/
+
+# internal tooling / scratch (not part of the published project)
+capture/
+
+# machine-local / private / not ours
+logs/
+.lody/
+*.slopbak
+*.bak
+
+# os / editor
+.DS_Store
+*.log
+
+# concurrent de-slop working dir (not part of the project)
+.deslop/

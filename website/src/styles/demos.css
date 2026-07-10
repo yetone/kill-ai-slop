@@ -1,0 +1,1046 @@
+/*
+  Styles for the before→after demos. Everything is scoped under `.ba-stage`
+  (shared demo primitives) or `.demo-<id>` (per-demo specifics), so these
+  generic class names never leak into the rest of the site.
+
+  The "before" panes intentionally reproduce slop. The "after" panes obey the
+  site's own rules.
+*/
+
+/* --- shared demo primitives ------------------------------------------------ */
+.ba-stage h5 {
+  font-size: var(--step-1);
+  line-height: 1.1;
+  letter-spacing: -0.022em;
+  font-weight: 620;
+  margin: 0;
+  color: var(--ink);
+}
+.ba-stage .ey {
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin: 0 0 0.55rem;
+}
+.ba-stage .sub {
+  color: var(--ink-2);
+  font-size: var(--step--1);
+  line-height: 1.45;
+  margin: 0.35rem 0 0;
+}
+.ba-stage .card {
+  padding: 1.25rem 1.35rem;
+  max-width: 21rem;
+  margin-inline: auto;
+  text-align: left;
+}
+.ba-stage .btn {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 1rem;
+  padding: 0.5rem 0.85rem;
+  border: 0;
+  border-radius: var(--radius);
+  font: inherit;
+  font-size: var(--step--1);
+  font-weight: 560;
+  letter-spacing: -0.005em;
+  cursor: pointer;
+}
+.ba-stage .btn.solid {
+  background: var(--ink);
+  color: var(--paper);
+  box-shadow: var(--shadow-e1);
+}
+/* Clean surfaces float the way Linear floats a panel: hairline + a soft lift. */
+.ba-stage .card.clean,
+.ba-stage .card.neutral,
+.demo-over-rounded-glass .flat {
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-e2);
+}
+
+/* 01 indigo→violet gradient ------------------------------------------------- */
+.demo-indigo-violet-gradient .slop-grad {
+  background: linear-gradient(135deg, #6366f1, #a855f7);
+  border-radius: 16px;
+  color: #fff;
+  box-shadow: 0 22px 44px -14px rgba(139, 92, 246, 0.65);
+}
+.demo-indigo-violet-gradient .slop-grad .ey {
+  color: rgba(255, 255, 255, 0.82);
+}
+.demo-indigo-violet-gradient .slop-grad h5 {
+  color: #fff;
+}
+.demo-indigo-violet-gradient .slop-grad .sub {
+  color: rgba(255, 255, 255, 0.85);
+}
+.demo-indigo-violet-gradient .btn.grad {
+  background: linear-gradient(135deg, #ffffff, #ede9fe);
+  color: #6d28d9;
+  border-radius: 9999px;
+  font-weight: 640;
+}
+.demo-indigo-violet-gradient .card.clean {
+  background: var(--card);
+  border: 1px solid var(--rule);
+}
+.demo-indigo-violet-gradient .card.clean .ey {
+  color: var(--ink-3);
+}
+
+/* 02 gradient text ---------------------------------------------------------- */
+.demo-gradient-text {
+  text-align: center;
+}
+.demo-gradient-text .grad-head {
+  font-size: var(--step-3);
+  font-weight: 820;
+  letter-spacing: -0.03em;
+  margin: 0;
+  background: linear-gradient(90deg, #6366f1, #ec4899, #f59e0b);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.demo-gradient-text .solid-head {
+  font-size: var(--step-3);
+  font-weight: 720;
+  letter-spacing: -0.03em;
+  margin: 0;
+  color: var(--ink);
+}
+
+/* 03 warm cozy palette ------------------------------------------------------ */
+.demo-warm-cozy-palette .card.amber {
+  background: #fdf6ec;
+  border: 1px solid #f0d6ac;
+  border-radius: 14px;
+  color: #6b4a22;
+}
+.demo-warm-cozy-palette .amber .tile {
+  display: grid;
+  place-items: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 10px;
+  background: #f6e2c4;
+  color: #c2843c;
+  margin-bottom: 0.6rem;
+}
+.demo-warm-cozy-palette .amber h5 {
+  color: #6b4a22;
+}
+.demo-warm-cozy-palette .amber .sub {
+  color: #a07d4f;
+}
+.demo-warm-cozy-palette .amber-btn {
+  margin-top: 0.9rem;
+  background: #e0932f;
+  color: #fff;
+  border: 0;
+  border-radius: 9999px;
+  padding: 0.5rem 0.95rem;
+  font: inherit;
+  font-size: var(--step--1);
+  font-weight: 560;
+  cursor: pointer;
+}
+.demo-warm-cozy-palette .card.neutral {
+  background: var(--card);
+  border: 1px solid var(--rule);
+}
+.demo-warm-cozy-palette .neutral .dot {
+  display: inline-block;
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background: #b0764a;
+  margin-bottom: 0.7rem;
+}
+
+/* 03b default semantic palette ---------------------------------------------- */
+.demo-default-semantic-palette .sem {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+.demo-default-semantic-palette .c {
+  font-size: var(--step--1);
+  font-weight: 600;
+  padding: 0.28rem 0.65rem;
+  border-radius: 6px;
+}
+/* before: the framework rainbow, five unrelated candy hues */
+.demo-default-semantic-palette .sem-slop .info { background: #eef2ff; color: #4338ca; }
+.demo-default-semantic-palette .sem-slop .success { background: #ecfdf5; color: #047857; }
+.demo-default-semantic-palette .sem-slop .warning { background: #fffbeb; color: #b45309; }
+.demo-default-semantic-palette .sem-slop .error { background: #fef2f2; color: #dc2626; }
+.demo-default-semantic-palette .sem-slop .new { background: #faf5ff; color: #7c3aed; }
+/* after: one coherent system — neutrals + two intentional semantic colors */
+/* The restrained system: one neutral chip style for every status — same faint
+   fill, same hairline, same ink. The semantic colour lives only in a small dot,
+   and only where it's a real signal. Loud rainbow of boxes → one calm set. */
+.demo-default-semantic-palette .sem-clean {
+  gap: 0.5rem;
+}
+.demo-default-semantic-palette .sem-clean .c {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.44rem;
+  padding: 0.32rem 0.7rem;
+  border-radius: 7px;
+  background: color-mix(in oklab, var(--ink) 4%, transparent);
+  border: 1px solid var(--rule);
+  color: var(--ink-2);
+  font-weight: 500;
+}
+.demo-default-semantic-palette .sem-clean .d {
+  width: 0.46rem;
+  height: 0.46rem;
+  border-radius: 50%;
+  background: var(--ink-3);
+  flex: none;
+}
+.demo-default-semantic-palette .sem-clean .d.warn { background: #b58a3f; }
+.demo-default-semantic-palette .sem-clean .d.ok { background: #5a9d7e; }
+.demo-default-semantic-palette .sem-clean .d.err { background: #c0605a; }
+
+/* 04 serif emphasis --------------------------------------------------------- */
+.demo-serif-emphasis {
+  text-align: center;
+}
+.demo-serif-emphasis .mix {
+  font-size: var(--step-2);
+  font-weight: 660;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin: 0;
+}
+.demo-serif-emphasis .mix em {
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-weight: 500;
+  color: var(--slop);
+}
+.demo-serif-emphasis .one {
+  font-size: var(--step-2);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin: 0;
+}
+.demo-serif-emphasis .one b {
+  font-weight: 820;
+}
+
+/* 05 serif body misuse ------------------------------------------------------ */
+.demo-serif-body-misuse .panel {
+  width: 100%;
+  max-width: 20rem;
+  margin-inline: auto;
+}
+.demo-serif-body-misuse .row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.55rem 0.1rem;
+  border-bottom: 1px solid var(--rule);
+}
+.demo-serif-body-misuse .row span {
+  color: var(--ink-2);
+}
+.demo-serif-body-misuse .panel.serif {
+  font-family: Georgia, "Times New Roman", serif;
+}
+.demo-serif-body-misuse .panel.serif b {
+  font-weight: 600;
+}
+.demo-serif-body-misuse .panel.sans {
+  font-family: var(--font-sans);
+}
+.demo-serif-body-misuse .panel.sans b {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+
+/* 05b decorative text lines ------------------------------------------------- */
+.demo-decorative-text-lines .dl-slop,
+.demo-decorative-text-lines .dl-clean {
+  font-size: var(--step-2);
+  font-weight: 620;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  max-width: 20ch;
+  margin: 0 auto;
+  text-align: center;
+  color: var(--ink);
+}
+.demo-decorative-text-lines .dl-slop s {
+  text-decoration-thickness: 2px;
+}
+.demo-decorative-text-lines .dl-slop u {
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+.demo-decorative-text-lines .dl-slop mark {
+  background: linear-gradient(transparent 55%, var(--slop) 0);
+  color: inherit;
+  padding-inline: 0.08em;
+}
+
+/* 06 highlighted keywords --------------------------------------------------- */
+.demo-highlighted-keywords .para {
+  max-width: 42ch;
+  margin-inline: auto;
+  line-height: 1.65;
+  color: var(--ink);
+}
+.demo-highlighted-keywords .para.hl span {
+  background: #ede9fe;
+  color: #6d28d9;
+  padding: 0 0.2em;
+  border-radius: 3px;
+  font-weight: 600;
+}
+
+/* 07 ai copy tics ----------------------------------------------------------- */
+.demo-ai-copy-tics .copyblock {
+  max-width: 42ch;
+  margin-inline: auto;
+}
+.demo-ai-copy-tics .tics {
+  text-align: center;
+}
+.demo-ai-copy-tics .tics p {
+  font-size: var(--step-1);
+  font-weight: 640;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  margin: 0.3rem 0;
+  color: var(--ink);
+}
+.demo-ai-copy-tics .plain p {
+  font-size: var(--step-0);
+  line-height: 1.55;
+  margin: 0.5rem 0;
+  color: var(--ink);
+}
+
+/* 08 emoji everywhere ------------------------------------------------------- */
+.demo-emoji-everywhere .list {
+  max-width: 22rem;
+  margin-inline: auto;
+}
+.demo-emoji-everywhere .list .h {
+  font-weight: 680;
+  font-size: var(--step-1);
+  margin: 0 0 0.6rem;
+}
+.demo-emoji-everywhere .list ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.45rem;
+  color: var(--ink);
+}
+.demo-emoji-everywhere .plain ul li {
+  position: relative;
+  padding-left: 1.6rem;
+}
+.demo-emoji-everywhere .plain ul li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  color: var(--ink-3);
+}
+
+/* 09 left-border callout ---------------------------------------------------- */
+.demo-left-border-callout .calls {
+  display: grid;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 25rem;
+  margin-inline: auto;
+}
+.demo-left-border-callout .call {
+  border-radius: 8px;
+  border-left: 4px solid;
+  padding: 0.6rem 0.8rem;
+  font-size: var(--step--1);
+}
+.demo-left-border-callout .call b {
+  margin-right: 0.4rem;
+}
+/* Every plain list item wrapped in a rounded box with a candy left-bar. */
+.demo-left-border-callout .call.c1 {
+  background: #eef2ff;
+  border-color: #6366f1;
+  color: #3730a3;
+}
+.demo-left-border-callout .call.c2 {
+  background: #fffbeb;
+  border-color: #f59e0b;
+  color: #92400e;
+}
+.demo-left-border-callout .call.c3 {
+  background: #ecfdf5;
+  border-color: #10b981;
+  color: #065f46;
+}
+.demo-left-border-callout .call.c4 {
+  background: #fdf2f8;
+  border-color: #ec4899;
+  color: #9d2463;
+}
+/* The fix: a list that's just a list. */
+.demo-left-border-callout .plainlist {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto;
+  max-width: 25rem;
+  display: grid;
+  gap: 0.5rem;
+  color: var(--ink);
+  font-size: var(--step--1);
+  line-height: 1.5;
+}
+.demo-left-border-callout .plainlist b {
+  color: var(--ink);
+}
+
+/* 10 pastel icon tiles ------------------------------------------------------ */
+.demo-pastel-icon-tiles .tiles {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.7rem;
+  width: 100%;
+}
+.demo-pastel-icon-tiles .feat {
+  display: grid;
+  gap: 0.15rem;
+  text-align: left;
+}
+.demo-pastel-icon-tiles .ic {
+  display: grid;
+  place-items: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 10px;
+  margin-bottom: 0.3rem;
+}
+.demo-pastel-icon-tiles .i1 { background: #ede9fe; color: #7c3aed; }
+.demo-pastel-icon-tiles .i2 { background: #dcfce7; color: #16a34a; }
+.demo-pastel-icon-tiles .i3 { background: #ffe4e6; color: #e11d48; }
+.demo-pastel-icon-tiles .feat b { font-size: var(--step-0); }
+.demo-pastel-icon-tiles .feat span:last-child {
+  color: var(--ink-2);
+  font-size: var(--step--1);
+}
+.demo-pastel-icon-tiles .plainfeat {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-width: 42ch;
+  margin-inline: 0 auto;
+  display: grid;
+  gap: 0.55rem;
+  color: var(--ink);
+  line-height: 1.5;
+}
+@media (max-width: 34rem) {
+  .demo-pastel-icon-tiles .tiles {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 11 over-rounded glass ----------------------------------------------------- */
+.demo-over-rounded-glass .glassbg {
+  background: linear-gradient(135deg, #7c3aed, #2563eb);
+  padding: 1.7rem;
+  border-radius: 14px;
+  width: 100%;
+  display: grid;
+  place-items: center;
+}
+.demo-over-rounded-glass .glass {
+  background: rgba(255, 255, 255, 0.13);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 20px;
+  padding: 1.2rem 1.4rem;
+  text-align: center;
+  color: #fff;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+.demo-over-rounded-glass .glass h5 { color: #fff; }
+.demo-over-rounded-glass .glass .sub { color: rgba(255, 255, 255, 0.85); }
+.demo-over-rounded-glass .pill {
+  margin-top: 0.85rem;
+  background: #fff;
+  color: #4c1d95;
+  border: 0;
+  border-radius: 9999px;
+  padding: 0.5rem 1.25rem;
+  font: inherit;
+  font-size: var(--step--1);
+  font-weight: 600;
+  cursor: pointer;
+}
+.demo-over-rounded-glass .flatbg {
+  background: var(--paper-2);
+  padding: 1.7rem;
+  border-radius: var(--radius);
+  width: 100%;
+  display: grid;
+  place-items: center;
+}
+.demo-over-rounded-glass .flat {
+  background: var(--card);
+  border: 1px solid var(--rule);
+  padding: 1.25rem 1.4rem;
+  text-align: left;
+  max-width: 18rem;
+}
+
+/* 12 badge spam ------------------------------------------------------------- */
+.demo-badge-spam .titlebar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+.demo-badge-spam .pill {
+  font-size: 0.64rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 9999px;
+  font-weight: 600;
+}
+.demo-badge-spam .p1 { background: #ede9fe; color: #6d28d9; }
+.demo-badge-spam .p2 { background: #ffe4e6; color: #e11d48; }
+.demo-badge-spam .p3 { background: #dbeafe; color: #1d4ed8; }
+.demo-badge-spam .p4 { background: #fef3c7; color: #92400e; }
+.demo-badge-spam .tidy .ver {
+  font-size: 0.72rem;
+  color: var(--ink-3);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 0.1rem 0.4rem;
+  font-family: var(--font-mono);
+}
+
+/* 13 feature grid ----------------------------------------------------------- */
+.demo-feature-grid .fgrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.6rem;
+  width: 100%;
+}
+.demo-feature-grid .fc {
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 0.7rem;
+  text-align: left;
+  display: grid;
+  gap: 0.15rem;
+}
+.demo-feature-grid .fc .ic { color: var(--ink-3); }
+.demo-feature-grid .fc b {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+}
+.demo-feature-grid .fc span:last-child {
+  color: var(--ink-2);
+  font-size: var(--step--1);
+}
+.demo-feature-grid .onepoint {
+  max-width: 44ch;
+  margin-inline: auto;
+}
+.demo-feature-grid .lead {
+  font-size: var(--step-2);
+  font-weight: 680;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+.demo-feature-grid .body {
+  color: var(--ink-2);
+  margin: 0.5rem 0 0;
+  line-height: 1.55;
+}
+@media (max-width: 34rem) {
+  .demo-feature-grid .fgrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* 16 tasteful terminal (evolved) ------------------------------------------- */
+/* before: mono-everything, near-black, one warm accent, ASCII hero — the
+   "hacker terminal" template used as UI chrome. */
+.demo-tasteful-terminal .term {
+  width: 100%;
+  max-width: 25rem;
+  margin-inline: auto;
+  padding: 1.15rem 1.3rem;
+  background: #0e0f12;
+  border: 1px solid #26272e;
+  border-radius: 8px;
+  color: #e8e6e0;
+  font-family: var(--font-mono);
+  text-align: left;
+}
+.demo-tasteful-terminal .ascii {
+  margin: 0 0 0.55rem;
+  font-size: 0.7rem;
+  line-height: 1.15;
+  color: var(--slop);
+  white-space: pre;
+}
+.demo-tasteful-terminal .term .ey {
+  margin: 0 0 0.7rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.09em;
+  color: var(--slop);
+}
+.demo-tasteful-terminal .hh {
+  margin: 0 0 0.95rem;
+  font-size: var(--step-1);
+  font-weight: 500;
+  color: #fff;
+}
+.demo-tasteful-terminal .term .btns {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.demo-tasteful-terminal .term .btns span {
+  padding: 0.32rem 0.62rem;
+  border: 1px solid #33343b;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  color: #cfcdc7;
+}
+/* after: keep the local-first idea; drop the terminal costume. Type-led,
+   monospace only where it's literally a command. */
+.demo-tasteful-terminal .designed {
+  width: 100%;
+  max-width: 25rem;
+  margin-inline: auto;
+  padding: 1.25rem 1.35rem;
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-e1);
+  text-align: center;
+}
+.demo-tasteful-terminal .designed .ey {
+  margin: 0 0 0.5rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.demo-tasteful-terminal .designed h5 {
+  margin: 0;
+}
+.demo-tasteful-terminal .designed .sub {
+  margin: 0.35rem 0 1rem;
+}
+.demo-tasteful-terminal .designed .btns {
+  display: flex;
+  gap: 0.7rem;
+  align-items: baseline;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+/* The shared .ba-stage .btn rule adds margin-top: 1rem for stacked layouts;
+   in this centered row it would push the button's baseline below the code's,
+   so zero it out here and let baseline alignment line the two up. */
+.demo-tasteful-terminal .designed .btns .btn {
+  margin-top: 0;
+}
+.demo-tasteful-terminal .designed code {
+  padding: 0.32rem 0.55rem;
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: var(--ink-2);
+}
+
+/* 07b glowing status dot (component) ---------------------------------------
+   before: a status indicator overblown into a glowing, pulsing orb — a pale
+   halo around a solid saturated dot. after: a small, flat, single-color dot
+   + label: the signal, nothing else. */
+.demo-status-dot-glow .status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+}
+.demo-status-dot-glow .status .lbl {
+  font-size: var(--step-1);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+/* before: pale halo disc + solid glowing core + a live pulse */
+.demo-status-dot-glow .slop .live {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: color-mix(in oklab, #2fbf78 20%, transparent);
+}
+.demo-status-dot-glow .slop .live::before,
+.demo-status-dot-glow .slop .live::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+.demo-status-dot-glow .slop .live::after {
+  background: #2fbf78;
+  box-shadow: 0 0 10px 2px color-mix(in oklab, #2fbf78 55%, transparent);
+}
+.demo-status-dot-glow .slop .live::before {
+  background: color-mix(in oklab, #2fbf78 45%, transparent);
+  animation: status-ping 1.9s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+.demo-status-dot-glow .slop .lbl {
+  color: #1f9d60;
+}
+@keyframes status-ping {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.55;
+  }
+  75%,
+  100% {
+    transform: translate(-50%, -50%) scale(2.6);
+    opacity: 0;
+  }
+}
+/* after: a small flat dot, one muted color, no glow, no pulse */
+.demo-status-dot-glow .clean .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--mark);
+}
+@media (prefers-reduced-motion: reduce) {
+  .demo-status-dot-glow .slop .live::before {
+    animation: none;
+  }
+}
+
+/* 07c nested radius (component) --------------------------------------------
+   before: an inner box at the same big radius as its outer box, so the
+   corners aren't concentric — the inner arc fights the outer one. after:
+   inner radius = outer − gap, so the two arcs stay parallel. */
+.demo-nested-radius .rc {
+  width: 100%;
+  max-width: 15rem;
+  margin-inline: auto;
+}
+.demo-nested-radius .outer {
+  padding: 11px;
+  background: var(--card);
+  border: 1px solid var(--rule-strong);
+}
+.demo-nested-radius .inner {
+  display: grid;
+  place-items: center;
+  height: 5rem;
+  background: color-mix(in oklab, var(--ink) 7%, transparent);
+  border: 1px solid var(--rule-strong);
+  font-size: var(--step--1);
+  color: var(--ink-2);
+}
+/* slop: same radius on both layers → non-concentric, corners pinch */
+.demo-nested-radius .slop .outer,
+.demo-nested-radius .slop .inner {
+  border-radius: 18px;
+}
+/* clean: inner = outer(18) − gap(11) = 7 → concentric */
+.demo-nested-radius .clean .outer {
+  border-radius: 18px;
+}
+.demo-nested-radius .clean .inner {
+  border-radius: 7px;
+}
+.demo-nested-radius .cap {
+  margin: 0.65rem 0 0;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--ink-3);
+}
+
+/* 03c atmosphere gradient (color) ------------------------------------------
+   before: near-black navy page with a top glow + a gradient-filled glassy
+   card — the "premium dark mode" default. after: one flat background, a flat
+   card, depth from a hairline + a whisper shadow. Both panes are dark on
+   purpose (the tell only exists in dark UIs). */
+.demo-atmosphere-gradient .bg {
+  width: 100%;
+  max-width: 20rem;
+  margin-inline: auto;
+  padding: 1.5rem 1.4rem;
+  border-radius: var(--radius-lg);
+  overflow: clip;
+}
+.demo-atmosphere-gradient .card {
+  padding: 1rem 1.1rem;
+}
+.demo-atmosphere-gradient .h {
+  margin: 0;
+  font-size: var(--step-1);
+  font-weight: 640;
+  letter-spacing: -0.01em;
+  color: #eaeef5;
+}
+.demo-atmosphere-gradient .s {
+  margin: 0.3rem 0 0;
+  font-size: var(--step--1);
+  color: #97a1b2;
+}
+.demo-atmosphere-gradient .field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.85rem;
+  padding: 0.5rem 0.7rem;
+  font-size: var(--step--1);
+  color: #cfd6e2;
+}
+.demo-atmosphere-gradient .chev { color: #7f8a9c; }
+/* before: glow backdrop + gradient surfaces */
+.demo-atmosphere-gradient .slop {
+  background: radial-gradient(120% 85% at 50% -12%, #2b3c66 0%, #0b1120 55%);
+}
+.demo-atmosphere-gradient .slop .card {
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(48, 62, 100, 0.7), rgba(19, 25, 42, 0.55));
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow: 0 22px 50px -22px rgba(0, 0, 0, 0.7);
+}
+.demo-atmosphere-gradient .slop .field {
+  border-radius: 8px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(255, 255, 255, 0.11);
+}
+/* after: flat backdrop, flat card, hairline + whisper shadow */
+.demo-atmosphere-gradient .clean {
+  background: #0f141c;
+}
+.demo-atmosphere-gradient .clean .card {
+  border-radius: 8px;
+  background: #171d27;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+.demo-atmosphere-gradient .clean .field {
+  border-radius: 6px;
+  background: #1e2530;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* 07d AI-drawn SVG icon (component) ----------------------------------------
+   before: a crude generated blob mascot on a dark app-icon tile. after: a
+   flat, single-colour, deliberate monogram — a mark that was decided, not
+   guessed at. */
+.demo-ai-svg-icon .ic {
+  text-align: center;
+}
+.demo-ai-svg-icon .tile {
+  display: inline-grid;
+  place-items: center;
+  width: 78px;
+  height: 78px;
+}
+.demo-ai-svg-icon .slop .tile {
+  border-radius: 22px;
+  background: #0e0e12;
+  box-shadow: 0 8px 22px -8px rgba(0, 0, 0, 0.5);
+}
+.demo-ai-svg-icon .slop svg {
+  width: 62%;
+  height: 62%;
+  display: block;
+}
+.demo-ai-svg-icon .clean .tile {
+  border-radius: 18px;
+  background: var(--ink);
+}
+.demo-ai-svg-icon .clean .mono {
+  color: var(--paper);
+  font-weight: 640;
+  font-size: 2.3rem;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.demo-ai-svg-icon .cap {
+  margin: 0.75rem 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--ink-3);
+}
+
+/* 07e tinted icon tile (component) -----------------------------------------
+   before: each icon wrapped in a rounded tile filled with a translucent tint
+   of the icon's own colour. after: the icon is just the icon — one neutral
+   colour, no container. */
+.demo-tinted-icon-tile .icons {
+  display: flex;
+  gap: 1.1rem;
+  align-items: center;
+  justify-content: center;
+}
+.demo-tinted-icon-tile .ib {
+  display: grid;
+  place-items: center;
+}
+.demo-tinted-icon-tile .ib svg {
+  width: 1.55rem;
+  height: 1.55rem;
+  display: block;
+}
+/* slop: same-hue translucent tiles */
+.demo-tinted-icon-tile .slop .ib {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 12px;
+}
+.demo-tinted-icon-tile .slop .b {
+  color: #3b82f6;
+  background: color-mix(in oklab, #3b82f6 14%, transparent);
+}
+.demo-tinted-icon-tile .slop .g {
+  color: #24a35a;
+  background: color-mix(in oklab, #24a35a 14%, transparent);
+}
+.demo-tinted-icon-tile .slop .a {
+  color: #d98a2b;
+  background: color-mix(in oklab, #d98a2b 14%, transparent);
+}
+/* clean: plain, one neutral colour, no tile */
+.demo-tinted-icon-tile .clean .ib {
+  color: var(--ink-2);
+}
+
+/* 03d mono-hue status box (color) ------------------------------------------
+   before: each alert is one hue at three opacities — same-colour border,
+   text, and a translucent fill. after: a neutral surface, the state carried
+   by a bold label, colour reduced to a small muted dot. Fixed dark panel so
+   it reads like the real thing (these live in dark UIs). */
+.demo-mono-hue-alert .alerts {
+  display: grid;
+  gap: 0.55rem;
+  width: 100%;
+  max-width: 22rem;
+  margin-inline: auto;
+  padding: 0.9rem;
+  border-radius: var(--radius-lg);
+  background: #12161d;
+}
+.demo-mono-hue-alert .al {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: 8px;
+  font-size: var(--step--1);
+  line-height: 1.35;
+}
+/* slop: one hue, three opacities */
+.demo-mono-hue-alert .slop .err {
+  color: #f2686c;
+  border: 1px solid rgba(229, 72, 77, 0.5);
+  background: rgba(229, 72, 77, 0.12);
+}
+.demo-mono-hue-alert .slop .warn {
+  color: #e6bd52;
+  border: 1px solid rgba(212, 160, 23, 0.5);
+  background: rgba(212, 160, 23, 0.12);
+}
+.demo-mono-hue-alert .slop .ok {
+  color: #55c789;
+  border: 1px solid rgba(41, 163, 90, 0.5);
+  background: rgba(41, 163, 90, 0.12);
+}
+/* clean: neutral surface, bold label, small muted dot */
+.demo-mono-hue-alert .clean .al {
+  color: #c6cedb;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.03);
+}
+.demo-mono-hue-alert .clean b {
+  color: #eef2f7;
+  font-weight: 640;
+}
+.demo-mono-hue-alert .clean .d {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  flex: none;
+}
+.demo-mono-hue-alert .clean .d.err { background: #b0555a; }
+.demo-mono-hue-alert .clean .d.warn { background: #a9852f; }
+.demo-mono-hue-alert .clean .d.ok { background: #4e9d74; }
+
+/* 07f oversized drop shadow (component) ------------------------------------
+   before: a small card casting a room-sized, near-symmetric soft shadow — a
+   big blur at low opacity with almost no offset, so it fogs out in every
+   direction instead of dropping downward, corresponding to no real height.
+   after: elevation you can believe — a hairline edge plus a 1px contact
+   shadow and one restrained ambient shadow, the blur sized to a plausible
+   lift. Extra vertical room on the stage so the bloated shadow can bloom. */
+.demo-oversized-shadow .sha {
+  width: 100%;
+  display: grid;
+  place-items: center;
+  padding: 2.25rem 0.5rem;
+}
+.demo-oversized-shadow .card {
+  width: 100%;
+  max-width: 15rem;
+  padding: 1rem 1.15rem;
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  text-align: left;
+}
+.demo-oversized-shadow .h {
+  margin: 0;
+  font-size: var(--step-1);
+  font-weight: 640;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.demo-oversized-shadow .s {
+  margin: 0.3rem 0 0;
+  font-size: var(--step--1);
+  color: var(--ink-2);
+}
+/* before: the render range is far bigger than the card — a faint, barely
+   offset 80px blur that hangs a symmetric cloud around it. */
+.demo-oversized-shadow .slop .card {
+  box-shadow:
+    0 6px 20px rgba(18, 19, 22, 0.12),
+    0 16px 80px 10px rgba(18, 19, 22, 0.36);
+}
+/* after: a hairline + the site's own tight elevation token. */
+.demo-oversized-shadow .clean .card {
+  border: 1px solid var(--rule);
+  box-shadow: var(--shadow-e2);
+}

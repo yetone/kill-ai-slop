@@ -1,0 +1,81 @@
+---
+/** A language switch. No emoji flags, no dropdown chrome — just the native
+ *  labels, with the active one marked. English leads (the default). */
+const langs = [
+  { code: "en", label: "EN" },
+  { code: "zh", label: "中文" },
+  { code: "ja", label: "日本語" },
+  { code: "ko", label: "한국어" },
+];
+---
+
+<div class="langtoggle" role="group" aria-label="Language / 语言 / 言語 / 언어">
+  {
+    langs.map((l, i) => (
+      <>
+        {i > 0 && <span class="sep" aria-hidden="true">·</span>}
+        <button type="button" data-set-lang={l.code} aria-pressed={l.code === "en"}>
+          {l.label}
+        </button>
+      </>
+    ))
+  }
+</div>
+
+<script>
+  const root = document.documentElement;
+  const KEY = "kas-lang";
+  const TAGS: Record<string, string> = { en: "en", zh: "zh-Hans", ja: "ja", ko: "ko" };
+
+  function apply(lang: string) {
+    root.dataset.lang = lang;
+    root.setAttribute("lang", TAGS[lang] ?? "en");
+    document
+      .querySelectorAll<HTMLButtonElement>("[data-set-lang]")
+      .forEach((b) =>
+        b.setAttribute("aria-pressed", String(b.dataset.setLang === lang)),
+      );
+  }
+
+  document.querySelectorAll<HTMLButtonElement>("[data-set-lang]").forEach((b) => {
+    b.addEventListener("click", () => {
+      const lang = b.dataset.setLang!;
+      try {
+        localStorage.setItem(KEY, lang);
+      } catch {}
+      apply(lang);
+    });
+  });
+
+  // Sync buttons to whatever the pre-paint head script already resolved.
+  apply(root.dataset.lang || "en");
+</script>
+
+<style>
+  .langtoggle {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    font-size: var(--step--1);
+  }
+  .langtoggle button {
+    appearance: none;
+    background: none;
+    border: 0;
+    padding: 0.15rem 0.1rem;
+    color: var(--ink-3);
+    cursor: pointer;
+    font: inherit;
+    letter-spacing: 0.02em;
+  }
+  .langtoggle button[aria-pressed="true"] {
+    color: var(--ink);
+    font-weight: 640;
+  }
+  .langtoggle button:hover {
+    color: var(--ink);
+  }
+  .langtoggle .sep {
+    color: var(--rule-strong);
+  }
+</style>

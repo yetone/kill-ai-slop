@@ -1,0 +1,111 @@
+/*
+  Kill AI Slop — design tokens.
+
+  The whole site is an argument, so the tokens are the argument made concrete.
+  Rules we hold ourselves to (and enforce in the skill):
+
+  - The site is monochrome: ink on paper. Colour is spent ONLY on the verdict,
+    the way a code diff spends it — red = slop, green = the fix. Never on chrome
+    (numbers, nav, structure stay ink), never on decoration, never a gradient.
+    (An early draft leaked a warm orange-red into the chrome — the exact "one
+    warm accent" tic we mock, and the same family as the specimen's coral. Cooled
+    to a correction-red and confined to the verdict.)
+  - No blue→purple gradient. No amber/stone "cozy" wash. No rainbow text.
+  - Hierarchy comes from scale, weight, and space — not from swapping to a
+    serif or coloring a keyword mid-sentence.
+  - Modest, consistent radius. Hairline rules instead of drop shadows.
+  - Monospace is for code only. It is not chrome.
+*/
+
+:root {
+  /* --- Paper & ink -------------------------------------------------------
+     A near-neutral paper (a hair cool, so it never reads as the "warm brown
+     cozy" slop). Ink is close to black but not pure, for a printed feel. */
+  --paper: #f5f4f1;        /* refined neutral paper, a hair off pure white */
+  --paper-2: #ecebe7;      /* recessed panels */
+  --card: #fcfcfa;         /* soft white — never clinical pure #fff */
+  --ink: #1c1b19;          /* rich near-black, faintly warm */
+  --ink-2: #625f59;        /* secondary text */
+  --ink-3: #928f88;        /* meta, captions */
+  --rule: #e5e3dd;         /* hairline rules & borders */
+  --rule-strong: #cac7bf;
+
+  /* --- The mark ---------------------------------------------------------
+     Ink on bone paper is the identity; the one colour is a deep, muted pine
+     green (墨绿), the timeless high-end note against neutrals. Spent sparingly —
+     only to mark the slop, never as chrome. Deliberately clear of the specimen's
+     coral and of every slop family (no violet, no amber, no bright anything).
+     "Clean" carries no colour of its own; clean is simply unmarked. */
+  --mark: #2c4a3d;         /* deep pine green — flags the slop */
+  --mark-soft: #dde7e0;    /* faint green wash */
+  /* The specimen's own coral, used deliberately as commentary: in a before/after,
+     the slop side is coloured in the colour of slop, the clean side in ours. */
+  --slop: #ff5c5c;
+
+  /* --- Type -------------------------------------------------------------
+     A clean, confident sans. The thesis is that you do not need an exotic
+     font to avoid slop — you need intention. Monospace is reserved for code. */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", "Cascadia Code",
+    Menlo, Consolas, monospace;
+
+  /* Modular scale (~1.2). Restrained, editorial — refinement over bigness.
+     Display caps kept deliberately modest so nothing reads as template-hero. */
+  --step--1: clamp(0.78rem, 0.76rem + 0.08vw, 0.82rem);
+  --step-0: clamp(0.94rem, 0.92rem + 0.1vw, 1rem);
+  --step-1: clamp(1.05rem, 1rem + 0.24vw, 1.18rem);
+  --step-2: clamp(1.25rem, 1.14rem + 0.5vw, 1.55rem);
+  --step-3: clamp(1.5rem, 1.3rem + 0.9vw, 2rem);
+  --step-4: clamp(1.85rem, 1.5rem + 1.5vw, 2.6rem);
+  --step-5: clamp(2.2rem, 1.75rem + 2.2vw, 3.2rem);
+
+  /* --- Space (8px base) -------------------------------------------------- */
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-5: 1.5rem;
+  --s-6: 2rem;
+  --s-7: 3rem;
+  --s-8: 4.5rem;
+  --s-9: 7rem;
+
+  /* --- Structure --------------------------------------------------------- */
+  --measure: 68ch;         /* readable prose width */
+  --container: 76rem;
+  --radius: 6px;           /* small, consistent — never a pill for chrome */
+  --radius-lg: 10px;       /* cards / surfaces */
+  --hair: 1px;
+
+  /* Elevation — the way Linear lifts a panel: a hairline plus a tight contact
+     shadow, sitting on a faintly recessed canvas. Never a diffuse drop, never
+     a glow. */
+  --shadow-e1: 0 1px 2px rgba(18, 19, 22, 0.06);
+  --shadow-e2:
+    0 1px 1px rgba(18, 19, 22, 0.04), 0 4px 10px -6px rgba(18, 19, 22, 0.1);
+
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/*
+  A deliberately restrained dark mode: still paper-and-ink logic, just
+  inverted. We keep the single red accent. No neon glow.
+*/
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #131316;
+    --paper-2: #1b1c20;
+    --card: #202127;
+    --ink: #ecebe6;
+    --ink-2: #a9a8a2;
+    --ink-3: #74736e;
+    --rule: #2c2d33;
+    --rule-strong: #3d3e45;
+    --mark: #6faa8e;
+    --mark-soft: #1e2f28;
+    --shadow-e1: 0 1px 2px rgba(0, 0, 0, 0.45);
+    --shadow-e2: 0 1px 1px rgba(0, 0, 0, 0.4), 0 4px 10px -6px rgba(0, 0, 0, 0.55);
+  }
+}

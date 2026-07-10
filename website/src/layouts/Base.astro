@@ -1,0 +1,136 @@
+---
+import "../styles/global.css";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+const {
+  title = "Kill AI Slop — 杀死 AI slop",
+  description = "A field guide to the visual tics of vibe-coded products, and how to strip them out. 一份识别并清除 Vibe Coding 产品里 AI slop 的实战手册。",
+} = Astro.props;
+
+// Absolute URLs for share metadata. Astro.site is https://killaislop.com.
+const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+const ogImage = new URL("/og.png", Astro.site).toString();
+const ogAlt =
+  "The wordmark “Kill AI slop / 杀死 AI slop” set in ink on bone-white paper, with a single pine-green proof-mark — a field guide to spotting and removing AI slop.";
+---
+
+<!doctype html>
+<html lang="en" data-lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="canonical" href={canonical} />
+
+    {/* Open Graph — the share card is itself a rebuttal to slop: ink on paper,
+        one green proof-mark, no gradient. See capture/og/og.html. */}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Kill AI Slop" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:secure_url" content={ogImage} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={ogAlt} />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="zh_CN" />
+    <meta property="og:locale:alternate" content="ja_JP" />
+    <meta property="og:locale:alternate" content="ko_KR" />
+
+    {/* Twitter / X */}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={ogAlt} />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    {/* Pre-paint: resolve the language before first render, no flash. English
+        is the default; on first visit we switch to the OS language if it's one
+        we support (中文 / 日本語 / 한국어), otherwise stay in English. */}
+    <script is:inline>
+      (function () {
+        try {
+          var tags = { en: "en", zh: "zh-Hans", ja: "ja", ko: "ko" };
+          var l = localStorage.getItem("kas-lang");
+          if (!tags[l]) {
+            var n = (navigator.language || "").toLowerCase();
+            l = n.indexOf("zh") === 0 ? "zh"
+              : n.indexOf("ja") === 0 ? "ja"
+              : n.indexOf("ko") === 0 ? "ko"
+              : "en";
+          }
+          var r = document.documentElement;
+          r.dataset.lang = l;
+          r.setAttribute("lang", tags[l]);
+        } catch (e) {}
+      })();
+    </script>
+    {/* Deep-link landing: scroll-behavior is `auto` until this runs, so an
+        incoming /#entry link jumps straight to the entry. After the page has
+        loaded and we've re-landed on the target (correcting for any layout
+        shift), enable smooth scrolling for in-page navigation. */}
+    <script is:inline>
+      (function () {
+        var html = document.documentElement;
+        function start() {
+          if (location.hash) {
+            try {
+              var el = document.getElementById(
+                decodeURIComponent(location.hash.slice(1)),
+              );
+              if (el) el.scrollIntoView({ block: "start" });
+            } catch (e) {}
+          }
+          requestAnimationFrame(function () {
+            try {
+              if (!matchMedia("(prefers-reduced-motion: reduce)").matches)
+                html.classList.add("nav-ready");
+            } catch (e) {
+              html.classList.add("nav-ready");
+            }
+          });
+        }
+        if (document.readyState === "complete") requestAnimationFrame(start);
+        else
+          window.addEventListener("load", function () {
+            requestAnimationFrame(start);
+          });
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <Nav />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <style>
+      .skip {
+        position: fixed;
+        left: 1rem;
+        top: -3rem;
+        z-index: 100;
+        background: var(--ink);
+        color: var(--paper);
+        padding: 0.5rem 0.9rem;
+        border-radius: var(--radius);
+        transition: top 0.15s var(--ease);
+      }
+      .skip:focus {
+        top: 1rem;
+      }
+    </style>
+  </body>
+</html>

@@ -1,0 +1,317 @@
+---
+import T from "./T.astro";
+import { demos } from "../data/demos";
+
+interface Props {
+  id: string; // key into demos map
+}
+const { id } = Astro.props;
+const demo = demos[id];
+if (!demo) throw new Error(`No demo for id "${id}"`);
+---
+
+<figure class="ba" data-demo={id} data-show="before">
+  <div class="ba-head">
+    <div class="ba-switch" role="tablist" aria-label="Before / after">
+      <button type="button" role="tab" data-ba="before" aria-selected="true">
+        <span class="dot slop" aria-hidden="true"></span>
+        <T zh="slop" en="Slop" ja="Slop" ko="Slop" />
+      </button>
+      <button type="button" role="tab" data-ba="after" aria-selected="false">
+        <span class="dot clean" aria-hidden="true"></span>
+        <T zh="清理后" en="Clean" ja="クリーン" ko="정리 후" />
+      </button>
+    </div>
+    <span class="ba-hint">
+      <T zh="点按对照，同一内容两种处理" en="Tap to compare the same content" ja="タップで同じ内容を見比べる" ko="눌러서 같은 내용을 비교한다" />
+    </span>
+  </div>
+
+  <div class={`ba-stage demo-${id}`}>
+    {/* Tags live on the stage (not inside a pane) so the reveal transform
+        can't re-anchor them — they stay pinned to the stage's top-right. */}
+    <span class="ba-tag before" aria-hidden="true"><T zh="SLOP" en="SLOP" ja="SLOP" ko="SLOP" /></span>
+    <span class="ba-tag after" aria-hidden="true"><T zh="清理后" en="CLEAN" ja="CLEAN" ko="CLEAN" /></span>
+
+    <div class="ba-pane" data-pane="before">
+      <Fragment set:html={demo.before} />
+    </div>
+    <div class="ba-pane" data-pane="after">
+      <Fragment set:html={demo.after} />
+    </div>
+
+    {/* Dust-sweep transition overlay — plays only on Slop → Clean. */}
+    <div class="ba-sweep" aria-hidden="true">
+      <i class="mote m1"></i><i class="mote m2"></i><i class="mote m3"></i>
+      <i class="mote m4"></i><i class="mote m5"></i><i class="mote m6"></i>
+      <i class="mote m7"></i><i class="mote m8"></i><i class="mote m9"></i>
+      <i class="mote m10"></i><i class="mote m11"></i><i class="mote m12"></i>
+      <i class="mote m13"></i><i class="mote m14"></i><i class="mote m15"></i>
+      <i class="mote m16"></i><i class="mote m17"></i><i class="mote m18"></i>
+    </div>
+  </div>
+</figure>
+
+<style>
+  .ba {
+    margin: 0;
+    border: var(--hair) solid var(--rule);
+    border-radius: var(--radius-lg);
+    overflow: clip;
+    background: var(--card);
+    box-shadow: var(--shadow-e1);
+  }
+  .ba-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-4);
+    /* Uniform padding so the toggle is evenly inset — equal gap top, left,
+       and bottom. */
+    padding: var(--s-3);
+    border-bottom: var(--hair) solid var(--rule);
+    background: var(--paper-2);
+  }
+  .ba-switch {
+    display: inline-flex;
+    padding: 3px;
+    gap: 2px;
+    background: color-mix(in oklab, var(--ink) 7%, transparent);
+    border-radius: var(--radius);
+  }
+  .ba-switch button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    appearance: none;
+    border: 0;
+    background: none;
+    padding: 0.35rem 0.7rem;
+    border-radius: 3px;
+    font: inherit;
+    font-size: var(--step--1);
+    color: var(--ink-2);
+    cursor: pointer;
+  }
+  .ba-switch button[aria-selected="true"] {
+    background: var(--card);
+    color: var(--ink);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
+    font-weight: 600;
+  }
+  .dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+  }
+  .dot.slop {
+    background: var(--slop);
+  }
+  .dot.clean {
+    background: var(--mark);
+  }
+  .ba-hint {
+    font-size: var(--step--1);
+    color: var(--ink-3);
+  }
+  @media (max-width: 34rem) {
+    .ba-hint {
+      display: none;
+    }
+  }
+
+  .ba-stage {
+    position: relative;
+    padding: clamp(1.25rem, 4vw, 2.5rem);
+    min-height: 12rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    place-items: center;
+    /* Faintly recessed canvas so a white "clean" card is defined by its edge,
+       not by a heavy drop shadow. */
+    background: var(--paper);
+  }
+  /* Both panes share one grid cell, so the stage always reserves the height of
+     the taller pane — toggling slop ⇄ clean never resizes it, so the page
+     can't jump. */
+  .ba-pane {
+    grid-area: 1 / 1;
+    width: 100%;
+  }
+  /* Hide the inactive pane with visibility (not display) so it keeps taking up
+     its space and the shared cell stays sized to the taller of the two. */
+  .ba[data-show="before"] [data-pane="after"],
+  .ba[data-show="after"] [data-pane="before"] {
+    visibility: hidden;
+  }
+  /* Tags are absolutely positioned, so display:none here has no height impact. */
+  .ba[data-show="before"] .ba-tag.after,
+  .ba[data-show="after"] .ba-tag.before {
+    display: none;
+  }
+
+  .ba-tag {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.6rem;
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    font-weight: 700;
+    padding: 0.15rem 0.4rem;
+    border-radius: 3px;
+    z-index: 3;
+  }
+  .ba-tag.before {
+    color: #fff;
+    background: var(--slop);
+  }
+  .ba-tag.after {
+    color: var(--paper);
+    background: var(--mark);
+  }
+
+  /* ── Dust-sweep transition ────────────────────────────────────────────
+     Switching Slop → Clean sweeps the pane: a faint wipe front slides left →
+     right and carries the dust off with it. The specks start visible, then
+     get pushed sideways with a little motion blur — so it reads as being
+     swept, not twinkling. No rise, no reveal; just the sweep. Removed under
+     reduced-motion. `.ba-sweep`'s own fade is the JS end-signal. */
+  .ba-sweep {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    overflow: clip;
+    pointer-events: none;
+    opacity: 0;
+  }
+  /* the wipe front: a soft luminance band that passes across, clearing dust */
+  .ba-sweep::before {
+    content: "";
+    position: absolute;
+    top: -10%;
+    bottom: -10%;
+    left: 0;
+    width: 45%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in oklab, var(--ink) 6%, transparent) 55%,
+      transparent
+    );
+    opacity: 0;
+    transform: translateX(-130%);
+  }
+  .mote {
+    position: absolute;
+    width: 2.5px;
+    height: 2.5px;
+    border-radius: 50%;
+    /* dusty warm grey, not a bright speck */
+    background: color-mix(in oklab, var(--ink-3) 82%, #9b7f5e);
+    opacity: 0;
+    filter: blur(0.3px);
+  }
+  /* dust scattered over the surface; swept off to the right */
+  .m1  { left: 6%;  top: 40%; }
+  .m2  { left: 11%; top: 66%; }
+  .m3  { left: 15%; top: 26%; }
+  .m4  { left: 20%; top: 52%; width: 4px; height: 4px; }
+  .m5  { left: 25%; top: 74%; }
+  .m6  { left: 30%; top: 34%; }
+  .m7  { left: 35%; top: 60%; width: 1.5px; height: 1.5px; }
+  .m8  { left: 40%; top: 22%; width: 4px; height: 4px; }
+  .m9  { left: 45%; top: 48%; }
+  .m10 { left: 50%; top: 71%; }
+  .m11 { left: 55%; top: 30%; width: 1.5px; height: 1.5px; }
+  .m12 { left: 60%; top: 56%; }
+  .m13 { left: 65%; top: 42%; width: 4px; height: 4px; }
+  .m14 { left: 70%; top: 68%; }
+  .m15 { left: 76%; top: 24%; }
+  .m16 { left: 81%; top: 50%; width: 1.5px; height: 1.5px; }
+  .m17 { left: 86%; top: 72%; }
+  .m18 { left: 91%; top: 36%; }
+
+  .ba.sweeping .ba-sweep {
+    animation: sweep-run 1040ms linear;
+  }
+  .ba.sweeping .ba-sweep::before {
+    animation: wipe-front 840ms cubic-bezier(0.36, 0, 0.3, 1) forwards;
+  }
+  .ba.sweeping .mote {
+    /* ease-in: sit, then accelerate off — like being flicked by the sweep */
+    animation: dust-sweep 430ms cubic-bezier(0.42, 0, 0.7, 0.4) forwards;
+  }
+  .ba.sweeping .m1  { animation-delay: 20ms; }
+  .ba.sweeping .m2  { animation-delay: 50ms; }
+  .ba.sweeping .m3  { animation-delay: 80ms; }
+  .ba.sweeping .m4  { animation-delay: 110ms; }
+  .ba.sweeping .m5  { animation-delay: 145ms; }
+  .ba.sweeping .m6  { animation-delay: 180ms; }
+  .ba.sweeping .m7  { animation-delay: 215ms; }
+  .ba.sweeping .m8  { animation-delay: 250ms; }
+  .ba.sweeping .m9  { animation-delay: 285ms; }
+  .ba.sweeping .m10 { animation-delay: 320ms; }
+  .ba.sweeping .m11 { animation-delay: 355ms; }
+  .ba.sweeping .m12 { animation-delay: 390ms; }
+  .ba.sweeping .m13 { animation-delay: 425ms; }
+  .ba.sweeping .m14 { animation-delay: 455ms; }
+  .ba.sweeping .m15 { animation-delay: 485ms; }
+  .ba.sweeping .m16 { animation-delay: 510ms; }
+  .ba.sweeping .m17 { animation-delay: 535ms; }
+  .ba.sweeping .m18 { animation-delay: 560ms; }
+
+  @keyframes sweep-run {
+    0%   { opacity: 0; }
+    4%   { opacity: 1; }
+    90%  { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  @keyframes wipe-front {
+    0%   { opacity: 0; transform: translateX(-130%); }
+    12%  { opacity: 1; }
+    85%  { opacity: 1; }
+    100% { opacity: 0; transform: translateX(300%); }
+  }
+  @keyframes dust-sweep {
+    0%   { opacity: 0; transform: translate(0, 0) scale(1, 1); filter: blur(0.3px); }
+    12%  { opacity: 0.62; transform: translate(1px, 0) scale(1, 1); }
+    /* stretch into a horizontal streak as it's dragged off — a motion-blur
+       trail, so it reads as dust being swept rather than a speck blinking */
+    55%  { opacity: 0.5; transform: translate(16px, 1px) scale(2.6, 0.8); filter: blur(0.8px); }
+    100% { opacity: 0; transform: translate(40px, 3px) scale(3.4, 0.5); filter: blur(1.6px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ba-sweep { display: none; }
+  }
+</style>
+
+<script>
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  document.querySelectorAll<HTMLElement>(".ba").forEach((ba) => {
+    // Remove the sweeping state once the dust-erase overlay fades out.
+    ba.addEventListener("animationend", (e) => {
+      if ((e as AnimationEvent).animationName === "sweep-run") {
+        ba.classList.remove("sweeping");
+      }
+    });
+
+    ba.querySelectorAll<HTMLButtonElement>("[data-ba]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const mode = btn.dataset.ba!;
+        const wasClean = ba.dataset.show === "after";
+        ba.dataset.show = mode;
+        ba.querySelectorAll<HTMLButtonElement>("[data-ba]").forEach((b) =>
+          b.setAttribute("aria-selected", String(b.dataset.ba === mode)),
+        );
+        // Sweep only when actually cleaning (slop → clean), never in reverse.
+        if (mode === "after" && !wasClean && !reduceMotion.matches) {
+          ba.classList.remove("sweeping");
+          void ba.offsetWidth; // reflow so the animation restarts on re-click
+          ba.classList.add("sweeping");
+        }
+      });
+    });
+  });
+</script>

@@ -1,0 +1,527 @@
+---
+import Base from "../layouts/Base.astro";
+import T from "../components/T.astro";
+import SlopEntry from "../components/SlopEntry.astro";
+import { catalogue } from "../data/catalogue";
+
+const principles = [
+  {
+    head: {
+      en: "Decide before you decorate",
+      zh: "先决定，再装饰",
+      ja: "飾る前に決める",
+      ko: "꾸미기 전에 정한다",
+    },
+    body: {
+      en: "Every visual choice should be one you can explain. If you can't, it's a default someone else set.",
+      zh: "每一个视觉选择都要能说出理由。说不出来的，就是别人替你设好的默认值。",
+      ja: "どの見た目の選択にも、説明できる理由があるはずだ。説明できないなら、それは誰かが決めたデフォルトにすぎない。",
+      ko: "모든 시각적 선택에는 설명할 수 있는 이유가 있어야 한다. 설명하지 못한다면 그건 남이 정해 둔 기본값이다.",
+    },
+  },
+  {
+    head: {
+      en: "One accent, one voice",
+      zh: "一个主色，一种嗓音",
+      ja: "アクセントは一つ、声も一つ",
+      ko: "강조색 하나, 목소리 하나",
+    },
+    body: {
+      en: "Use a single accent color, sparingly. Keep the whole page reading like one person talking.",
+      zh: "只用一个强调色，而且要省着用。整页文案，从头到尾是同一个人在说话。",
+      ja: "強調色は一つだけ、控えめに。ページ全体が一人の人間の声で語られるように保つ。",
+      ko: "강조색은 하나만, 아껴서 쓴다. 페이지 전체가 한 사람이 말하는 것처럼 읽히게 유지한다.",
+    },
+  },
+  {
+    head: {
+      en: "Hierarchy from scale and space",
+      zh: "层级来自字号与留白",
+      ja: "階層はサイズと余白でつくる",
+      ko: "위계는 크기와 여백에서 나온다",
+    },
+    body: {
+      en: "Rank things with size, weight, and spacing. Coloring words or swapping in a font is the lazy shortcut.",
+      zh: "用字号、字重、间距分出主次。给字上色、临时换个字体，都是偷懒的捷径。",
+      ja: "大きさ・太さ・間隔で優先順位をつける。文字に色をつけたり書体を差し替えたりするのは、手抜きの近道だ。",
+      ko: "크기, 굵기, 간격으로 우선순위를 매긴다. 글자에 색을 입히거나 서체를 바꿔 끼우는 건 게으른 지름길이다.",
+    },
+  },
+  {
+    head: {
+      en: "Subtract first",
+      zh: "先做减法",
+      ja: "まず引く",
+      ko: "먼저 덜어낸다",
+    },
+    body: {
+      en: "Slop is what piles up. The first move toward not-ugly is to take things away, until everything left has to be there.",
+      zh: "slop 是一样样堆出来的。想不难看，第一步是往下删——删到留下的每一样都非在不可。",
+      ja: "slop は積み重なってできる。醜さから抜け出す第一歩は、削ることだ。残ったものすべてが必要になるまで削る。",
+      ko: "slop 은 쌓여서 생긴다. 안 못생기게 만드는 첫걸음은 덜어내는 것이다. 남은 것 하나하나가 꼭 있어야 할 때까지.",
+    },
+  },
+  {
+    head: {
+      en: "Specific beats loud",
+      zh: "具体胜过响亮",
+      ja: "具体は威勢よりも強い",
+      ko: "구체적인 것이 요란한 것을 이긴다",
+    },
+    body: {
+      en: "Write real numbers, nouns, and consequences. ‘40% faster’ says more than ‘blazing fast ✨’.",
+      zh: "写真实的数字、名词和后果。「快 40%」比「快如闪电 ✨」说得更多。",
+      ja: "実際の数字・名詞・結果を書く。「40% 速い」は「爆速 ✨」よりも多くを語る。",
+      ko: "실제 숫자, 명사, 결과를 쓴다. ‘40% 빠름’이 ‘번개처럼 빠름 ✨’보다 더 많은 걸 말한다.",
+    },
+  },
+  {
+    head: {
+      en: "Decoration must mean something",
+      zh: "装饰必须有语义",
+      ja: "装飾には意味がなければならない",
+      ko: "장식에는 의미가 있어야 한다",
+    },
+    body: {
+      en: "Icons, badges, and callouts are signals. Spread everywhere, they signal nothing.",
+      zh: "图标、徽章、callout 都是信号。一旦无差别地铺满，就什么都不再表示。",
+      ja: "アイコン、バッジ、callout はどれも信号だ。見境なく敷き詰めれば、何も伝えなくなる。",
+      ko: "아이콘, 배지, callout 은 모두 신호다. 아무 데나 깔면 아무것도 알리지 못한다.",
+    },
+  },
+];
+---
+
+<Base>
+  {/* ── Hero ──────────────────────────────────────────────────────────── */}
+  <section class="hero" id="top">
+    <div class="container">
+      <p class="kicker">
+        <T
+          zh="一份识别并清除 AI slop 的实战手册"
+          en="A field guide to spotting and removing AI slop"
+          ja="AI slop を見分けて取り除くための実践ガイド"
+          ko="AI slop 을 알아보고 걷어내기 위한 실전 안내서"
+        />
+      </p>
+      <h1>
+        <span data-t="zh">杀死 <span class="strike">AI slop</span></span>
+        <span data-t="en">Kill <span class="strike">AI slop</span></span>
+        <span data-t="ja"><span class="strike">AI slop</span> を殺す</span>
+        <span data-t="ko"><span class="strike">AI slop</span> 죽이기</span>
+      </h1>
+      <p class="lede hero-lede">
+        <T
+          zh="Vibe Coding 造出来的产品，难看得都是一个样：蓝紫渐变、发光的玻璃卡片、每行都挂 emoji、什么都要贴个徽章。这是机器没有品味、又想显得高级时抓来的东西。因为到处都是，你早就看不见它了。这份手册让它重新变得刺眼，再教你把它清掉。"
+          en="Vibe-coded products are ugly in the same specific way: indigo gradients, glowing glass cards, emoji on every line, a badge on everything. It's what a machine reaches for when it has no taste but wants to look impressive. It's so common you've stopped seeing it. This guide makes it glaring again, then shows you how to strip it out."
+          ja="Vibe Coding で作られた製品は、決まって同じ醜さをしている。藍紫のグラデーション、光るガラスカード、行ごとの emoji、何にでも貼られたバッジ。センスのない機械が、それでも高級に見せたくて手を伸ばす先だ。あまりに多すぎて、もう目に入らなくなっている。このガイドはそれを再び目障りにし、そのうえで削り落とし方を示す。"
+          ko="Vibe Coding 으로 만든 제품은 하나같이 같은 방식으로 못생겼다. 남보라 그라데이션, 빛나는 유리 카드, 줄마다 붙은 emoji, 무엇에나 달린 배지. 취향 없는 기계가 그럼에도 고급스러워 보이려 할 때 집어 드는 것들이다. 너무 흔해서 이제는 눈에 들어오지도 않는다. 이 안내서는 그것을 다시 거슬리게 만들고, 그다음 걷어내는 법을 보여준다."
+        />
+      </p>
+      <div class="cta">
+        <a class="button primary" href="#catalogue">
+          <T zh="看 slop 图鉴" en="See the catalogue" ja="slop 図鑑を見る" ko="slop 도감 보기" />
+        </a>
+        <a class="button ghost" href="#skill">
+          <T zh="用 Skill 清理项目" en="Get the cleanup skill" ja="クリーンアップ Skill を入手" ko="정리 Skill 받기" />
+        </a>
+      </div>
+      <p class="specimen">
+        <T
+          zh="参考样本："
+          en="Reference specimen: "
+          ja="参考サンプル："
+          ko="참고 샘플: "
+        /><a href="https://github.com/openclaw/openclaw" rel="noopener">OpenClaw</a><T
+          zh="。它几乎收齐了当代 AI slop，这份图鉴里的 tell 多半能在它身上找到。"
+          en=". It ships a near-complete set of contemporary AI slop; most of these tells show up in it."
+          ja="。現代の AI slop をほぼひと通り揃えて出荷した製品で、この図鑑の tell の大半はここに見つかる。"
+          ko=". 요즘의 AI slop 을 거의 빠짐없이 담아 내놓은 제품으로, 이 도감의 tell 대부분이 여기서 발견된다."
+        />
+      </p>
+    </div>
+  </section>
+
+  {/* ── What is AI slop ──────────────────────────────────────────────── */}
+  <section class="section" id="what">
+    <div class="container what">
+      <p class="eyebrow" data-index="00"><T zh="定义" en="Definition" ja="定義" ko="정의" /></p>
+      <h2 class="def">
+        <T
+          en="AI slop is ugly in a specific way:<br>it piles on every possible style and detail without settling on a focus."
+          zh="AI slop 是一种很具体的难看：<br>它把所有能加的风格和细节都堆上来，却不定下一个重点。"
+          ja="AI slop は、ある特定の醜さだ。<br>あらゆるスタイルとディテールを積み上げて、重点を一つも定めていない。"
+          ko="AI slop 은 아주 특정한 방식으로 못생겼다.<br>온갖 스타일과 디테일을 쌓아 올리고, 정작 초점 하나를 정하지 않는다."
+        />
+      </h2>
+      <div class="what-cols">
+        <p>
+          <T
+            zh="模型没有品味，于是去抓那些在缩略图里显得「高级」的东西：一道渐变、一层光晕、一排徽章、一墙发光卡片。每一样单独看都是俗套；全堆在一起、什么都不删，就熬成了你见过一千遍的那种刺眼页面。"
+            en="A model has no taste, so it grabs whatever looks impressive in a thumbnail: a gradient, a glow, a row of badges, a wall of glowing cards. Each is a cliché on its own. Stacked together with nothing edited out, they curdle into the same garish page you've seen a thousand times."
+            ja="モデルにはセンスがない。だからサムネイルで「高級」に見えるものを掴んでくる。グラデーション、グロー、バッジの列、光るカードの壁。どれも単体ではありふれた常套句だ。何も削らずに積み上げると、あなたが千回見たあの毒々しいページに煮詰まる。"
+            ko="모델에는 취향이 없다. 그래서 섬네일에서 ‘고급스러워’ 보이는 것을 집어 온다. 그라데이션 하나, 광채 한 겹, 배지 한 줄, 빛나는 카드로 채운 벽. 하나하나는 그저 흔한 상투구다. 아무것도 덜어내지 않고 쌓아 올리면, 당신이 천 번은 본 그 요란한 페이지로 굳어 버린다."
+          />
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {/* ── Catalogue ────────────────────────────────────────────────────── */}
+  <section class="section" id="catalogue">
+    <div class="container">
+      <header class="cat-head">
+        <p class="eyebrow" data-index="01"><T zh="图鉴" en="The catalogue" ja="図鑑" ko="도감" /></p>
+        <h2><T zh="23 种 AI slop，逐条拆解" en="23 tells, taken apart one by one" ja="23 種類の AI slop を、一つずつ分解する" ko="23 가지 AI slop 을 하나씩 뜯어본다" /></h2>
+        <p class="lede">
+          <T
+            zh="每一条都是一组 before → after 对照：slop 长什么样，换成什么干净做法。全部用 HTML 重建，点按即可切换。"
+            en="Each tell is a before → after pair: what the slop looks like, and the clean move instead. All rebuilt in HTML, tap to switch."
+            ja="各項目は before → after の対で、slop がどう見えるか、代わりにどう整えるかを示す。すべて HTML で再構築、タップで切り替わる。"
+            ko="각 항목은 before → after 짝으로, slop 이 어떻게 보이는지와 대신 취할 깔끔한 방식을 보여준다. 모두 HTML 로 재구성했고, 눌러서 전환한다."
+          />
+        </p>
+        <div class="legend">
+          <span class="lg"><span class="sw t1"></span><T zh="经典 slop" en="Classic slop" ja="定番の slop" ko="고전적인 slop" /></span>
+          <span class="lg"><span class="sw t2"></span><T zh="进化型 slop（已成新默认）" en="Evolved slop (the new default)" ja="進化型の slop（新しいデフォルト）" ko="진화형 slop（새 기본값이 된)" /></span>
+        </div>
+      </header>
+
+      <div class="entries">
+        {catalogue.map((entry) => <SlopEntry entry={entry} />)}
+      </div>
+    </div>
+  </section>
+
+  {/* ── Principles ──────────────────────────────────────────────────── */}
+  <section class="section" id="principles">
+    <div class="container">
+      <p class="eyebrow" data-index="02"><T zh="原则" en="Principles" ja="原則" ko="원칙" /></p>
+      <h2><T zh="避免 slop 的六条" en="Six ways to stay out of slop" ja="slop に陥らないための六か条" ko="slop 에 빠지지 않는 여섯 가지" /></h2>
+      <ol class="principles">
+        {
+          principles.map((p, i) => (
+            <li>
+              <span class="pn" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+              <div>
+                <h3 class="ph"><T {...p.head} /></h3>
+                <p><T {...p.body} /></p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  {/* ── The Skill ───────────────────────────────────────────────────── */}
+  <section class="section skill" id="skill">
+    <div class="container">
+      <p class="eyebrow" data-index="03"><T zh="清理 Skill" en="The cleanup skill" ja="クリーンアップ Skill" ko="정리 Skill" /></p>
+      <div class="skill-grid">
+        <div class="skill-copy">
+          <h2>
+            <T
+              zh="kill-ai-slop：把这份图鉴跑在你代码上的 Agent Skill"
+              en="kill-ai-slop, the Agent Skill that runs this catalogue on your code"
+              ja="kill-ai-slop、この図鑑をあなたのコードに走らせる Agent Skill"
+              ko="kill-ai-slop, 이 도감을 당신의 코드에 돌리는 Agent Skill"
+            />
+          </h2>
+          <p class="lede">
+            <T
+              zh="同一套分类，做成能直接在你项目里跑的 skill。它扫描代码，对照图鉴逐条标出 slop，解释原因，再给出干净的改法，或者在你划定的范围里直接改。"
+              en="The same taxonomy, as a skill you run on your own project. It scans the code, flags each tell from this catalogue, explains why, and gives the clean fix, or applies it in a scope you approve."
+              ja="同じ分類を、あなたのプロジェクトで直接走らせる skill にした。コードを走査し、この図鑑の tell を一つずつ指摘し、理由を説明し、そして綺麗な直し方を提案する。あるいは、あなたが認めた範囲内で直接直す。"
+              ko="같은 분류 체계를, 당신의 프로젝트에서 바로 돌리는 skill 로 만들었다. 코드를 훑어 이 도감의 tell 을 하나씩 짚고, 이유를 설명하고, 깔끔한 수정안을 제안한다. 혹은 당신이 승인한 범위 안에서 바로 고친다."
+            />
+          </p>
+          <ul class="skill-points">
+            <li>
+              <T
+                zh="<b>检测</b>：从代码信号入手，蓝紫渐变类名、bg-clip-text、border-l-4 callout、堆叠的 emoji 与徽章、等宽外壳、AI 文案腔。"
+                en="<b>Detect</b> code signals: indigo-gradient classes, bg-clip-text, border-l-4 callouts, stacked emoji and badges, mono chrome, AI copy tics."
+                ja="<b>検出</b>：コードの信号から入る。indigo-gradient のクラス名、bg-clip-text、border-l-4 の callout、積み重なった emoji とバッジ、mono の外殻、AI 文案の癖。"
+                ko="<b>탐지</b>: 코드 신호에서 출발한다. indigo-gradient 클래스명, bg-clip-text, border-l-4 callout, 쌓인 emoji 와 배지, mono 껍데기, AI 문구 특유의 버릇."
+              />
+            </li>
+            <li>
+              <T
+                zh="<b>解释</b>：每一处都说明为什么它读起来像机器做的，不留「照做就行」的黑盒。"
+                en="<b>Explain</b>: each hit says why it reads as machine-made, no ‘just trust me’ black box."
+                ja="<b>説明</b>：ヒットごとに、なぜ機械が作ったように読めるかを言う。「黙って従え」のブラックボックスは残さない。"
+                ko="<b>설명</b>: 걸린 곳마다 왜 기계가 만든 것처럼 읽히는지 말한다. ‘그냥 믿어라’식 블랙박스는 남기지 않는다."
+              />
+            </li>
+            <li>
+              <T
+                zh="<b>修复</b>：给出最小改动，或在你确认的范围直接改。留下你的品牌，去掉默认值。"
+                en="<b>Fix</b>: a minimal diff, or applied directly within a scope you approve. Keep your brand, drop the defaults."
+                ja="<b>修復</b>：最小の diff を出す。あるいは、あなたが認めた範囲内で直接あてる。ブランドは残し、デフォルトは捨てる。"
+                ko="<b>수정</b>: 최소한의 diff 를 낸다. 혹은 당신이 승인한 범위 안에서 바로 적용한다. 브랜드는 남기고, 기본값은 버린다."
+              />
+            </li>
+          </ul>
+        </div>
+
+        <aside class="skill-card">
+          <div class="sc-head">
+            <span class="mark" aria-hidden="true"></span>
+            <code>kill-ai-slop</code>
+            <span class="sc-kind">SKILL</span>
+          </div>
+          <p class="sc-note">
+            <T
+              zh="放进 Claude Code 或支持 Agent Skills 的环境，调用："
+              en="Drop it into Claude Code / any Agent-Skills host, then call:"
+              ja="Claude Code / Agent Skills 対応の環境に入れて、呼び出す："
+              ko="Claude Code / Agent Skills 를 지원하는 환경에 넣고 호출한다:"
+            />
+          </p>
+          <pre class="sc-pre"><code>&gt; /kill-ai-slop
+
+<span class="c">Scanning src/ … 24 files</span>
+<span class="hit">slop  src/Hero.tsx:12</span>  indigo→violet gradient
+<span class="hit">slop  src/Hero.tsx:31</span>  gradient-clip headline
+<span class="hit">slop  src/Note.tsx:8</span>   border-l-4 callout ×3
+<span class="hit">slop  copy.md:1</span>       "not just X — it's Y"
+<span class="ok">→ 4 groups, 11 hits. Apply fixes? [y/scope]</span></code></pre>
+          <p class="sc-foot">
+            <a href="https://github.com/yetone/kill-ai-slop/tree/main/skill" rel="noopener"><T zh="在 GitHub 上获取完整 skill →" en="Get the full skill on GitHub →" ja="GitHub で完全な skill を入手 →" ko="GitHub 에서 전체 skill 받기 →" /></a>
+          </p>
+        </aside>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* Hero */
+  .hero {
+    padding-block: clamp(3.5rem, 10vw, 7.5rem) clamp(3rem, 7vw, 5rem);
+  }
+  .kicker {
+    font-size: var(--step--1);
+    letter-spacing: 0.02em;
+    color: var(--ink-3);
+    margin: 0 0 var(--s-5);
+  }
+  .hero h1 {
+    max-width: 16ch;
+  }
+  /* No decorative strike on the word — the title carries itself. Emphasis
+     comes from the word "Kill", not from drawing a line through "AI slop". */
+  .strike {
+    white-space: nowrap;
+  }
+  .hero-lede {
+    margin-top: var(--s-5);
+    max-width: 60ch;
+    color: var(--ink-2);
+  }
+  .cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    margin-top: var(--s-6);
+  }
+  .button {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.6rem 1.05rem;
+    border-radius: var(--radius);
+    text-decoration: none;
+    font-size: var(--step-0);
+    font-weight: 550;
+    letter-spacing: -0.01em;
+    border: 1px solid transparent;
+    transition:
+      transform 0.12s var(--ease),
+      background 0.12s var(--ease),
+      border-color 0.12s var(--ease);
+  }
+  .button:active { transform: translateY(1px); }
+  .button.primary {
+    background: var(--ink);
+    color: var(--paper);
+    box-shadow: var(--shadow-e1);
+  }
+  .button.primary:hover {
+    background: color-mix(in oklab, var(--ink) 85%, var(--paper));
+  }
+  .button.ghost {
+    border-color: var(--rule-strong);
+    color: var(--ink);
+  }
+  .button.ghost:hover {
+    border-color: var(--ink);
+    background: color-mix(in oklab, var(--ink) 4%, transparent);
+  }
+  .specimen {
+    margin-top: var(--s-6);
+    padding-top: var(--s-4);
+    border-top: var(--hair) solid var(--rule);
+    font-size: var(--step--1);
+    color: var(--ink-3);
+    max-width: 60ch;
+  }
+  .specimen a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--rule-strong); }
+
+  /* What */
+  .what .def {
+    max-width: 20ch;
+    margin-bottom: var(--s-6);
+  }
+  .what-cols {
+    max-width: 66ch;
+  }
+  .what-cols p { color: var(--ink-2); line-height: 1.6; margin: 0; }
+
+  /* Catalogue head */
+  .cat-head { max-width: var(--measure); margin-bottom: var(--s-6); }
+  .cat-head .lede { margin-top: var(--s-4); color: var(--ink-2); }
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-5);
+    margin-top: var(--s-5);
+    font-size: var(--step--1);
+    color: var(--ink-2);
+  }
+  .lg { display: inline-flex; align-items: center; gap: 0.5rem; }
+  .sw {
+    width: 0.85rem; height: 0.85rem; border-radius: 3px;
+    border: 1px solid var(--rule-strong);
+  }
+  .sw.t2 { border-color: var(--ink); background: var(--ink); }
+
+  /* Principles */
+  .principles {
+    list-style: none;
+    margin: var(--s-6) 0 0;
+    padding: 0;
+    display: grid;
+    gap: 0;
+    counter-reset: none;
+    max-width: 60rem;
+  }
+  .principles li {
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    gap: var(--s-4);
+    padding: var(--s-5) 0;
+    border-top: var(--hair) solid var(--rule);
+  }
+  .pn {
+    font-variant-numeric: tabular-nums;
+    color: var(--ink-3);
+    font-weight: 680;
+    font-size: var(--step-0);
+  }
+  .ph { margin-bottom: var(--s-2); }
+  .principles p { color: var(--ink-2); max-width: 60ch; line-height: 1.55; }
+  @media (min-width: 46rem) {
+    .principles li { grid-template-columns: 4rem 1fr; }
+  }
+
+  /* Skill */
+  .skill-grid {
+    display: grid;
+    gap: var(--s-7);
+    margin-top: var(--s-5);
+    align-items: start;
+  }
+  @media (min-width: 58rem) {
+    .skill-grid { grid-template-columns: 1.05fr 0.95fr; gap: var(--s-8); }
+  }
+  .skill-copy .lede { margin-top: var(--s-5); color: var(--ink-2); }
+  .skill-points {
+    margin: var(--s-5) 0 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: var(--s-4);
+  }
+  .skill-points li {
+    padding-left: 1.1rem;
+    position: relative;
+    color: var(--ink-2);
+    line-height: 1.5;
+  }
+  .skill-points li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.6em;
+    width: 0.4rem;
+    height: 0.4rem;
+    background: var(--ink-3);
+    border-radius: 2px;
+  }
+  .skill-points b { color: var(--ink); }
+
+  .skill-card {
+    border: var(--hair) solid var(--rule);
+    border-radius: var(--radius-lg);
+    overflow: clip;
+    background: var(--card);
+    box-shadow: var(--shadow-e2);
+    position: sticky;
+    top: 5rem;
+  }
+  .sc-head {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: var(--s-3) var(--s-4);
+    border-bottom: var(--hair) solid var(--rule);
+    background: var(--paper-2);
+  }
+  .sc-head code { font-weight: 640; color: var(--ink); }
+  .sc-head .mark {
+    width: 0.85rem; height: 0.85rem; background: var(--mark);
+    border-radius: 2px; rotate: -8deg; flex: none;
+    position: relative;
+  }
+  /* Same proof-strike as the nav brand mark, so the mark is identical everywhere. */
+  .sc-head .mark::after {
+    content: ""; position: absolute; inset: 0;
+    background: var(--paper);
+    clip-path: polygon(18% 44%, 82% 44%, 82% 56%, 18% 56%);
+  }
+  .sc-kind {
+    margin-left: auto;
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    color: var(--ink-3);
+  }
+  .sc-note { padding: var(--s-4) var(--s-4) 0; color: var(--ink-2); font-size: var(--step--1); }
+  .sc-pre {
+    margin: var(--s-3) var(--s-4) 0;
+    padding: var(--s-4);
+    background: #0e0f12;
+    color: #d7d5cf;
+    border-radius: var(--radius);
+    overflow-x: auto;
+    font-size: 0.78rem;
+    line-height: 1.6;
+  }
+  .sc-pre .c { color: #7f8894; }
+  .sc-pre .hit { color: var(--slop); }
+  .sc-pre .ok { color: #6fcf9a; }
+  .sc-foot {
+    padding: var(--s-3) var(--s-4) var(--s-4);
+    color: var(--ink-3);
+    font-size: var(--step--1);
+    margin: 0;
+  }
+  .sc-foot a {
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-color: var(--rule-strong);
+    text-underline-offset: 0.2em;
+  }
+  .sc-foot a:hover {
+    text-decoration-color: var(--ink);
+  }
+</style>

@@ -1,0 +1,100 @@
+---
+import T from "./T.astro";
+import LangToggle from "./LangToggle.astro";
+
+const links = [
+  { href: "#what", zh: "什么是 slop", en: "What it is", ja: "slop とは", ko: "slop 이란" },
+  { href: "#catalogue", zh: "图鉴", en: "Catalogue", ja: "図鑑", ko: "도감" },
+  { href: "#principles", zh: "原则", en: "Principles", ja: "原則", ko: "원칙" },
+  { href: "#skill", zh: "Skill", en: "Skill", ja: "Skill", ko: "Skill" },
+];
+---
+
+<header class="nav">
+  <div class="container inner">
+    <a class="brand" href="#top" aria-label="Kill AI Slop">
+      <span class="mark" aria-hidden="true"></span>
+      <span class="wordmark">Kill AI Slop</span>
+    </a>
+
+    <nav class="links" aria-label="Sections">
+      {
+        links.map((l) => (
+          <a href={l.href}>
+            <T zh={l.zh} en={l.en} ja={l.ja} ko={l.ko} />
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="right">
+      <LangToggle />
+    </div>
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--paper);
+    border-bottom: var(--hair) solid var(--rule);
+  }
+  .inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-5);
+    height: 3.75rem;
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    text-decoration: none;
+    font-weight: 680;
+    letter-spacing: -0.02em;
+  }
+  /* The mark: a red proof-strike through an implied word. */
+  .mark {
+    width: 1.05rem;
+    height: 1.05rem;
+    background: var(--mark);
+    border-radius: 2px;
+    position: relative;
+    rotate: -8deg;
+  }
+  .mark::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--paper);
+    clip-path: polygon(18% 44%, 82% 44%, 82% 56%, 18% 56%);
+  }
+  .wordmark {
+    font-size: var(--step-0);
+  }
+  .links {
+    display: none;
+    gap: clamp(1rem, 2.5vw, 2rem);
+    font-size: var(--step--1);
+  }
+  .links a {
+    text-decoration: none;
+    color: var(--ink-2);
+    letter-spacing: 0.01em;
+  }
+  .links a:hover {
+    color: var(--ink);
+  }
+  .right {
+    display: flex;
+    align-items: center;
+  }
+  @media (min-width: 52rem) {
+    .links {
+      display: flex;
+    }
+  }
+</style>

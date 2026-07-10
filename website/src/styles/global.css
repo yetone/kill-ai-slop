@@ -1,0 +1,144 @@
+@import "./tokens.css";
+@import "./demos.css";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: auto;
+  scroll-padding-top: 6rem;
+}
+/* Smooth scrolling is enabled (via JS adding .nav-ready after first paint) only
+   once we've landed any incoming deep link. That way a shared /#entry URL jumps
+   straight to the entry instead of animating the whole page down from the top. */
+html.nav-ready {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  font-feature-settings: "kern", "liga", "cv11";
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  margin: 0;
+  line-height: 1.04;
+  letter-spacing: -0.022em;
+  font-weight: 640;
+  text-wrap: balance;
+}
+
+h1 { font-size: var(--step-5); letter-spacing: -0.038em; font-weight: 620; }
+h2 { font-size: var(--step-3); letter-spacing: -0.028em; }
+h3 { font-size: var(--step-1); letter-spacing: -0.018em; }
+
+p { margin: 0; }
+
+a {
+  color: inherit;
+  text-decoration-color: var(--rule-strong);
+  text-underline-offset: 3px;
+}
+a:hover { text-decoration-color: var(--ink); }
+
+strong { font-weight: 660; }
+
+code, kbd, samp, pre {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+::selection {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+img { max-width: 100%; display: block; }
+
+/* --- Layout primitives ---------------------------------------------------- */
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 5vw, 3rem);
+}
+
+.measure { max-width: var(--measure); }
+
+.section {
+  padding-block: clamp(3.5rem, 8vw, var(--s-9));
+  border-top: var(--hair) solid var(--rule);
+}
+
+/* --- Small shared pieces --------------------------------------------------- */
+
+/* Section eyebrow: a numbered, tracked label. Restrained, not a mono badge. */
+.eyebrow {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-3);
+  font-size: var(--step--1);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: var(--s-5);
+}
+.eyebrow::before {
+  content: attr(data-index);
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  font-weight: 620;
+  letter-spacing: 0;
+}
+
+/* Deliberately does nothing: emphasis by weight and structure, not by drawing
+   a line or a highlight under the words. (See the "decorative lines" tell.) */
+.mark-hl {
+}
+
+.lede {
+  font-size: var(--step-2);
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  font-weight: 480;
+  text-wrap: pretty;
+}
+
+/* --- Localized visibility -------------------------------------------------- */
+/* Every language is rendered; CSS shows only the active one. Zero-flash because
+   the <html> element carries the default and the head script fixes it before
+   paint. Untranslated strings fall back to English at the <T> level. */
+[data-lang="en"] [data-t]:not([data-t="en"]),
+[data-lang="zh"] [data-t]:not([data-t="zh"]),
+[data-lang="ja"] [data-t]:not([data-t="ja"]),
+[data-lang="ko"] [data-t]:not([data-t="ko"]) {
+  display: none;
+}

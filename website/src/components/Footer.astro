@@ -1,0 +1,95 @@
+---
+import T from "./T.astro";
+---
+
+<footer class="foot">
+  <div class="container inner">
+    <div class="col">
+      <span class="mark" aria-hidden="true"></span>
+      <span class="tag">
+        <T
+          zh="Kill AI Slop —— 又丑又默认的东西，删掉。"
+          en="Kill AI Slop — the ugly default, deleted."
+          ja="Kill AI Slop —— 醜いデフォルトを、削除。"
+          ko="Kill AI Slop —— 못생긴 기본값, 삭제."
+        />
+      </span>
+    </div>
+    <nav class="col links" aria-label="Footer">
+      <a href="#catalogue"><T zh="Slop 图鉴" en="The catalogue" ja="Slop 図鑑" ko="Slop 도감" /></a>
+      <a href="#skill"><T zh="清理 Skill" en="The skill" ja="クリーンアップ Skill" ko="정리 Skill" /></a>
+      <a href="https://github.com/openclaw/openclaw" rel="noopener">
+        <T zh="参考样本：OpenClaw 产品 UI" en="Reference specimen: OpenClaw product UI" ja="参考サンプル：OpenClaw の製品 UI" ko="참고 샘플: OpenClaw 제품 UI" />
+      </a>
+    </nav>
+    <p class="col fineprint">
+      <T
+        zh="所有示例均为 HTML 重建，仅作评论与教学之用。"
+        en="All examples are rebuilt in HTML, for commentary and teaching."
+        ja="すべての例は HTML で再構築したもので、論評と教材のためだけに用いる。"
+        ko="모든 예시는 HTML 로 재구성한 것이며, 논평과 교육 목적으로만 쓴다."
+      />
+    </p>
+  </div>
+</footer>
+
+<style>
+  .foot {
+    border-top: var(--hair) solid var(--rule-strong);
+    padding-block: var(--s-7);
+    color: var(--ink-2);
+    font-size: var(--step--1);
+  }
+  .inner {
+    display: grid;
+    gap: var(--s-5);
+  }
+  .col {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 0;
+  }
+  .links {
+    flex-wrap: wrap;
+    gap: var(--s-5);
+  }
+  .links a {
+    text-decoration: none;
+    color: var(--ink-2);
+  }
+  .links a:hover {
+    color: var(--ink);
+  }
+  .mark {
+    width: 0.85rem;
+    height: 0.85rem;
+    background: var(--mark);
+    border-radius: 2px;
+    rotate: -8deg;
+    flex: none;
+    position: relative;
+  }
+  /* Same proof-strike as the nav brand mark, so the mark is identical everywhere. */
+  .mark::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--paper);
+    clip-path: polygon(18% 44%, 82% 44%, 82% 56%, 18% 56%);
+  }
+  .fineprint {
+    color: var(--ink-3);
+  }
+  @media (min-width: 52rem) {
+    .inner {
+      grid-template-columns: 1fr auto;
+      align-items: center;
+    }
+    .fineprint {
+      grid-column: 1 / -1;
+      border-top: var(--hair) solid var(--rule);
+      padding-top: var(--s-4);
+    }
+  }
+</style>

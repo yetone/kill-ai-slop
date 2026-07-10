@@ -1,0 +1,225 @@
+---
+import T from "./T.astro";
+import BeforeAfter from "./BeforeAfter.astro";
+import { GROUPS, type Entry } from "../data/catalogue";
+
+interface Props {
+  entry: Entry;
+}
+const { entry } = Astro.props;
+const num = String(entry.n).padStart(2, "0");
+---
+
+<article class="entry" id={entry.id}>
+  <header class="top">
+    <div class="idline">
+      <a class="num permalink" href={`#${entry.id}`} aria-label={`Copy link to “${entry.title.en}”`}>{num}</a>
+      <div class="tags">
+        <span class:list={["tag group", `t${entry.tier}`]}>
+          <T {...GROUPS[entry.group]} />
+        </span>
+      </div>
+    </div>
+    <h3><T {...entry.title} /></h3>
+    <p class="what"><T {...entry.what} /></p>
+  </header>
+
+  <div class="evidence">
+    {entry.demo && <BeforeAfter id={entry.demo} />}
+  </div>
+
+  <div class="notes">
+    <div class="note why">
+      <h4 class="k"><T en="Why it's slop" zh="为什么是 slop" ja="なぜ slop なのか" ko="왜 slop 인가" /></h4>
+      <p><T {...entry.why} /></p>
+    </div>
+    <div class="note fix">
+      <h4 class="k"><T en="The fix" zh="怎么改" ja="直し方" ko="고치는 법" /></h4>
+      <p><T {...entry.fix} /></p>
+    </div>
+  </div>
+
+  <div class="detect">
+    <span class="dk"><T en="Code signals" zh="代码信号" ja="コード上のサイン" ko="코드 신호" /></span>
+    <ul>
+      {entry.detect.map((d) => <li><code>{d}</code></li>)}
+    </ul>
+  </div>
+</article>
+
+<style>
+  .entry {
+    padding-block: clamp(2.5rem, 6vw, 4.5rem);
+    border-top: var(--hair) solid var(--rule);
+    /* Offset for the sticky nav is handled globally by html { scroll-padding-top }
+       so deep-link landings match the section anchors — no double offset here. */
+  }
+  .entry:first-child {
+    border-top: 0;
+  }
+
+  /* The number + category row spans the full entry width, so the tag caps the
+     top-right corner (aligned with the demo below) instead of floating at the
+     reading-measure edge. Title and description keep the readable measure. */
+  .idline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-4);
+    margin-bottom: var(--s-3);
+  }
+  .num {
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    font-size: var(--step-1);
+    color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+  /* The number doubles as a permalink: hover reveals a #, a click copies the
+     link and flashes a ✓. Positioned absolutely so the affordance never nudges
+     the layout. */
+  a.num {
+    position: relative;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  a.num::after {
+    content: "#";
+    position: absolute;
+    left: calc(100% + 0.35rem);
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: var(--step-0);
+    font-weight: 600;
+    color: var(--ink-3);
+    opacity: 0;
+    transition: opacity 0.12s var(--ease);
+  }
+  a.num:hover::after,
+  a.num:focus-visible::after {
+    opacity: 1;
+  }
+  a.num.copied::after {
+    content: "✓";
+    color: var(--mark);
+    opacity: 1;
+  }
+  .tags {
+    display: flex;
+    gap: var(--s-2);
+  }
+  .tag {
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.5rem;
+    border-radius: 3px;
+    border: var(--hair) solid var(--rule-strong);
+    color: var(--ink-2);
+  }
+  .tag.group.t2 {
+    border-color: var(--ink);
+    background: var(--ink);
+    color: var(--paper);
+    font-weight: 600;
+  }
+  h3 {
+    max-width: var(--measure);
+    margin-bottom: var(--s-3);
+  }
+  .what {
+    max-width: var(--measure);
+    font-size: var(--step-1);
+    line-height: 1.4;
+    color: var(--ink-2);
+    letter-spacing: -0.01em;
+  }
+
+  .evidence {
+    margin-top: var(--s-6);
+  }
+
+  .notes {
+    margin-top: var(--s-6);
+    display: grid;
+    gap: var(--s-5);
+  }
+  @media (min-width: 46rem) {
+    .notes {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--s-6);
+    }
+  }
+  .note {
+    max-width: 46ch;
+  }
+  .k {
+    font-size: var(--step--1);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: var(--s-2);
+    color: var(--ink-3);
+    font-weight: 620;
+  }
+  .note.fix .k {
+    color: var(--ink);
+  }
+  .note p {
+    color: var(--ink);
+    line-height: 1.55;
+  }
+
+  .detect {
+    margin-top: var(--s-6);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-2) var(--s-3);
+  }
+  .dk {
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .detect ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .detect code {
+    display: inline-block;
+    font-size: 0.76rem;
+    padding: 0.2rem 0.45rem;
+    background: var(--paper-2);
+    border: var(--hair) solid var(--rule);
+    border-radius: 3px;
+    color: var(--ink-2);
+  }
+</style>
+
+<script>
+  // Clicking an entry number copies its shareable URL and flashes a ✓, while
+  // updating the address bar hash (via replaceState, so no history spam).
+  document.querySelectorAll<HTMLAnchorElement>("a.num.permalink").forEach((a) => {
+    a.addEventListener("click", (e) => {
+      e.preventDefault();
+      const id = a.getAttribute("href")!.slice(1);
+      history.replaceState(null, "", "#" + id);
+      document
+        .getElementById(id)
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+      const url = location.origin + location.pathname + "#" + id;
+      navigator.clipboard
+        ?.writeText(url)
+        .then(() => {
+          a.classList.add("copied");
+          window.setTimeout(() => a.classList.remove("copied"), 1400);
+        })
+        .catch(() => {});
+    });
+  });
+</script>
