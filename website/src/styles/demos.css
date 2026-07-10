@@ -1107,24 +1107,19 @@
   font-size: var(--step--1);
   line-height: 1.35;
 }
-/* slop: one hue, three opacities. Opaque values (the old translucent tints
-   flattened over the former #12161d panel) so each row is self-contained now
-   that the enclosing panel is gone. */
-.demo-mono-hue-alert .slop .err {
-  color: #f2686c;
-  border: 1px solid #7c2f35;
-  background: #2b1c23;
+/* slop: one hue at three opacities — same-hue border, text, and a see-through
+   tint of the background. Derived from the hue (--h) mixed against the theme
+   tokens, so the tell renders correctly in BOTH modes: a pale tint with darker
+   text on light, a deep tint with lighter text on dark — same hue either way.
+   The three hues are the Tailwind red/yellow/green 500s this tell reaches for. */
+.demo-mono-hue-alert .slop .al {
+  color: color-mix(in oklab, var(--h) 70%, var(--ink));
+  border: 1px solid color-mix(in oklab, var(--h) 55%, transparent);
+  background: color-mix(in oklab, var(--h) 13%, transparent);
 }
-.demo-mono-hue-alert .slop .warn {
-  color: #e6bd52;
-  border: 1px solid #735b1a;
-  background: #29271c;
-}
-.demo-mono-hue-alert .slop .ok {
-  color: #55c789;
-  border: 1px solid #1e5d3c;
-  background: #152724;
-}
+.demo-mono-hue-alert .slop .err { --h: #ef4444; }
+.demo-mono-hue-alert .slop .warn { --h: #eab308; }
+.demo-mono-hue-alert .slop .ok { --h: #22c55e; }
 /* clean: this is how Linear actually does it. Linear's toasts are the `sonner`
    library run with rich-colours OFF — a neutral surface (var(--normal-bg)), a
    neutral 1px ring (var(--normal-border)), neutral text, 8px radius. No per-type
@@ -1140,16 +1135,15 @@
    *own* elevation instead: a tight 1px contact shadow pulled in with a negative
    spread. Same lift, no banding. */
 .demo-mono-hue-alert .clean .al {
-  color: #d4d4d6;
-  border: 1px solid #212224;
-  background: #191a1c;
+  color: var(--ink-2);
+  border: 1px solid var(--rule);
+  background: var(--card);
   border-radius: 8px;
-  box-shadow:
-    0 1px 1px rgba(0, 0, 0, 0.35),
-    0 4px 4px -2px rgba(0, 0, 0, 0.25);
+  /* No drop shadow — a soft hairline border plus the card's lift off the
+     recessed stage define it. Keeps it seated flat instead of floating. */
 }
 .demo-mono-hue-alert .clean b {
-  color: #e3e3e5;
+  color: var(--ink);
   font-weight: 620;
 }
 .demo-mono-hue-alert .clean .d {
