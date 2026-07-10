@@ -60,36 +60,34 @@ if (!demo) throw new Error(`No demo for id "${id}"`);
 </figure>
 
 <style>
+  /* De-carded: the demo is no longer a floating rounded card. No outer border,
+     radius, or shadow — each demo reads as an editorial inset in the article,
+     the way a figure sits in a page of prose. The only shaped surfaces left are
+     the functional Slop/Clean toggle and the specimens themselves. This also
+     brings the demos back in line with the site's own token rule ("hairline
+     rules instead of drop shadows"), which the card treatment had drifted from. */
   .ba {
     margin: 0;
-    border: var(--hair) solid var(--rule);
-    /* Concentric corners: each inner radius = outer radius − its gap, so the
-       gap at every corner matches the gap along the straight edges. Card is the
-       outermost, so it gets the largest radius. */
-    border-radius: var(--radius-lg);
-    overflow: clip;
-    background: var(--card);
-    box-shadow: var(--shadow-e1);
+    background: transparent;
   }
   .ba-head {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: var(--s-4);
-    /* Uniform 6px gap around the switch — this is the gap the switch's radius
-       is derived from, so the corner stays concentric with the card. */
-    padding: 6px;
-    border-bottom: var(--hair) solid var(--rule);
-    background: var(--paper-2);
+    padding: 0 0 var(--s-3);
+    background: transparent;
   }
   .ba-switch {
     position: relative;
     display: inline-flex;
     padding: 3px;
     gap: 2px;
-    background: color-mix(in oklab, var(--ink) 7%, transparent);
-    /* card radius (12) − head gap (6) = 6 → concentric with the card corner */
-    border-radius: calc(var(--radius-lg) - 6px);
+    background: color-mix(in oklab, var(--ink) 6%, transparent);
+    border-radius: 9px;
+    /* A faint recessed well, so the thumb reads as lifted out of the track
+       rather than pasted on top of it. */
+    box-shadow: inset 0 1px 2px rgba(17, 18, 20, 0.05);
   }
   /* The sliding thumb: one white pill that glides between the two tabs, so
      switching reads as a smooth motion rather than a hard background swap. Its
@@ -103,9 +101,13 @@ if (!demo) throw new Error(`No demo for id "${id}"`);
     width: var(--thumb-w, 0);
     transform: translateX(var(--thumb-x, 0));
     background: var(--card);
-    /* same concentric radius the selected tab used to carry */
-    border-radius: calc(var(--radius-lg) - 6px - 3px);
-    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
+    border-radius: 6px;
+    /* A believable, refined lift: a tight contact shadow plus a hairline ring,
+       the way Linear seats a raised control — not a flat fill. */
+    box-shadow:
+      0 1px 2px rgba(17, 18, 20, 0.13),
+      0 1px 1px rgba(17, 18, 20, 0.05),
+      0 0 0 0.5px rgba(17, 18, 20, 0.04);
     transition:
       transform 260ms cubic-bezier(0.32, 0.72, 0, 1),
       width 260ms cubic-bezier(0.32, 0.72, 0, 1);
@@ -125,11 +127,11 @@ if (!demo) throw new Error(`No demo for id "${id}"`);
     appearance: none;
     border: 0;
     background: none;
-    padding: 0.35rem 0.7rem;
-    /* switch radius (6) − switch padding (3) = 3 → concentric with the track */
-    border-radius: calc(var(--radius-lg) - 6px - 3px);
+    padding: 0.34rem 0.78rem;
+    border-radius: 6px;
     font: inherit;
     font-size: var(--step--1);
+    letter-spacing: 0.004em;
     color: var(--ink-2);
     cursor: pointer;
     transition: color 180ms ease;
@@ -159,6 +161,20 @@ if (!demo) throw new Error(`No demo for id "${id}"`);
       transition: none;
     }
   }
+  /* In dark, a contact shadow alone can't separate the thumb from the track —
+     both are dark. A faint top-lit ring gives the thumb a machined edge, and a
+     deeper inset darkens the well. */
+  @media (prefers-color-scheme: dark) {
+    .ba-switch {
+      background: color-mix(in oklab, var(--ink) 9%, transparent);
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.28);
+    }
+    .ba-thumb {
+      box-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.55),
+        0 0 0 0.5px rgba(255, 255, 255, 0.07);
+    }
+  }
   .dot {
     width: 0.5rem;
     height: 0.5rem;
@@ -186,14 +202,16 @@ if (!demo) throw new Error(`No demo for id "${id}"`);
 
   .ba-stage {
     position: relative;
+    overflow: clip;
     padding: clamp(1.25rem, 4vw, 2.5rem);
     min-height: 12rem;
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     place-items: center;
-    /* Faintly recessed canvas so a white "clean" card is defined by its edge,
-       not by a heavy drop shadow. */
-    background: var(--paper);
+    /* Faintly recessed inset plate — with the outer card gone, this subtle
+       step down from the page is what sets the specimen apart, no border or
+       shadow needed. */
+    background: var(--paper-2);
   }
   /* Both panes share one grid cell, so the stage always reserves the height of
      the taller pane — toggling slop ⇄ clean never resizes it, so the page
