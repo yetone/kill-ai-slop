@@ -956,9 +956,8 @@
   width: 100%;
   max-width: 22rem;
   margin-inline: auto;
-  padding: 0.9rem;
-  border-radius: var(--radius-lg);
-  background: #12161d;
+  /* No wrapping panel — just the sample rows. Each row carries its own opaque
+     surface, so they stand on the stage directly with no enclosing background. */
 }
 .demo-mono-hue-alert .al {
   display: flex;
@@ -969,28 +968,28 @@
   font-size: var(--step--1);
   line-height: 1.35;
 }
-/* slop: one hue, three opacities */
+/* slop: one hue, three opacities. Opaque values (the old translucent tints
+   flattened over the former #12161d panel) so each row is self-contained now
+   that the enclosing panel is gone. */
 .demo-mono-hue-alert .slop .err {
   color: #f2686c;
-  border: 1px solid rgba(229, 72, 77, 0.5);
-  background: rgba(229, 72, 77, 0.12);
+  border: 1px solid #7c2f35;
+  background: #2b1c23;
 }
 .demo-mono-hue-alert .slop .warn {
   color: #e6bd52;
-  border: 1px solid rgba(212, 160, 23, 0.5);
-  background: rgba(212, 160, 23, 0.12);
+  border: 1px solid #735b1a;
+  background: #29271c;
 }
 .demo-mono-hue-alert .slop .ok {
   color: #55c789;
-  border: 1px solid rgba(41, 163, 90, 0.5);
-  background: rgba(41, 163, 90, 0.12);
+  border: 1px solid #1e5d3c;
+  background: #152724;
 }
-/* clean: Linear's real dark surfaces — panel = #0f1010, each row raised to
-   #191a1c with a #212224 ring (measured off the app). The state is carried by a
-   bold neutral label, colour reduced to one small muted dot. */
-.demo-mono-hue-alert .alerts.clean {
-  background: #0f1010;
-}
+/* clean: Linear's real dark surfaces — each row is #191a1c with a #212224 ring
+   (measured off the app), standing on the stage with no enclosing panel. The
+   state is carried by a bold neutral label, colour reduced to one small muted
+   dot. */
 .demo-mono-hue-alert .clean .al {
   color: #d4d4d6;
   border: 1px solid #212224;
