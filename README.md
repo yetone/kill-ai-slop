@@ -47,6 +47,16 @@ shared with the skill).
 
 ## The skill
 
+### Universal agent installer
+
+Run the following command and follow the prompt to install it to your favorite coding agents:
+
+```
+npx skills add yetone/kill-ai-slop
+```
+
+### Manual installation
+
 Install it without touching a single file: paste this to your coding agent (Claude
 Code, Cursor, etc.) and it fetches the skill and drops it into its own skills
 directory for you.
