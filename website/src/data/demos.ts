@@ -455,6 +455,47 @@ export const demos: Record<string, { before: string; after: string }> = {
       </div>`,
   },
 
+  /* A usage panel, same three facts twice. before: title, rows, and meta all
+     within a pixel of each other, hierarchy left to gray. after: someone
+     decided what matters — one number big, the rest demoted. */
+  "flat-type-hierarchy": {
+    before: `<div class="fth slop">
+        <p class="a">Usage this month</p>
+        <p class="b">API calls: 48,210 (+12% vs May)</p>
+        <p class="b">Bandwidth: 1.9 TB of 4 TB used</p>
+        <p class="b">Next invoice: $86 on Aug 1</p>
+      </div>`,
+    after: `<div class="fth clean">
+        <p class="lbl">API calls this month</p>
+        <p class="num">48,210</p>
+        <p class="meta">+12% vs May · 1.9 TB bandwidth · next invoice $86 on Aug 1</p>
+      </div>`,
+  },
+
+  /* A settings panel, same rows twice. before: one grid gap for everything, so
+     "Danger zone" floats exactly as close to the previous group's email row as
+     to its own row. after: headings hug their rows; groups pushed apart. */
+  "monotone-spacing": {
+    before: `<div class="msp slop">
+        <p class="h">Profile</p>
+        <p class="r">Name — Sasha Ito</p>
+        <p class="r">Email — sasha@relay.dev</p>
+        <p class="h">Danger zone</p>
+        <p class="r">Delete workspace — removes all data</p>
+      </div>`,
+    after: `<div class="msp clean">
+        <div class="grp">
+          <p class="h">Profile</p>
+          <p class="r">Name — Sasha Ito</p>
+          <p class="r">Email — sasha@relay.dev</p>
+        </div>
+        <div class="grp">
+          <p class="h">Danger zone</p>
+          <p class="r">Delete workspace — removes all data</p>
+        </div>
+      </div>`,
+  },
+
   /* Font choices shown as the tokens that encode them: the stock pairing vs a
      stack with a reason attached (this site's own choice — yours may differ). */
   "overused-font": {

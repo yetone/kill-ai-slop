@@ -1492,7 +1492,83 @@
   font-weight: 560;
 }
 
-/* 29 Inter everywhere (evolved) ------------------------------------------------
+/* 12 flat type hierarchy -------------------------------------------------------
+   before: every size within a pixel of the next, hierarchy left to gray.
+   after: one decided scale — label small, the number that matters big. */
+.demo-flat-type-hierarchy .fth {
+  width: 100%;
+  max-width: 20rem;
+  margin-inline: auto;
+  text-align: left;
+  display: grid;
+  gap: 0.55rem;
+}
+.demo-flat-type-hierarchy .fth p {
+  margin: 0;
+}
+.demo-flat-type-hierarchy .slop .a {
+  font-size: 0.95rem;
+  font-weight: 620;
+  color: var(--ink);
+}
+.demo-flat-type-hierarchy .slop .b {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--ink-2);
+}
+.demo-flat-type-hierarchy .clean .lbl {
+  font-size: var(--step--1);
+  color: var(--ink-2);
+}
+.demo-flat-type-hierarchy .clean .num {
+  font-size: var(--step-4);
+  font-weight: 640;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--ink);
+}
+.demo-flat-type-hierarchy .clean .meta {
+  font-size: var(--step--1);
+  color: var(--ink-3);
+}
+
+/* 30 one gap everywhere ---------------------------------------------------------
+   before: a single grid gap, so "Danger zone" sits exactly as close to the
+   previous group's last row as to its own. after: headings hug their rows,
+   groups pushed apart — proximity carries the structure. */
+.demo-monotone-spacing .msp {
+  width: 100%;
+  max-width: 20rem;
+  margin-inline: auto;
+  text-align: left;
+}
+.demo-monotone-spacing .msp p {
+  margin: 0;
+}
+.demo-monotone-spacing .h {
+  font-size: var(--step-0);
+  font-weight: 640;
+  color: var(--ink);
+}
+.demo-monotone-spacing .r {
+  font-size: var(--step--1);
+  color: var(--ink-2);
+}
+.demo-monotone-spacing .slop {
+  display: grid;
+  gap: 0.85rem;
+}
+.demo-monotone-spacing .clean .grp + .grp {
+  margin-top: 2rem;
+}
+.demo-monotone-spacing .clean .h {
+  margin-bottom: 0.35rem;
+}
+.demo-monotone-spacing .clean .r + .r {
+  margin-top: 0.3rem;
+}
+
+/* 31 Inter everywhere (evolved) ------------------------------------------------
    Shown as the tokens that encode the choice, not a specimen — loading Space
    Grotesk and Inter just to exhibit them would hand the tell a webfont request.
    Mono is fine here: this is actual code. */

@@ -121,6 +121,7 @@ const rawEntries: Omit<Entry, "n">[] = [
       "amber-50 / stone-100 / orange-400",
       "bg-[#fdf6ec] text-amber-900",
       "border-amber-200",
+      "text-gray-500 on a tinted surface (gray never toned to the bg)",
     ],
     demo: "warm-cozy-palette",
   },
@@ -181,7 +182,7 @@ const rawEntries: Omit<Entry, "n">[] = [
       zh: "选一个实心背景色，从头用到尾。表面的层次用一条细边框加克制的阴影，别用渐变。真要加光晕，就让它指向某个东西，而不是把背后所有空白都填满。",
       en: "Pick one flat background and hold it. Build depth on surfaces with a hairline and a restrained shadow, not a gradient. If a glow has to exist, let it point at something instead of filling the void behind everything.",
     },
-    detect: ["radial-gradient page background", "dark navy + top spotlight glow", "linear-gradient on card/surface fill", "‘premium’ ambient glow behind everything", "gradient where a flat bg color would do"],
+    detect: ["radial-gradient page background", "dark navy + top spotlight glow", "linear-gradient on card/surface fill", "‘premium’ ambient glow behind everything", "gradient where a flat bg color would do", "repeating-linear-gradient stripes as decoration", "colored box-shadow glows as dark-mode accents"],
     demo: "atmosphere-gradient",
   },
 
@@ -212,18 +213,18 @@ const rawEntries: Omit<Entry, "n">[] = [
     group: "type",
     title: { zh: "该用无衬线的地方用衬线", en: "Serif where sans belongs" },
     what: {
-      zh: "给开发者工具 / SaaS 落地页正文用 Playfair、Lora 这类展示衬线字体。",
-      en: "A dev tool or SaaS page dressed in Playfair / Lora display serif for body copy.",
+      zh: "给开发者工具 / SaaS 落地页用 Playfair、Lora 这类展示衬线：要么拿来排正文，要么整句斜体衬线的巨型 hero 标题。",
+      en: "A dev tool or SaaS page dressed in Playfair / Lora display serif — as body copy, or as an oversized italic-serif hero headline.",
     },
     why: {
-      zh: "模型把「高级」等同于「衬线」。但衬线在小字号、信息密集的界面里，既难读又跑题，就像给终端穿上了燕尾服。",
-      en: "The model equates ‘premium’ with ‘serif’. Display serifs are hard to read at UI sizes and tonally off — a tuxedo on a terminal.",
+      zh: "模型把「高级」等同于「衬线」。但衬线在小字号、信息密集的界面里，既难读又跑题，就像给终端穿上了燕尾服。斜体衬线 hero 单看像品味，如今已是 AI 创业公司落地页的统一制服。",
+      en: "The model equates ‘premium’ with ‘serif’. Display serifs are hard to read at UI sizes and tonally off — a tuxedo on a terminal. The italic-serif hero reads as taste in isolation; by now it's the universal AI-startup landing page uniform.",
     },
     fix: {
       zh: "界面正文用一款你选定的、好读的无衬线字体。衬线字体只在真的想要那种嗓音时、且是正文衬线时才用。",
       en: "One legible sans you actually chose for UI text. Reach for serif only when you want that voice — and use a text serif, not a display one.",
     },
-    detect: ["font-family: 'Playfair Display'", "Lora / Cormorant on body", "serif on a dashboard"],
+    detect: ["font-family: 'Playfair Display'", "Lora / Cormorant on body", "serif on a dashboard", "oversized italic display-serif hero"],
     demo: "serif-body-misuse",
   },
   {
@@ -283,8 +284,28 @@ const rawEntries: Omit<Entry, "n">[] = [
       zh: "把最重要的那件事压成几个词，让它大；其余放回正常字号的副标题里说清楚。字距只收到字体本身设计允许的范围。",
       en: "Compress the one thing into a few words and let those be big; say the rest in a normal-size subline. Tighten tracking only as far as the face was designed to go.",
     },
-    detect: ["text-5xl md:text-7xl on a full sentence", "font-extrabold tracking-tight hero", "display headline wrapping to 3+ lines"],
+    detect: ["text-5xl md:text-7xl on a full sentence", "font-extrabold tracking-tight hero", "display headline wrapping to 3+ lines", "letter-spacing crushed past the face (−0.05em and tighter)"],
     demo: "oversized-hero-headline",
+  },
+  {
+    id: "flat-type-hierarchy",
+    tier: 1,
+    group: "type",
+    title: { zh: "没有层级的字号", en: "The flat type hierarchy" },
+    what: {
+      zh: "整个界面的字号挤在 14 到 18px 之间：标题只比正文大一点点，标签只比正文小一点点，层级全靠灰色的深浅硬撑。",
+      en: "Every size on the page crammed between 14 and 18px: headings barely bigger than body, labels barely smaller, hierarchy left entirely to shades of gray.",
+    },
+    why: {
+      zh: "它是巨型标题的反面，却是同一种缺席：没人决定什么最重要。模型求稳——标题 text-lg，其余一律 text-sm——于是读者分不清页面上最重要的那件事和脚注。真正的字号刻度级差要够大（1.25 倍以上）；胆怯的字号把活儿全推给灰色文字，整页读起来像一团雾。",
+      en: "It's the opposite failure of the display-size sentence, and the same absence: nobody decided what matters most. The model plays it safe — text-lg for the heading, text-sm for everything else — so a reader can't tell the page's one important thing from its footnotes. A real scale has contrast between steps (1.25× and up); timid sizing pushes the work onto shades of gray, and the whole page reads as fog.",
+    },
+    fix: {
+      zh: "选一套级差明显、层级少的字号刻度：最重要的东西给一个配得上它的字号，正文就是正文。两个字号只差一两像素，就合并成一个。",
+      en: "Pick a scale with few steps and real contrast between them: give the most important thing a size that says so, and let body be body. If two sizes are within a pixel or two, merge them.",
+    },
+    detect: ["h1/h2 set at text-base / text-lg", "whole UI between 14 and 18px", "hierarchy carried by gray shades, not size", "scale steps under 1.25×"],
+    demo: "flat-type-hierarchy",
   },
 
   // ── Copy ─────────────────────────────────────────────────────────────────
@@ -325,7 +346,7 @@ const rawEntries: Omit<Entry, "n">[] = [
       zh: "写具体的东西。用真实的数字、名词、后果。一个人会怎么跟另一个人解释，就怎么写。",
       en: "Write something specific: real numbers, nouns, consequences. Say it the way one person explains it to another.",
     },
-    detect: ["“not just … it's …”", "“Say goodbye to …”", "three-word triads", "em-dash triplets"],
+    detect: ["“not just … it's …”", "“Say goodbye to …”", "three-word triads", "em-dash triplets", "dismissing things as ‘X theater’"],
     demo: "ai-copy-tics",
   },
   {
@@ -387,7 +408,7 @@ const rawEntries: Omit<Entry, "n">[] = [
       zh: "列表就该是列表：靠对齐、间距和层级来呈现。旁注是稀缺资源，一页最多一两个，而且只在确实需要时才用。",
       en: "Let a list be a list — carried by alignment, spacing, and hierarchy. A callout is scarce: one or two a page, and only when it's genuinely an aside.",
     },
-    detect: ["border-l-4 rounded-lg bg-*-50 on list items", "every row/card wearing a left accent bar", "admonition styling on plain lists"],
+    detect: ["border-l-4 rounded-lg bg-*-50 on list items", "every row/card wearing a left accent bar", "admonition styling on plain lists", "thick accent ring (border-2) around a rounded card"],
     demo: "left-border-callout",
   },
   {
@@ -407,7 +428,7 @@ const rawEntries: Omit<Entry, "n">[] = [
       zh: "图标要么承载信息，要么删掉。宁可用清楚的标题和一句话，也不要一排装饰图标。",
       en: "An icon should carry meaning or go. A clear label and one sentence beat a row of decorative glyphs.",
     },
-    detect: ["grid of rounded-xl bg-*-100 icon chips", "lucide/heroicons one-per-feature", "icon square + h3 + one line ×6"],
+    detect: ["grid of rounded-xl bg-*-100 icon chips", "lucide/heroicons one-per-feature", "icon square + h3 + one line ×6", "giant decorative line icon (w-24 h-24) as filler"],
     demo: "pastel-icon-tiles",
   },
   {
@@ -453,6 +474,7 @@ const rawEntries: Omit<Entry, "n">[] = [
       "filter: drop-shadow(0 0 60px …)",
       "big-blur, low-opacity shadow as ‘depth’",
       "shadow larger than the element casting it",
+      "hairline border + wide soft shadow on one card (pick one)",
     ],
     demo: "oversized-shadow",
   },
@@ -639,6 +661,26 @@ const rawEntries: Omit<Entry, "n">[] = [
     },
     detect: ["3+ nested rounded/bordered boxes", "<Card> wrapping <Card>", "border inside border inside border"],
     demo: "nested-cards",
+  },
+  {
+    id: "monotone-spacing",
+    tier: 1,
+    group: "layout",
+    title: { zh: "间距一个值用到底", en: "One gap everywhere" },
+    what: {
+      zh: "gap-4、p-4、space-y-4——同一个间距值盖满整个页面：标题和它的正文之间的距离，和两个不相干区块之间的距离，一模一样。",
+      en: "gap-4, p-4, space-y-4 — one spacing value stamped across the page: the distance between a heading and its own body is the same as the distance between two unrelated sections.",
+    },
+    why: {
+      zh: "间距是版式表达『什么和什么是一伙』的方式：组内紧，组间松。一个值用到底，等于宣布什么都不属于什么——亲密度不再携带信息，眼睛只能逐行读字去找结构。这是间距版的同一种缺席：分组需要先决定什么相关，而模型没有决定。",
+      en: "Spacing is how a layout says what belongs together: tight inside a group, generous between groups. One value everywhere announces that nothing belongs to anything — proximity stops carrying information, and the eye has to read every line to find the structure. It's the spacing form of the same absence: grouping requires deciding what's related, and the model didn't.",
+    },
+    fix: {
+      zh: "按关系给间距，不是按 token：相关的拉近（标题贴着它的正文），不相关的推远。用一套有真实跳跃的小刻度（4 / 8 / 16 / 32 / 64），而且故意用得不均匀。",
+      en: "Space by relationship, not by token: pull related lines close (a heading sits near its body), push unrelated groups apart. A small scale with real jumps (4 / 8 / 16 / 32 / 64), used unevenly on purpose.",
+    },
+    detect: ["gap-4 / space-y-4 / p-4 everywhere", "heading equidistant from its body and the previous section", "one spacing token, no scale"],
+    demo: "monotone-spacing",
   },
 
   // ── Evolved slop ─────────────────────────────────────────────────────────

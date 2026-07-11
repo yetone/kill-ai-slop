@@ -1,6 +1,6 @@
 # The AI-slop taxonomy
 
-30 tells, in two tiers. **Classic** = widely recognised. **Evolved** = newer
+32 tells, in two tiers. **Classic** = widely recognised. **Evolved** = newer
 defaults that already read as templated. For each: what it is, why it reads as
 machine-made, and the fix. Detection patterns live in `detection.md`; code
 patches in `fixes.md`.
@@ -49,7 +49,9 @@ neutral surface.
 top and cards whose surface is itself a gradient, lighter above and darker
 below: the default "premium dark mode." The glow and surface gradients carry no
 information; it's the move a model makes to look premium in the dark, the same
-midnight blue with a spotlight behind a thousand AI pages.
+midnight blue with a spotlight behind a thousand AI pages. Same family:
+repeating-gradient stripes as surface decoration, and colored box-shadow glows
+used as dark-mode accents.
 *Fix:* pick one flat background and hold it; build surface depth with a hairline
 and a restrained shadow. If a glow must exist, let it point at something.
 
@@ -61,12 +63,15 @@ the most viral AI headline tic.
 *Fix:* emphasise with weight, position, or a line break; keep one voice, and if
 you truly need italic use the same family's italic.
 
-**08 · Serif where sans belongs** — Playfair/Lora/Cormorant display serif as
-body/UI text on a dev tool or SaaS. The model equates "premium" with "serif";
-display serifs are hard to read at UI sizes and tonally off, a tuxedo on a
-terminal.
+**08 · Serif where sans belongs** — Playfair/Lora/Cormorant display serif on a
+dev tool or SaaS, as body/UI text or as an oversized italic-serif hero
+headline. The model equates "premium" with "serif"; display serifs are hard to
+read at UI sizes and tonally off, a tuxedo on a terminal. The italic-serif hero
+reads as taste in isolation — by now it's the universal AI-startup landing
+page uniform.
 *Fix:* one legible sans you chose; serif only when you want that voice, and a
-text serif not a display one.
+text serif not a display one. Set the hero roman, or use a non-serif display
+face (a genuinely editorial product may keep it — judge by context).
 
 **09 · Decorative strikes & highlights** — striking out, underlining, or
 swiping a highlighter over a word, not to delete or annotate but as decorative
@@ -96,20 +101,31 @@ sentence at display size until this entry forced the fix.)
 rest in a normal-size subline. Tighten tracking only as far as the face was
 designed to go.
 
+**12 · The flat type hierarchy** — every size on the page crammed between 14
+and 18px: headings barely bigger than body, labels barely smaller, hierarchy
+left entirely to shades of gray. The opposite failure of the display-size
+sentence, and the same absence: nobody decided what matters most. The model
+plays it safe (`text-lg` heading, `text-sm` everything else), so a reader
+can't tell the page's one important thing from its footnotes.
+*Fix:* a scale with few steps and real contrast between them (1.25× and up);
+give the most important thing a size that says so. If two sizes are within a
+pixel or two, merge them.
+
 ## Copy
 
-**12 · Highlighted keywords** — coloring or bolding scattered words
+**13 · Highlighted keywords** — coloring or bolding scattered words
 mid-paragraph, like a highlighter ran over it. When every word is emphasised,
 none is; it's the signature of not knowing the point.
 *Fix:* let sentence structure carry emphasis — at most one accent per paragraph.
 
-**13 · The AI copywriting voice** — "It's not just X — it's Y", "Say goodbye to
-X", punchy three-word triads, an em-dash habit. A rhythmic fingerprint:
-symmetrical, one notch too excited, specifics-free.
+**14 · The AI copywriting voice** — "It's not just X — it's Y", "Say goodbye to
+X", punchy three-word triads, an em-dash habit, dismissing things as "X
+theater." A rhythmic fingerprint: symmetrical, one notch too excited,
+specifics-free.
 *Fix:* write something specific — real numbers, nouns, consequences; say it the
 way one person explains it to another.
 
-**14 · Emoji everywhere** — an emoji on every heading, button, and bullet: 🚀
+**15 · Emoji everywhere** — an emoji on every heading, button, and bullet: 🚀
 launch, ⚡ fast, 🔒 secure, 🎉 delight. Borrowed warmth standing in for tone
 that copy and design should carry; a glyph before every point is louder, not
 clearer.
@@ -118,7 +134,7 @@ carries information, like a real status.
 
 ## Components
 
-**15 · The glowing status dot** — a status indicator (online / ready / live)
+**16 · The glowing status dot** — a status indicator (online / ready / live)
 drawn as a solid dot in a pale halo, usually pulsing, almost always saturated
 green; at its most decorative, glued into a hero marketing pill, playing status
 for a tagline with no state behind it. A status is a tiny signal; the halo,
@@ -128,36 +144,41 @@ glowing gem is textbook overdesign.
 only when the state actually matters or changes — and if nothing is live behind
 it, no dot at all.
 
-**16 · Rounded card, colored left border** — a pale rounded box with a 4px
+**17 · Rounded card, colored left border** — a pale rounded box with a 4px
 colored bar down the left, wrapped around every list item, not just a "Tip/Note"
 but feature points and changelog rows. A docs admonition turned into universal
-decoration, so every row looks like an "important note" and none is.
+decoration, so every row looks like an "important note" and none is. Sibling
+move: a thick accent ring (`border-2` in a loud color) around a rounded card
+to make one tier "pop."
 *Fix:* let a list be a list — alignment, spacing, hierarchy. Callouts are
 scarce: one or two a page, only for a genuine aside.
 
-**17 · Rounded-square icon tiles** — every feature gets a rounded-square chip +
+**18 · Rounded-square icon tiles** — every feature gets a rounded-square chip +
 a line icon, tiled into a grid. Shortest path to "looks designed"; the icons
-rarely relate to the content, they just fill the grid.
+rarely relate to the content, they just fill the grid. Same reflex at another
+size: a giant decorative line icon (`w-24 h-24`) parked in a card as filler.
 *Fix:* an icon must carry meaning or go; a clear label + one sentence beats a
 row of glyphs.
 
-**18 · Max radius + glassmorphism** — everything a max-radius pill; every card a
+**19 · Max radius + glassmorphism** — everything a max-radius pill; every card a
 translucent `backdrop-blur` pane. A frozen slice of 2021 Dribbble; effect
 presets unrelated to what the product says.
 *Fix:* one radius, held site-wide (usually small); depth from solid surfaces and
 space, not blur.
 
-**19 · The oversized drop shadow** — a small card or icon casting a huge, soft
+**20 · The oversized drop shadow** — a small card or icon casting a huge, soft
 shadow that bleeds far past it on every side: big blur, low opacity, almost no
 offset. A shadow says how high a surface floats, and real light gives a tight
 contact shadow plus a soft ambient one with the blur tracking the height; this
 one tracks nothing. A big soft blur reads as "depth" in a thumbnail but maps to
-no real height — atmosphere standing in for elevation.
+no real height — atmosphere standing in for elevation. Variant: the "ghost
+card," a hairline border *plus* a wide diffuse shadow on the same card — two
+separators doing one job; commit to an edge or an elevation, not both.
 *Fix:* a small elevation scale, held: tight blur, small offset, low opacity,
 never a shadow bigger than the thing casting it. Often a hairline does the
 separating and no shadow is needed; keep it colorless — a tinted glow isn't depth.
 
-**20 · Corners that don't nest** — the same radius on every layer: a big-radius
+**21 · Corners that don't nest** — the same radius on every layer: a big-radius
 outer box with an inner box at the same big radius, so the corners don't sit
 concentrically and the inner arc fights the outer one. Nested corners have a
 rule (inner = outer − gap); AI UIs skip the math and stamp one radius token on
@@ -165,11 +186,11 @@ everything.
 *Fix:* compute the nested radius (inner = outer − padding), or don't round the
 inner element at all; keep a small, deliberate radius scale.
 
-**21 · Badge and pill spam** — "✨ New", "β Beta", "🔥 Popular" decorative pills
+**22 · Badge and pill spam** — "✨ New", "β Beta", "🔥 Popular" decorative pills
 everywhere. Manufacturing fake buzz; in bulk each stops meaning anything.
 *Fix:* a badge only for real status (a version, stock).
 
-**22 · AI-drawn SVG icons** — asking a model to "draw an icon" and shipping what
+**23 · AI-drawn SVG icons** — asking a model to "draw an icon" and shipping what
 comes back: a round blob with two dot eyes, a mascot of primitive shapes, a logo
 that's a rounded square with a face. Vector art the machine can't really draw,
 used as the product's mark; it looks like placeholder art that never got
@@ -178,7 +199,7 @@ replaced.
 with the best image model and refine it until it's crisp and on-brand. A crude
 SVG the model sketched, or a bare fallback letter, isn't a mark worth shipping.
 
-**23 · Icon in a tint of itself** — every icon wrapped in a rounded square
+**24 · Icon in a tint of itself** — every icon wrapped in a rounded square
 filled with a see-through tint of its own color: a blue icon on faint blue, a
 green one on faint green (`bg-{color}/10` behind `text-{color}`). A one-line
 reflex — pad, round, wash in 10% of the icon's hue — so the page becomes a grid
@@ -189,7 +210,7 @@ palette, not a tint of the icon it holds.
 
 ## Motion
 
-**24 · The springy hover** — every card, button, and image wearing
+**25 · The springy hover** — every card, button, and image wearing
 `hover:scale-105` and `transition-all`: touch it and it grows, lifts, and
 bounces on an elastic ease. Motion is information — what changed, where a thing
 went, what's interactive — and scaling a card on hover says nothing; the card
@@ -202,7 +223,7 @@ not growth; save spring physics for things that genuinely move through space.
 
 ## Layout
 
-**25 · The all-caps card grid** — an ALL-CAPS label plus a number or icon,
+**26 · The all-caps card grid** — an ALL-CAPS label plus a number or icon,
 copied into rows of interchangeable cards: feature grids and dashboard
 stat-cards alike. It fakes structure while stuffing unrelated things into
 identical boxes; the ALL-CAPS micro-label is the default costume for "looks
@@ -210,7 +231,7 @@ designed."
 *Fix:* decide the single most important thing and show it fully; if you must
 list, use real hierarchy and contrast, not a grid of equal-weight cards.
 
-**26 · The invented stat row** — three big numbers in a row: 10k+ developers,
+**27 · The invented stat row** — three big numbers in a row: 10k+ developers,
 99.9% uptime, 24/7 support, on a product that launched yesterday. Social proof
 turned into a layout, filled whether or not the proof exists; the numbers are
 set dressing (a round 10k+, two nines, a 24/7), not measurements. Real numbers
@@ -219,7 +240,7 @@ are odd and specific — and one invented figure poisons every true one beside i
 real, checkable figure beats three round ones. No numbers yet? Say what the
 product does.
 
-**27 · The 01 / 02 / 03 section markers** — a giant faint ordinal beside every
+**28 · The 01 / 02 / 03 section markers** — a giant faint ordinal beside every
 marketing section (01 Collaborate, 02 Innovate, 03 Scale) as if they were steps
 in a sequence. Numbering is a claim that these things happen in this order;
 feature sections have no order, so the numerals are costume borrowed from
@@ -228,7 +249,7 @@ structured without deciding on a structure.
 *Fix:* number what's genuinely ordered — install steps, a changelog, a
 catalogue — and delete the ornamental ordinals everywhere else.
 
-**28 · Cards inside cards** — a bordered, rounded, shadowed card holding
+**29 · Cards inside cards** — a bordered, rounded, shadowed card holding
 another card holding another, every layer with its own surface and padding. A
 card claims its content is one self-contained thing; nested three deep, nothing
 is contained and the padding stacks until content is a sliver. The model boxes
@@ -238,9 +259,19 @@ alignment requires deciding what belongs together.
 hairline dividers. A child earns its own surface only when it's genuinely a
 separate object (a preview, an embed).
 
+**30 · One gap everywhere** — `gap-4`, `p-4`, `space-y-4`: one spacing value
+stamped across the page, so a heading sits exactly as far from its own body as
+from the previous, unrelated section. Spacing is how a layout says what belongs
+together — tight inside a group, generous between groups. One value everywhere
+announces that nothing belongs to anything; proximity stops carrying
+information, and the eye has to read every line to find the structure.
+*Fix:* space by relationship, not by token: pull related lines close, push
+unrelated groups apart. A small scale with real jumps (4/8/16/32/64), used
+unevenly on purpose.
+
 ## Evolved slop
 
-**29 · Inter everywhere** — Space Grotesk for display, Inter for body; or
+**31 · Inter everywhere** — Space Grotesk for display, Inter for body; or
 Geist, Manrope, Plus Jakarta Sans. Every AI-built page draws from the same five
 faces. They're good typefaces — that's the trap: the model reaches for them
 because everyone did, and every product wearing them dissolves into the same
@@ -252,7 +283,7 @@ in each, be able to say why this one. Landing back on Inter after that is a
 choice; starting there isn't. (A system stack, picked for a reason, is a choice
 too.)
 
-**30 · The "tasteful terminal"** — mono everywhere, a near-black background, one
+**32 · The "tasteful terminal"** — mono everywhere, a near-black background, one
 warm accent, ASCII art: the look of "an AI that read one Vercel blog post." It
 isn't ugly, that's the trap; it's polished enough to have become the new
 default, dodging the design decision exactly like the indigo gradient did, in
