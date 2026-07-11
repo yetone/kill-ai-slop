@@ -684,19 +684,23 @@
   place-items: center;
   width: 100%;
 }
-/* before: dark AI-hero pill, haloed pulsing dot */
+/* before: the hero marketing pill, haloed pulsing dot. Surfaces come from the
+   theme tokens so the tell renders in BOTH modes — a floating white pill on
+   light paper, a glassy dark pill on the dark stack — same fake ‘live’ dot
+   either way. The drop shadow is part of the tell: marketing pills float. */
 .demo-status-dot-glow .slop .pill {
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
   padding: 0.5rem 1.05rem;
   border-radius: 999px;
-  background: #171b24;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: var(--card);
+  border: 1px solid var(--rule);
+  box-shadow: 0 6px 16px -8px rgba(15, 18, 24, 0.35);
   font-size: 0.85rem;
   font-weight: 560;
   letter-spacing: -0.005em;
-  color: #e8ecf4;
+  color: var(--ink);
   white-space: nowrap;
 }
 .demo-status-dot-glow .slop .live {
