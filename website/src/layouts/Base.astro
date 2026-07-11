@@ -6,10 +6,12 @@ import Footer from "../components/Footer.astro";
 interface Props {
   title?: string;
   description?: string;
+  keywords?: string;
 }
 const {
-  title = "Kill AI Slop — 杀死 AI slop",
-  description = "A field guide to the visual tics of vibe-coded products, and how to strip them out. 一份识别并清除 Vibe Coding 产品里 AI slop 的实战手册。",
+  title = "Kill AI Slop — Clean & Remove AI Slop | 杀死 AI slop",
+  description = "Clean AI slop out of your product: a field guide to the visual tics of vibe-coded UIs — and how to detect and remove the AI-generated look. 一份识别并清除 Vibe Coding 产品里 AI slop 的实战手册。",
+  keywords = "AI slop, kill AI slop, clean AI slop, remove AI slop, de-slop, AI slop detector, AI slop remover, AI-generated design, AI look, vibe coding, vibe-coded, generic AI design, make it not look AI-generated, 杀死 AI slop, 清除 AI slop, AI 味, AI 感设计",
 } = Astro.props;
 
 // Absolute URLs for share metadata. Astro.site is https://killaislop.com.
@@ -26,6 +28,7 @@ const ogAlt =
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
     <meta name="color-scheme" content="light dark" />
     <link rel="canonical" href={canonical} />
 
