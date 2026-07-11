@@ -921,8 +921,9 @@
 
 /* ── before: gradients as atmosphere ──────────────────────────────────────
    Cool ambient glow anchored up top over a near-black blue base; a card whose
-   surface is a top-lighter gradient with a hairline highlight; gradient tiles,
-   bars, segment pill, and a glowing gradient button. */
+   surface is a top-lighter gradient with a hairline highlight; stat tiles each
+   washed in a tint of their own accent; gradient bars, segment pill, and a
+   glowing gradient button. */
 .demo-atmosphere-gradient .page.slop {
   background:
     radial-gradient(115% 80% at 50% -12%, rgba(96, 118, 196, 0.42) 0%, transparent 52%),
@@ -951,10 +952,21 @@
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset, 0 2px 8px rgba(120, 150, 220, 0.35);
 }
 .demo-atmosphere-gradient .slop .tile {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.025));
   border: 1px solid rgba(255, 255, 255, 0.09);
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.07) inset;
 }
+/* each tile washed in a tint of its own accent — green card gets a green
+   gradient, purple card a purple one */
+.demo-atmosphere-gradient .slop .tile:nth-child(1) {
+  background: linear-gradient(135deg, rgba(74, 222, 158, 0.24) 0%, rgba(18, 48, 40, 0.5) 55%, rgba(10, 22, 26, 0.35) 100%);
+  border-color: rgba(110, 231, 183, 0.26);
+}
+.demo-atmosphere-gradient .slop .tile:nth-child(1) .tl { color: rgba(134, 239, 172, 0.85); }
+.demo-atmosphere-gradient .slop .tile:nth-child(2) {
+  background: linear-gradient(135deg, rgba(167, 139, 250, 0.24) 0%, rgba(44, 32, 70, 0.5) 55%, rgba(20, 15, 36, 0.35) 100%);
+  border-color: rgba(196, 181, 253, 0.26);
+}
+.demo-atmosphere-gradient .slop .tile:nth-child(2) .tl { color: rgba(196, 181, 253, 0.85); }
 .demo-atmosphere-gradient .slop .tl { color: rgba(200, 214, 240, 0.62); }
 .demo-atmosphere-gradient .slop .tv { color: #f2f5fc; }
 .demo-atmosphere-gradient .slop .delta { color: #7ee0b0; }

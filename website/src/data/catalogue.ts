@@ -171,8 +171,8 @@ const rawEntries: Omit<Entry, "n">[] = [
     group: "color",
     title: { en: "Gradients as atmosphere", zh: "拿渐变当氛围" },
     what: {
-      zh: "近黑的深蓝页面，顶部一团柔光，卡片背景也是渐变，上浅下深。这是「高级暗色模式」的出厂设定，每个表面都在营造气氛，没有一处是实心色。",
-      en: "A near-black blue page with a soft glow up top, and cards whose surface is itself a gradient — lighter at the top, darker below. The default ‘premium dark mode’: every surface is mood, none is a flat color.",
+      zh: "近黑的深蓝页面，顶部一团柔光，卡片背景也是渐变——要么上浅下深，要么每张卡各自罩一层自己主题色的水洗：绿卡衬绿渐变，紫卡衬紫渐变。这是「高级暗色模式」的出厂设定，每个表面都在营造气氛，没有一处是实心色。",
+      en: "A near-black blue page with a soft glow up top, and cards whose surface is itself a gradient — lighter at the top and darker below, or each card washed in a tint of its own accent: the green card gets a green gradient, the purple card a purple one. The default ‘premium dark mode’: every surface is mood, none is a flat color.",
     },
     why: {
       zh: "光晕和表面渐变都不带信息，也回答不了任何设计问题。这是模型让暗色界面显得高级时的固定动作，和一千个 AI 落地页背后那团带聚光灯的午夜蓝一样。一个你选定的实心背景，比一层想撑气氛的渐变更有底气。",
@@ -182,7 +182,7 @@ const rawEntries: Omit<Entry, "n">[] = [
       zh: "选一个实心背景色，从头用到尾。表面的层次用一条细边框加克制的阴影，别用渐变。真要加光晕，就让它指向某个东西，而不是把背后所有空白都填满。",
       en: "Pick one flat background and hold it. Build depth on surfaces with a hairline and a restrained shadow, not a gradient. If a glow has to exist, let it point at something instead of filling the void behind everything.",
     },
-    detect: ["radial-gradient page background", "dark navy + top spotlight glow", "linear-gradient on card/surface fill", "‘premium’ ambient glow behind everything", "gradient where a flat bg color would do", "repeating-linear-gradient stripes as decoration", "colored box-shadow glows as dark-mode accents"],
+    detect: ["radial-gradient page background", "dark navy + top spotlight glow", "linear-gradient on card/surface fill", "‘premium’ ambient glow behind everything", "gradient where a flat bg color would do", "each card washed in a tint of its own accent (green card → green gradient, purple → purple)", "repeating-linear-gradient stripes as decoration", "colored box-shadow glows as dark-mode accents"],
     demo: "atmosphere-gradient",
   },
 

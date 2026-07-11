@@ -69,12 +69,15 @@ rg -n -i 'radial-gradient|bg-\[radial-gradient'
 rg -n -i 'linear-gradient[^;]*(to bottom|180deg|to top)'  # top-lighter surface fill
 rg -n -i 'bg-gradient-to-(b|t)\b[\s\S]{0,40}from-'
 rg -n -i 'repeating-(linear|radial)-gradient'
+rg -n -i 'bg-gradient-to-(br|tr|bl|tl)\b[\s\S]{0,40}from-(emerald|green|teal|cyan|purple|violet|fuchsia)-\d+/(5|10|15|20|25)'  # per-card accent-hue wash
 rg -n -i 'box-shadow:[^;]*(#(6366f1|8b5cf6|a855f7|22d3ee|06b6d4)|rgba?\(139|rgba?\(168)'  # colored glow accents
 ```
 *Confirm:* a page-wide radial glow behind everything, or card surfaces filled
-with a top-to-bottom gradient where a flat colour would do; repeating-gradient
-stripes as surface decoration; colored box-shadow glows as dark-mode accents.
-A gradient that points at something specific is a choice, not slop.
+with a top-to-bottom gradient where a flat colour would do; bento cards each
+washed in a tint of their own accent (green card → green gradient, purple →
+purple); repeating-gradient stripes as surface decoration; colored box-shadow
+glows as dark-mode accents. A gradient that points at something specific is a
+choice, not slop.
 
 ### 07 Serif-italic on one word
 Hard to grep purely; look for a serif font family or `<em>/italic` applied

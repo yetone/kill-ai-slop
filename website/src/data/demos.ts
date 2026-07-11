@@ -247,7 +247,8 @@ export const demos: Record<string, { before: string; after: string }> = {
   /* An original "premium dark SaaS" overview panel — the atmosphere-gradient
      tell applied to our own invented UI (not a clone of any real product): a
      glowing near-black page holding a glass card whose surface is a top-lighter
-     gradient, with gradient stat tiles, a gradient bar chart, a glassy segmented
+     gradient, with stat tiles each washed in a tint of its own accent (green
+     revenue tile, purple users tile), a gradient bar chart, a glassy segmented
      control, and a glowing gradient CTA. before wears the whole atmosphere;
      after keeps the identical layout but flattens every surface to Linear's real
      dark stack (flat page, flat card, hairline + tight shadow, one accent). */

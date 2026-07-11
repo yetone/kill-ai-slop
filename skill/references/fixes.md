@@ -63,7 +63,9 @@ Hold one flat background; build surface depth with a hairline, not a gradient.
 ```diff
 - <body class="bg-[radial-gradient(circle_at_top,#1e293b,#020617)]">
 -   <div class="rounded-2xl bg-gradient-to-b from-white/10 to-white/0 …">
+-   <div class="rounded-2xl bg-gradient-to-br from-emerald-400/15 to-transparent …">
 + <body class="bg-[--bg]">                 /* one flat colour, held */
++   <div class="rounded-[--radius] bg-[--card] border border-[--rule]">
 +   <div class="rounded-[--radius] bg-[--card] border border-[--rule]">
 ```
 If a glow must exist, let it point at one element instead of filling the void.

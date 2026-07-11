@@ -50,8 +50,9 @@ top and cards whose surface is itself a gradient, lighter above and darker
 below: the default "premium dark mode." The glow and surface gradients carry no
 information; it's the move a model makes to look premium in the dark, the same
 midnight blue with a spotlight behind a thousand AI pages. Same family:
-repeating-gradient stripes as surface decoration, and colored box-shadow glows
-used as dark-mode accents.
+bento cards each washed in a tint of their own accent — the green card gets a
+green gradient, the purple card a purple one — plus repeating-gradient stripes
+as surface decoration, and colored box-shadow glows used as dark-mode accents.
 *Fix:* pick one flat background and hold it; build surface depth with a hairline
 and a restrained shadow. If a glow must exist, let it point at something.
 
