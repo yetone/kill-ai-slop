@@ -99,10 +99,13 @@ carries information, like a real status.
 
 **13 · The glowing status dot** — a status indicator (online / ready / live)
 drawn as a solid dot in a pale halo, usually pulsing, almost always saturated
-green. A status is a tiny signal; the halo, pulse, and breathing glow carry no
-information. Inflating a binary state into a glowing gem is textbook overdesign.
+green; at its most decorative, glued into a hero marketing pill, playing status
+for a tagline with no state behind it. A status is a tiny signal; the halo,
+pulse, and breathing glow carry no information. Inflating a binary state into a
+glowing gem is textbook overdesign.
 *Fix:* a small, flat, single-color dot plus a word; no halo, no pulse. Colour
-only when the state actually matters or changes.
+only when the state actually matters or changes — and if nothing is live behind
+it, no dot at all.
 
 **14 · Rounded card, colored left border** — a pale rounded box with a 4px
 colored bar down the left, wrapped around every list item, not just a "Tip/Note"

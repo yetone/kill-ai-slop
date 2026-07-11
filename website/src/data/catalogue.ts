@@ -315,18 +315,18 @@ const rawEntries: Omit<Entry, "n">[] = [
     group: "component",
     title: { zh: "发光的状态圆点", en: "The glowing status dot" },
     what: {
-      zh: "表示状态（在线／就绪／直播）的圆点，画成实心圆加一圈浅色光晕，通常还一直呼吸或脉冲，几乎永远是饱和绿。",
-      en: "A status indicator (online / ready / live) drawn as a solid dot wrapped in a pale halo — usually pulsing, almost always saturated green.",
+      zh: "表示状态（在线／就绪／直播）的圆点，画成实心圆加一圈浅色光晕，通常还一直呼吸或脉冲，几乎永远是饱和绿。最装饰化的一种：直接嵌进首页营销胶囊里给口号「报状态」，背后根本没有任何状态。",
+      en: "A status indicator (online / ready / live) drawn as a solid dot wrapped in a pale halo — usually pulsing, almost always saturated green. At its most decorative, it's glued into a hero marketing pill, playing status for a tagline with no state behind it.",
     },
     why: {
       zh: "状态本身只是极小的信号，光晕、脉冲、呼吸这些全是纯装饰，不携带任何信息。每个 AI 产品都冲你闪着「● 就绪」。把一个二元状态放大成一颗发光宝石，就是典型的过度设计。",
       en: "A status is a tiny signal — the halo, the pulse, the breathing glow carry no information, they're pure decoration. Every AI product blinks ‘● Ready’ at you. Inflating a binary state into a glowing gem is textbook overdesign.",
     },
     fix: {
-      zh: "一个小小的单色圆点，配一句文字就够了。不要光晕，不要脉冲。只在状态确实重要、或确实会变化时才上色。",
-      en: "A small, flat, single-color dot plus a word is enough. No halo, no pulse. Use color only when the state actually matters or actually changes.",
+      zh: "一个小小的单色圆点，配一句文字就够了。不要光晕，不要脉冲。只在状态确实重要、或确实会变化时才上色；背后根本没有状态的话，连点都不要。",
+      en: "A small, flat, single-color dot plus a word is enough. No halo, no pulse. Use color only when the state actually matters or actually changes — and if nothing is live behind it, no dot at all.",
     },
-    detect: ["glowing / pulsing status dot", "pale halo ring around a solid dot", "animate-ping or box-shadow glow on a ‘live’ dot", "saturated-green ‘● Ready / Online’ indicator"],
+    detect: ["glowing / pulsing status dot", "pale halo ring around a solid dot", "animate-ping or box-shadow glow on a ‘live’ dot", "saturated-green ‘● Ready / Online’ indicator", "green ‘live’ dot in a hero pill / tagline with no state behind it"],
     demo: "status-dot-glow",
   },
   {

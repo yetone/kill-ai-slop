@@ -10,13 +10,11 @@
 
 export const demos: Record<string, { before: string; after: string }> = {
   "status-dot-glow": {
-    before: `<div class="status slop">
-        <span class="live"></span>
-        <span class="lbl">Online</span>
+    before: `<div class="scene slop">
+        <span class="pill"><i class="live"></i>Where modern teams plan work</span>
       </div>`,
-    after: `<div class="status clean">
-        <span class="dot"></span>
-        <span class="lbl">Online</span>
+    after: `<div class="scene clean">
+        <p class="tag">Where modern teams plan work</p>
       </div>`,
   },
 
