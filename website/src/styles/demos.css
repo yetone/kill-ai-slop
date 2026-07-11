@@ -152,13 +152,13 @@
   background: var(--card);
   border: 1px solid var(--rule);
 }
-.demo-warm-cozy-palette .neutral .dot {
-  display: inline-block;
-  width: 0.6rem;
-  height: 0.6rem;
-  border-radius: 50%;
-  background: #b0764a;
-  margin-bottom: 0.7rem;
+/* The entry's fix promises "a neutral base with ONE restrained warm accent" —
+   so the accent gets a real job (the primary action) instead of floating as an
+   orphaned dot above the heading. Deep caramel; white text clears ~7:1. */
+.demo-warm-cozy-palette .neutral .btn.warm {
+  background: #8a5428;
+  color: #fff;
+  box-shadow: var(--shadow-e1);
 }
 
 /* 03b default semantic palette ---------------------------------------------- */
@@ -180,10 +180,13 @@
 .demo-default-semantic-palette .sem-slop .warning { background: #fffbeb; color: #b45309; }
 .demo-default-semantic-palette .sem-slop .error { background: #fef2f2; color: #dc2626; }
 .demo-default-semantic-palette .sem-slop .new { background: #faf5ff; color: #7c3aed; }
-/* after: one coherent system — neutrals + two intentional semantic colors */
-/* The restrained system: one neutral chip style for every status — same faint
-   fill, same hairline, same ink. The semantic colour lives only in a small dot,
-   and only where it's a real signal. Loud rainbow of boxes → one calm set. */
+/* after: one neutral chip style for every status — same faint fill, same
+   hairline, same ink. Colour lives only in a small dot, and ONLY where the
+   state is a real signal: Info and New aren't states, so they get no dot at
+   all (two identical grey dots would just be indistinguishable). Where the dot
+   does exist it's genuinely saturated — Linear's own label dots are vivid
+   (red Bug / purple Design / green Performance); restraint means spending
+   colour rarely, not muddying it. */
 .demo-default-semantic-palette .sem-clean {
   gap: 0.5rem;
 }
@@ -202,12 +205,11 @@
   width: 0.46rem;
   height: 0.46rem;
   border-radius: 50%;
-  background: var(--ink-3);
   flex: none;
 }
-.demo-default-semantic-palette .sem-clean .d.warn { background: #b58a3f; }
-.demo-default-semantic-palette .sem-clean .d.ok { background: #5a9d7e; }
-.demo-default-semantic-palette .sem-clean .d.err { background: #c0605a; }
+.demo-default-semantic-palette .sem-clean .d.warn { background: #d7962c; }
+.demo-default-semantic-palette .sem-clean .d.ok { background: #359e6d; }
+.demo-default-semantic-palette .sem-clean .d.err { background: #d64f4a; }
 
 /* 04 serif emphasis --------------------------------------------------------- */
 .demo-serif-emphasis {
@@ -306,6 +308,11 @@
   border-radius: 3px;
   font-weight: 600;
 }
+/* after: at most one emphasis per paragraph — a decided bold, no paint */
+.demo-highlighted-keywords .para b {
+  font-weight: 640;
+  color: var(--ink);
+}
 
 /* 07 ai copy tics ----------------------------------------------------------- */
 .demo-ai-copy-tics .copyblock {
@@ -397,20 +404,28 @@
   border-color: #ec4899;
   color: #9d2463;
 }
-/* The fix: a list that's just a list. */
+/* The fix: a list that's just a list — but a DESIGNED list. The entry's own
+   words: "carried by alignment, spacing, and hierarchy". Rows separated by
+   hairlines, bold leads aligned, breathing room — so the clean side reads as
+   typographic intent, not as markup that lost its stylesheet. */
 .demo-left-border-callout .plainlist {
   list-style: none;
   padding: 0;
   margin: 0 auto;
   max-width: 25rem;
-  display: grid;
-  gap: 0.5rem;
   color: var(--ink);
   font-size: var(--step--1);
   line-height: 1.5;
 }
+.demo-left-border-callout .plainlist li {
+  padding: 0.6rem 0.1rem;
+}
+.demo-left-border-callout .plainlist li + li {
+  border-top: var(--hair) solid var(--rule-strong);
+}
 .demo-left-border-callout .plainlist b {
   color: var(--ink);
+  font-weight: 640;
 }
 
 /* 10 pastel icon tiles ------------------------------------------------------ */
@@ -441,20 +456,54 @@
   color: var(--ink-2);
   font-size: var(--step--1);
 }
-.demo-pastel-icon-tiles .plainfeat {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  max-width: 42ch;
-  margin-inline: 0 auto;
+/* after: the entry's fix — "a clear label and one sentence" — but composed the
+   way Linear composes its FIG feature row: three columns split by hairlines,
+   term over sentence. Structure without the decorative tiles. */
+.demo-pastel-icon-tiles .cleanfeat {
   display: grid;
-  gap: 0.55rem;
+  grid-template-columns: repeat(3, 1fr);
+  width: 100%;
+}
+.demo-pastel-icon-tiles .cf {
+  display: grid;
+  gap: 0.35rem;
+  align-content: start;
+  padding: 0.15rem 1rem;
+  text-align: left;
+}
+.demo-pastel-icon-tiles .cf:first-child {
+  padding-left: 0;
+}
+.demo-pastel-icon-tiles .cf:last-child {
+  padding-right: 0;
+}
+.demo-pastel-icon-tiles .cf + .cf {
+  border-left: var(--hair) solid var(--rule-strong);
+}
+.demo-pastel-icon-tiles .cf b {
+  font-size: var(--step-0);
+  font-weight: 640;
+  letter-spacing: -0.01em;
   color: var(--ink);
+}
+.demo-pastel-icon-tiles .cf span {
+  color: var(--ink-2);
+  font-size: var(--step--1);
   line-height: 1.5;
 }
 @media (max-width: 34rem) {
   .demo-pastel-icon-tiles .tiles {
     grid-template-columns: 1fr;
+  }
+  .demo-pastel-icon-tiles .cleanfeat {
+    grid-template-columns: 1fr;
+  }
+  .demo-pastel-icon-tiles .cf {
+    padding: 0.6rem 0;
+  }
+  .demo-pastel-icon-tiles .cf + .cf {
+    border-left: 0;
+    border-top: var(--hair) solid var(--rule-strong);
   }
 }
 
@@ -491,8 +540,13 @@
   font-weight: 600;
   cursor: pointer;
 }
+/* The clean context panel must stay visible against the stage (which is also
+   a recessed paper tone) — otherwise the slop side keeps its rich purple
+   backdrop while the clean card floats in unexplained void, and the comparison
+   is rigged against the fix. One paper step + a hairline keeps the context. */
 .demo-over-rounded-glass .flatbg {
-  background: var(--paper-2);
+  background: var(--paper);
+  border: var(--hair) solid var(--rule-strong);
   padding: 1.7rem;
   border-radius: var(--radius);
   width: 100%;
@@ -562,15 +616,20 @@
   max-width: 44ch;
   margin-inline: auto;
 }
+/* "Decide the single most important thing and show it fully" — shown fully
+   means shown with conviction: the one point earns display scale. A timid
+   step-2 lead loses the eye to six cards; the fix must out-design the grid. */
 .demo-feature-grid .lead {
-  font-size: var(--step-2);
+  font-size: var(--step-3);
   font-weight: 680;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.028em;
+  line-height: 1.12;
   margin: 0;
 }
 .demo-feature-grid .body {
   color: var(--ink-2);
-  margin: 0.5rem 0 0;
+  margin: 0.65rem 0 0;
+  max-width: 40ch;
   line-height: 1.55;
 }
 @media (max-width: 34rem) {
@@ -741,12 +800,22 @@
     opacity: 0;
   }
 }
-/* after: the same tagline, no fake status attached to it */
+/* after: the same tagline, no fake status attached — set as one confident
+   line at the site's standard specimen-headline size (step-2, the same scale
+   the other type demos use). Not display size: a five-word marketing slogan
+   hasn't earned display scale — blowing it up would just commit the
+   full-sentence-display-headline tell one entry over (a reader caught an
+   earlier draft doing exactly that at step-3/two lines). And not the original
+   0.85rem whisper either, which read as deleted design and lost the eye to
+   the pill. Between the two lies the honest size: a headline, not a poster. */
 .demo-status-dot-glow .clean .tag {
   margin: 0;
-  font-size: 0.85rem;
-  font-weight: 560;
-  letter-spacing: -0.005em;
+  font-size: var(--step-2);
+  font-weight: 640;
+  letter-spacing: -0.018em;
+  line-height: 1.25;
+  text-align: center;
+  text-wrap: balance;
   color: var(--ink);
 }
 @media (prefers-reduced-motion: reduce) {
@@ -991,9 +1060,12 @@
    One flat page (#0f1010), a flat card raised one step (#191a1c) with a hairline
    ring (#212224) and Linear's tight contact shadow; inset tiles a step down
    (#1d1e22). No glow, no glass, no gradient. Neutral text ramp (#e3e3e5/#949496).
-   The most restrained move: no accent hue at all — a warm porcelain (#ecebe6)
-   solid carries the one primary action, the peak bar is just a bright neutral,
-   and the only colour left is the green ▲ delta, where it's a real signal. */
+   Chrome carries no hue — a warm porcelain (#ecebe6) solid is the one primary
+   action. But colour IS spent where it's signal: the chart. Data in flat
+   Linear indigo (their own Insights hue), the peak a lighter step of the same
+   hue, the ▲ delta green. An earlier draft greyed the bars into the card
+   (#2c2d31 on #191a1c) — unreadable data isn't restraint, it's a lost chart,
+   and it handed the beauty contest to the glowing slop version. */
 .demo-atmosphere-gradient .page.clean { background: #0f1010; }
 .demo-atmosphere-gradient .clean .card {
   background: #191a1c;
@@ -1018,8 +1090,8 @@
 .demo-atmosphere-gradient .clean .tl { color: #949496; }
 .demo-atmosphere-gradient .clean .tv { color: #e3e3e5; }
 .demo-atmosphere-gradient .clean .delta { color: #6faa8e; }
-.demo-atmosphere-gradient .clean .chart i { background: #2c2d31; }
-.demo-atmosphere-gradient .clean .chart i.hi { background: #c9cace; }
+.demo-atmosphere-gradient .clean .chart i { background: #5e6ad2; }
+.demo-atmosphere-gradient .clean .chart i.hi { background: #98a0f2; }
 .demo-atmosphere-gradient .clean .upd { color: #949496; }
 .demo-atmosphere-gradient .clean .btn {
   background: #ecebe6;
@@ -1102,9 +1174,27 @@
   color: #d98a2b;
   background: color-mix(in oklab, #d98a2b 14%, transparent);
 }
-/* clean: plain, one neutral colour, no tile */
-.demo-tinted-icon-tile .clean .ib {
-  color: var(--ink-2);
+/* clean: the icon inherits the text colour — the entry's fix, literally — so
+   it's shown IN text: beside the label it belongs to. Three bare grey glyphs
+   floating in an empty stage read as icons that lost their CSS, not as a
+   choice; context is what makes the restraint legible. */
+.demo-tinted-icon-tile .clean {
+  gap: 1.7rem;
+}
+.demo-tinted-icon-tile .clean .it {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--ink);
+  font-size: var(--step-0);
+  font-weight: 560;
+  letter-spacing: -0.005em;
+}
+.demo-tinted-icon-tile .clean .it svg {
+  width: 1.2rem;
+  height: 1.2rem;
+  display: block;
+  /* no color set — currentColor inherits the label's ink, which is the fix */
 }
 
 /* 03d mono-hue status box (color) ------------------------------------------
@@ -1272,7 +1362,7 @@
 
 /* 11 full-sentence display headline ------------------------------------------
    before: the whole vague pitch at display size, tracking crushed, wrapping
-   until it fills the pane. after: three words big, the specifics at body size. */
+   until it fills the pane. after: a few words big, the specifics at body size. */
 .demo-oversized-hero-headline .hero {
   width: 100%;
   max-width: 23rem;
@@ -1287,11 +1377,32 @@
   font-weight: 800;
   color: var(--ink);
 }
+/* The entry's fix says "compress the one thing into a few words and LET THOSE
+   BE BIG" — so this after IS the sanctioned use of display scale: four concrete
+   words that can carry it. What separates it from the slop beside it is
+   everything else the entry names: word count (4 vs 14), a verb that says what
+   the product does, a weight the face was designed for (640 vs 800), and
+   tracking pulled only to -0.03em instead of crushed to -0.05em. */
+/* The clean hero escapes the 23rem column that exists to wrap the slop block:
+   four words should sit on ONE line wherever the pane allows it. The wrap in
+   the slop pane is part of that tell (fourteen words can't help but wrap);
+   the fix shouldn't inherit it as a container artifact. Where the pane is
+   genuinely too narrow (phones), `balance` breaks the line at the phrase
+   boundary instead of orphaning the last word. */
+.demo-oversized-hero-headline .hero.clean {
+  max-width: none;
+}
 .demo-oversized-hero-headline .clean h5 {
-  font-size: var(--step-2);
+  font-size: clamp(1.9rem, 1.5rem + 2.4vw, 2.8rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  font-weight: 640;
+  text-wrap: balance;
 }
 .demo-oversized-hero-headline .clean .sub {
   max-width: 36ch;
+  margin-top: 0.55rem;
+  font-size: var(--step-0);
 }
 
 /* 24 springy hover ------------------------------------------------------------
@@ -1381,16 +1492,33 @@
   text-transform: uppercase;
   color: var(--ink-3);
 }
-/* after: one odd, checkable number with its source, at body size */
-.demo-fake-stat-trio .real {
-  margin: 0 auto;
-  max-width: 36ch;
-  font-size: var(--step-0);
-  line-height: 1.55;
-  color: var(--ink);
+/* after: one odd, checkable number — and it KEEPS the stat treatment. A real
+   figure demoted to a body-size footnote looked apologetic next to the big
+   invented trio; the honest number is the one that has earned the scale. */
+.demo-fake-stat-trio .stats.clean {
+  display: grid;
+  gap: 0.35rem;
+  justify-items: center;
+  text-align: center;
 }
-.demo-fake-stat-trio .real b {
+.demo-fake-stat-trio .clean p {
+  margin: 0;
+}
+.demo-fake-stat-trio .clean .lbl {
+  font-size: var(--step--1);
+  color: var(--ink-2);
+}
+.demo-fake-stat-trio .clean .num {
+  font-size: var(--step-4);
+  font-weight: 680;
+  letter-spacing: -0.025em;
+  line-height: 1.02;
+  color: var(--ink);
   font-variant-numeric: tabular-nums;
+}
+.demo-fake-stat-trio .clean .meta {
+  font-size: var(--step--1);
+  color: var(--ink-3);
 }
 
 /* 27 numbered section markers -------------------------------------------------

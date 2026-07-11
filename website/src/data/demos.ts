@@ -6,9 +6,20 @@
   The `after` panes are held to the same rules the site and skill enforce:
   one accent, no gradient chrome, hierarchy from scale + space, mono for code
   only, no decorative emoji/badges.
+
+  And one rule learned the hard way (readers kept preferring the slop side):
+  the after pane must WIN THE EYE, not just the argument. Removing the slop is
+  half the fix; the other half is spending real craft on what remains — scale,
+  structure, hairlines, one saturated signal. A clean pane that reads as
+  "deleted design" argues FOR the slop. Deletion is not design.
 */
 
 export const demos: Record<string, { before: string; after: string }> = {
+  /* before: the fake-live pill. after: the same tagline with the fake component
+     removed, set as one confident headline — big enough to read as a choice
+     (the 0.85rem whisper of an early draft read as deleted design), but NOT at
+     display size: a five-word slogan hasn't earned display scale, and inflating
+     it would commit the full-sentence-display-headline tell one entry over. */
   "status-dot-glow": {
     before: `<div class="scene slop">
         <span class="pill"><i class="live"></i>Where modern teams plan work</span>
@@ -52,10 +63,9 @@ export const demos: Record<string, { before: string; after: string }> = {
       </div>`,
     after: `
       <div class="card neutral">
-        <span class="dot"></span>
         <h5>Your workspace</h5>
         <p class="sub">Opens with a hotkey, syncs in the background.</p>
-        <button class="btn solid">Open workspace</button>
+        <button class="btn warm">Open workspace</button>
       </div>`,
   },
 
@@ -68,10 +78,10 @@ export const demos: Record<string, { before: string; after: string }> = {
         <span class="c new">New</span>
       </div>`,
     after: `<div class="sem sem-clean">
-        <span class="c"><i class="d"></i>Info</span>
-        <span class="c"><i class="d warn"></i>Warning</span>
-        <span class="c"><i class="d"></i>New</span>
+        <span class="c">Info</span>
+        <span class="c">New</span>
         <span class="c"><i class="d ok"></i>Success</span>
+        <span class="c"><i class="d warn"></i>Warning</span>
         <span class="c"><i class="d err"></i>Error</span>
       </div>`,
   },
@@ -101,13 +111,15 @@ export const demos: Record<string, { before: string; after: string }> = {
     after: `<h5 class="dl-clean">A fast, keyboard-first editor.</h5>`,
   },
 
+  /* after: at most ONE emphasis per paragraph — the entry's own fix — so the
+     clean pane shows a decided emphasis, not a flat wall of ink. */
   "highlighted-keywords": {
     before: `<p class="para hl">Our <span>revolutionary</span> platform helps
       <span>ambitious</span> teams move <span>faster</span> with
       <span>AI-native</span> workflows built for <span>scale</span>.</p>`,
     after: `<p class="para">A project tracker for engineering teams.
-      It syncs with GitHub and updates issues from your commits — no manual
-      status changes.</p>`,
+      It syncs with GitHub and updates issues from your commits —
+      <b>no manual status changes</b>.</p>`,
   },
 
   "ai-copy-tics": {
@@ -163,11 +175,11 @@ export const demos: Record<string, { before: string; after: string }> = {
         <div class="feat"><span class="ic i2">◇</span><b>Secure</b><span>Safe by design.</span></div>
         <div class="feat"><span class="ic i3">○</span><b>Simple</b><span>Easy to use.</span></div>
       </div>`,
-    after: `<ul class="plainfeat">
-        <li><b>Fast</b> — cold start in 180&thinsp;ms, measured on a 2020 laptop.</li>
-        <li><b>Secure</b> — data encrypted at rest with a key only you hold.</li>
-        <li><b>Simple</b> — one binary, no config file, no account.</li>
-      </ul>`,
+    after: `<div class="cleanfeat">
+        <div class="cf"><b>Fast</b><span>Cold start in 180&thinsp;ms, measured on a 2020 laptop.</span></div>
+        <div class="cf"><b>Secure</b><span>Encrypted at rest with a key only you hold.</span></div>
+        <div class="cf"><b>Simple</b><span>One binary — no config file, no account.</span></div>
+      </div>`,
   },
 
   "over-rounded-glass": {
@@ -345,9 +357,9 @@ export const demos: Record<string, { before: string; after: string }> = {
         <span class="ib a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span>
       </div>`,
     after: `<div class="icons clean">
-        <span class="ib"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5A1.5 1.5 0 0 1 4.5 7H7l1.2-1.6a1 1 0 0 1 .8-.4h6a1 1 0 0 1 .8.4L17 7h2.5A1.5 1.5 0 0 1 21 8.5v9A1.5 1.5 0 0 1 19.5 19h-15A1.5 1.5 0 0 1 3 17.5z"/><circle cx="12" cy="13" r="3.3"/></svg></span>
-        <span class="ib"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3 4 14h6l-1 7 9-11h-6z"/></svg></span>
-        <span class="ib"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span>
+        <span class="it"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5A1.5 1.5 0 0 1 4.5 7H7l1.2-1.6a1 1 0 0 1 .8-.4h6a1 1 0 0 1 .8.4L17 7h2.5A1.5 1.5 0 0 1 21 8.5v9A1.5 1.5 0 0 1 19.5 19h-15A1.5 1.5 0 0 1 3 17.5z"/><circle cx="12" cy="13" r="3.3"/></svg>Capture</span>
+        <span class="it"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3 4 14h6l-1 7 9-11h-6z"/></svg>Actions</span>
+        <span class="it"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>Private</span>
       </div>`,
   },
 
@@ -381,8 +393,9 @@ export const demos: Record<string, { before: string; after: string }> = {
   },
 
   /* An invented on-call product. before: the whole vague pitch at display size,
-     tracking crushed, filling the pane. after: the point in three words, the
-     specifics at body size. */
+     tracking crushed, filling the pane. after: the point in three words kept AT
+     display size (the entry's fix says "let those be big"), the specifics at
+     body size. Shrinking the clean headline would concede the visual game. */
   "oversized-hero-headline": {
     before: `<div class="hero slop">
         <h5 class="big">We help modern teams resolve incidents faster than ever before</h5>
@@ -408,6 +421,9 @@ export const demos: Record<string, { before: string; after: string }> = {
       </div>`,
   },
 
+  /* after: the one real, checkable number — given the stat treatment it earns
+     (label, big figure, source), not demoted to a footnote. One true number set
+     large beats three round ones; it doesn't have to look apologetic. */
   "fake-stat-trio": {
     before: `<div class="stats slop">
         <div class="st"><b>10k+</b><span>Developers</span></div>
@@ -415,7 +431,9 @@ export const demos: Record<string, { before: string; after: string }> = {
         <div class="st"><b>24/7</b><span>Support</span></div>
       </div>`,
     after: `<div class="stats clean">
-        <p class="real"><b>1,847</b> CI runs yesterday, median 3m 12s — from the public status page.</p>
+        <p class="lbl">CI runs yesterday</p>
+        <p class="num">1,847</p>
+        <p class="meta">median 3m 12s — from the public status page</p>
       </div>`,
   },
 
