@@ -363,6 +363,113 @@ export const demos: Record<string, { before: string; after: string }> = {
       </div>`,
   },
 
+  /* Three invented marketing sections, each wearing a tracked-uppercase kicker
+     that just restates its heading — the least defensible form of the tell.
+     after: the same sections carried by the headings alone. */
+  "section-kicker": {
+    before: `<div class="secs slop">
+        <div class="sec"><p class="kick">✦ Features</p><p class="hd">What it does</p><p class="bd">Reads your diff and drafts review comments.</p></div>
+        <div class="sec"><p class="kick">✦ Testimonials</p><p class="hd">What users say</p><p class="bd">“It halved our review queue.”</p></div>
+        <div class="sec"><p class="kick">✦ Pricing</p><p class="hd">What it costs</p><p class="bd">$8 per seat. Free for open source.</p></div>
+      </div>`,
+    after: `<div class="secs clean">
+        <div class="sec"><p class="hd">What it does</p><p class="bd">Reads your diff and drafts review comments.</p></div>
+        <div class="sec"><p class="hd">What users say</p><p class="bd">“It halved our review queue.”</p></div>
+        <div class="sec"><p class="hd">What it costs</p><p class="bd">$8 per seat. Free for open source.</p></div>
+      </div>`,
+  },
+
+  /* An invented on-call product. before: the whole vague pitch at display size,
+     tracking crushed, filling the pane. after: the point in three words, the
+     specifics at body size. */
+  "oversized-hero-headline": {
+    before: `<div class="hero slop">
+        <h5 class="big">We help modern teams resolve incidents faster than ever before</h5>
+      </div>`,
+    after: `<div class="hero clean">
+        <h5>Pages the right engineer</h5>
+        <p class="sub">It maps alerts to code owners and routes each incident to whoever shipped the change.</p>
+      </div>`,
+  },
+
+  /* Identical cards; only the motion differs. before: transition-all with an
+     overshoot bezier — grows, lifts, casts a bigger shadow (and idles with a
+     periodic bounce so the tell reads without a pointer). after: the surface
+     answers in 140ms and nothing moves. */
+  "springy-hover": {
+    before: `<div class="hv slop">
+        <div class="jcard"><p class="h">Changelog</p><p class="s">What shipped this week</p></div>
+        <p class="cap">hover — it jumps at you</p>
+      </div>`,
+    after: `<div class="hv clean">
+        <div class="jcard"><p class="h">Changelog</p><p class="s">What shipped this week</p></div>
+        <p class="cap">hover — the surface answers, nothing moves</p>
+      </div>`,
+  },
+
+  "fake-stat-trio": {
+    before: `<div class="stats slop">
+        <div class="st"><b>10k+</b><span>Developers</span></div>
+        <div class="st"><b>99.9%</b><span>Uptime</span></div>
+        <div class="st"><b>24/7</b><span>Support</span></div>
+      </div>`,
+    after: `<div class="stats clean">
+        <p class="real"><b>1,847</b> CI runs yesterday, median 3m 12s — from the public status page.</p>
+      </div>`,
+  },
+
+  /* before: ghost ordinals stapled to unordered marketing nouns. after: numbers
+     where the order is real — the actual setup sequence. */
+  "numbered-sections": {
+    before: `<div class="nums slop">
+        <div class="sec"><span class="no">01</span><div><p class="hd">Collaborate</p><p class="bd">Work together in real time.</p></div></div>
+        <div class="sec"><span class="no">02</span><div><p class="hd">Innovate</p><p class="bd">Move fast, break nothing.</p></div></div>
+        <div class="sec"><span class="no">03</span><div><p class="hd">Scale</p><p class="bd">Grow without limits.</p></div></div>
+      </div>`,
+    after: `<div class="nums clean">
+        <p class="hd">Set up in three steps</p>
+        <ol>
+          <li><code>brew install relay</code></li>
+          <li><code>relay init</code> in your repo</li>
+          <li>Push — every PR gets a preview</li>
+        </ol>
+      </div>`,
+  },
+
+  /* A billing panel. before: three surfaces deep, each with its own border,
+     radius, shadow, and shrinking padding. after: one surface; rows separated
+     by hairlines. */
+  "nested-cards": {
+    before: `<div class="nest slop">
+        <div class="c1"><p class="t">Billing</p>
+          <div class="c2"><p class="t">Current plan</p>
+            <div class="c3"><p class="t">Pro — $8/mo</p><p class="s">Renews May 3</p></div>
+          </div>
+        </div>
+      </div>`,
+    after: `<div class="nest clean">
+        <div class="c1"><p class="t">Billing</p>
+          <div class="row"><span>Plan</span><b>Pro — $8/mo</b></div>
+          <div class="row"><span>Renews</span><b>May 3</b></div>
+        </div>
+      </div>`,
+  },
+
+  /* Font choices shown as the tokens that encode them: the stock pairing vs a
+     stack with a reason attached (this site's own choice — yours may differ). */
+  "overused-font": {
+    before: `<div class="ff slop">
+        <pre><code>--font-display: "Space Grotesk";
+--font-body: "Inter";</code></pre>
+        <p class="cap">the pairing on every AI page</p>
+      </div>`,
+    after: `<div class="ff clean">
+        <pre><code>/* a tool should dress like the OS */
+--font: ui-sans-serif, system-ui;</code></pre>
+        <p class="cap">chosen for a reason — yours may differ</p>
+      </div>`,
+  },
+
   "tasteful-terminal": {
     before: `<div class="term">
         <pre class="ascii">  /\\_/\\    ___ _ __

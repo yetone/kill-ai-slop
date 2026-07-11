@@ -13,9 +13,12 @@ description: >-
   it's Y"), emoji everywhere, glowing status dots, rounded colored-left-border
   callouts, pastel rounded-square icon tiles, glassmorphism and over-rounding,
   oversized drop shadows, corners that don't nest, badge & pill spam, AI-drawn
-  SVG icons, icons in a
-  tint of themselves, all-caps card grids, and the "tasteful terminal". Works on
-  HTML/CSS, React/Vue/Svelte/Astro, Tailwind, and Markdown copy.
+  SVG icons, icons in a tint of themselves, kickers over every heading,
+  full-sentence display headlines, springy hover effects, all-caps card grids,
+  invented stat rows (10k+ / 99.9% / 24/7), 01/02/03 section markers, cards
+  nested in cards, the default Inter/Space Grotesk look, and the "tasteful
+  terminal". Works on HTML/CSS, React/Vue/Svelte/Astro, Tailwind, and Markdown
+  copy.
 ---
 
 # Kill AI Slop
@@ -106,7 +109,7 @@ function. Use `references/fixes.md` for the before→after pattern per tell.
 
 ## References
 
-- `references/taxonomy.md` — the 23 tells: what each is, why it's slop, the fix.
+- `references/taxonomy.md` — the 30 tells: what each is, why it's slop, the fix.
 - `references/detection.md` — concrete ripgrep/regex patterns + false positives.
 - `references/fixes.md` — before→after remediation patterns.
 - `scripts/scan.mjs` — the dependency-free scanner.

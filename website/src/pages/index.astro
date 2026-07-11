@@ -135,19 +135,19 @@ const principles = [
       <p class="eyebrow" data-index="00"><T zh="定义" en="Definition" ja="定義" ko="정의" /></p>
       <h2 class="def">
         <T
-          en="AI slop is ugly in a specific way:<br>it piles on every possible style and detail without settling on a focus."
-          zh="AI slop 的难看很有辨识度：<br>它把所有能加的风格和细节都往上堆，却始终定不下一个重点。"
-          ja="AI slop は、ある特定の醜さだ。<br>あらゆるスタイルとディテールを積み上げて、重点を一つも定めていない。"
-          ko="AI slop 은 아주 특정한 방식으로 못생겼다.<br>온갖 스타일과 디테일을 쌓아 올리고, 정작 초점 하나를 정하지 않는다."
+          en="AI slop is ugly in a specific way."
+          zh="AI slop 的难看很有辨识度。"
+          ja="AI slop は、ある特定の醜さだ。"
+          ko="AI slop 은 아주 특정한 방식으로 못생겼다."
         />
       </h2>
       <div class="what-cols">
         <p>
           <T
-            zh="模型没有品味，只会抓缩略图里看着「高级」的东西：一道渐变、一层光晕、一排徽章、一墙发光卡片。每样单拎出来都是俗套；全堆在一起、一样不删，就熬成了你见过一千遍的那种刺眼页面。"
-            en="A model has no taste, so it grabs whatever looks impressive in a thumbnail: a gradient, a glow, a row of badges, a wall of glowing cards. Each is a cliché on its own. Stacked together with nothing edited out, they curdle into the same garish page you've seen a thousand times."
-            ja="モデルにはセンスがない。だからサムネイルで「高級」に見えるものを掴んでくる。グラデーション、グロー、バッジの列、光るカードの壁。どれも単体ではありふれた常套句だ。何も削らずに積み上げると、あなたが千回見たあの毒々しいページに煮詰まる。"
-            ko="모델에는 취향이 없다. 그래서 섬네일에서 ‘고급스러워’ 보이는 것을 집어 온다. 그라데이션 하나, 광채 한 겹, 배지 한 줄, 빛나는 카드로 채운 벽. 하나하나는 그저 흔한 상투구다. 아무것도 덜어내지 않고 쌓아 올리면, 당신이 천 번은 본 그 요란한 페이지로 굳어 버린다."
+            zh="它把所有能加的风格和细节都往上堆，却始终定不下一个重点。模型没有品味，只会抓缩略图里看着「高级」的东西：一道渐变、一层光晕、一排徽章、一墙发光卡片。每样单拎出来都是俗套；全堆在一起、一样不删，就熬成了你见过一千遍的那种刺眼页面。"
+            en="It piles on every possible style and detail without settling on a focus. A model has no taste, so it grabs whatever looks impressive in a thumbnail: a gradient, a glow, a row of badges, a wall of glowing cards. Each is a cliché on its own. Stacked together with nothing edited out, they curdle into the same garish page you've seen a thousand times."
+            ja="あらゆるスタイルとディテールを積み上げて、重点を一つも定めていない。モデルにはセンスがない。だからサムネイルで「高級」に見えるものを掴んでくる。グラデーション、グロー、バッジの列、光るカードの壁。どれも単体ではありふれた常套句だ。何も削らずに積み上げると、あなたが千回見たあの毒々しいページに煮詰まる。"
+            ko="온갖 스타일과 디테일을 쌓아 올리고, 정작 초점 하나를 정하지 않는다. 모델에는 취향이 없다. 그래서 섬네일에서 ‘고급스러워’ 보이는 것을 집어 온다. 그라데이션 하나, 광채 한 겹, 배지 한 줄, 빛나는 카드로 채운 벽. 하나하나는 그저 흔한 상투구다. 아무것도 덜어내지 않고 쌓아 올리면, 당신이 천 번은 본 그 요란한 페이지로 굳어 버린다."
           />
         </p>
       </div>
@@ -159,7 +159,7 @@ const principles = [
     <div class="container">
       <header class="cat-head">
         <p class="eyebrow" data-index="01"><T zh="图鉴" en="The catalogue" ja="図鑑" ko="도감" /></p>
-        <h2><T zh="23 种 AI slop，逐条拆解" en="23 tells, taken apart one by one" ja="23 種類の AI slop を、一つずつ分解する" ko="23 가지 AI slop 을 하나씩 뜯어본다" /></h2>
+        <h2><T zh="30 种 AI slop，逐条拆解" en="30 tells, taken apart one by one" ja="30 種類の AI slop を、一つずつ分解する" ko="30 가지 AI slop 을 하나씩 뜯어본다" /></h2>
         <p class="lede">
           <T
             zh="每一条都是一组 before → after 对照：slop 长什么样，换成干净做法又长什么样。全部用 HTML 重建，点按即可切换。"
@@ -356,7 +356,9 @@ const principles = [
 
   /* What */
   .what .def {
-    max-width: 20ch;
+    /* Wide enough that the one-line thesis stays one line on desktop;
+       narrow viewports still wrap naturally. */
+    max-width: 40ch;
     margin-bottom: var(--s-6);
   }
   .what-cols {

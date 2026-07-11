@@ -91,7 +91,31 @@ Remove the strike/underline/highlight used for emphasis; let structure carry it.
 Keep strike-through for a real edit, underline for a link, highlight for a real
 annotation — each only when it does that job.
 
-### 10 Highlighted keywords
+### 10 The kicker above every heading
+Delete kickers that restate their heading; keep one only where it adds a real
+dimension (a category, a date, a genuine sequence number).
+```diff
+- <p class="text-xs uppercase tracking-widest text-indigo-500">Features</p>
+- <h2>What it does</h2>
++ <h2>What it does</h2>       /* scale and space introduce the section */
+```
+
+### 11 Full-sentence display headline
+Compress the point into a few words at display size; move the rest to a
+normal-size subline.
+```diff
+- <h1 class="text-7xl font-extrabold tracking-tight">
+-   We help modern teams resolve incidents faster than ever before
+- </h1>
++ <h1 class="text-5xl font-semibold">Pages the right engineer</h1>
++ <p class="text-lg text-[--ink-2]">It maps alerts to code owners and routes
++ each incident to whoever shipped the change.</p>
+```
+After shortening, re-check any `max-width` that was sized for the old headline —
+a stale narrow measure (say `20ch`) will re-wrap your few words onto two lines
+and undo the fix. Verify the rendered result, not just the copy.
+
+### 12 Highlighted keywords
 ```diff
 - Our <span class="text-indigo-600 font-semibold">revolutionary</span> platform helps
 - <span class="text-pink-600 font-semibold">ambitious</span> teams move faster.
@@ -99,14 +123,14 @@ annotation — each only when it does that job.
 ```
 Let structure carry emphasis; at most one accented phrase.
 
-### 11 AI copywriting voice
+### 13 AI copywriting voice
 Rewrite for specifics. Delete triads and em-dash drama.
 ```diff
 - It's not just an editor — it's a movement. Say goodbye to friction.
 + A code editor. Opens in under a second, ~half the memory of Electron editors.
 ```
 
-### 12 Emoji everywhere
+### 14 Emoji everywhere
 Remove emoji from headings, buttons, and bullets; keep one only where it carries
 real information (a status).
 ```diff
@@ -114,7 +138,7 @@ real information (a status).
 + <h2>Why teams pick it</h2>
 ```
 
-### 13 Glowing status dot
+### 15 Glowing status dot
 Drop the halo, the pulse, and the glow shadow; a flat dot plus a word is enough.
 ```diff
 - <span class="relative flex h-3 w-3">
@@ -124,7 +148,7 @@ Drop the halo, the pulse, and the glow shadow; a flat dot plus a word is enough.
 + <span class="inline-block h-2 w-2 rounded-full bg-[--ok]"></span> Ready
 ```
 
-### 14 Rounded card, colored left border
+### 16 Rounded card, colored left border
 Collapse stacked callouts to body text; keep at most one real aside.
 ```diff
 - <div class="border-l-4 border-indigo-500 rounded-lg bg-indigo-50 p-4">Note …</div>
@@ -133,21 +157,21 @@ Collapse stacked callouts to body text; keep at most one real aside.
 + <aside class="note">Beta: exports may change format before 1.0.</aside>
 ```
 
-### 15 Rounded-square icon tiles
+### 17 Rounded-square icon tiles
 Drop decorative tiles; use a labelled list with real specifics.
 ```diff
 - <div class="rounded-xl bg-indigo-100 p-2"><Icon/></div><h3>Fast</h3><p>Very fast.</p>
 + <li><b>Fast</b> — cold start in 180 ms, measured on a 2020 laptop.</li>
 ```
 
-### 16 Max radius + glassmorphism
+### 18 Max radius + glassmorphism
 Pick one small radius token; replace blur panes with solid surfaces.
 ```diff
 - class="rounded-full backdrop-blur bg-white/10 border border-white/20"
 + class="rounded-[--radius] bg-[--card] border border-[--rule]"
 ```
 
-### 17 Oversized drop shadow
+### 19 Oversized drop shadow
 Shrink the shadow to a real elevation: tight blur, small offset, low opacity,
 never bigger than the element. Often a hairline replaces it outright.
 ```diff
@@ -156,9 +180,9 @@ never bigger than the element. Often a hairline replaces it outright.
 + box-shadow: 0 1px 2px rgba(0,0,0,0.06), 0 4px 10px -6px rgba(0,0,0,0.1);
 ```
 Keep it colorless; a tinted glow is not depth. (See tell 01 for the purple
-glow-shadow, tell 13 for the status-dot halo.)
+glow-shadow, tell 15 for the status-dot halo.)
 
-### 18 Corners that don't nest
+### 20 Corners that don't nest
 Compute the inner radius from the outer minus the padding, or don't round the
 inner element at all.
 ```diff
@@ -166,14 +190,14 @@ inner element at all.
 + <div class="rounded-2xl p-3"><div class="rounded-lg">…</div></div>   /* 16 − 12 ≈ 8 */
 ```
 
-### 19 Badge & pill spam
+### 21 Badge & pill spam
 Delete decorative pills; keep at most a real status tag.
 ```diff
 - <h1>Dashboard</h1><Pill>✨ New</Pill><Pill>🔥 Popular</Pill><Pill>β Beta</Pill>
 + <h1>Dashboard</h1><span class="ver">v2.1</span>
 ```
 
-### 20 AI-drawn SVG icons
+### 22 AI-drawn SVG icons
 Get a real, high-quality icon: commission a designer, or generate one with the
 best image model and refine it until it's crisp and on-brand.
 ```diff
@@ -183,7 +207,7 @@ best image model and refine it until it's crisp and on-brand.
 Don't ship the crude blob the model sketched, and don't fall back to a bare
 letter; a crude generated icon is worse than no picture at all.
 
-### 21 Icon in a tint of itself
+### 23 Icon in a tint of itself
 Let the icon inherit the text color with no container; if it truly needs one,
 give it a deliberate opaque surface.
 ```diff
@@ -191,7 +215,17 @@ give it a deliberate opaque surface.
 + <Icon class="text-[--ink]"/>          /* just an icon; no tinted tile */
 ```
 
-### 22 The all-caps card grid
+### 24 The springy hover
+Transition only the properties that carry the state change, at 120–200ms with a
+standard ease; hover feedback is a surface shift, not growth.
+```diff
+- class="transition-all duration-500 hover:scale-105 hover:-translate-y-2 hover:shadow-2xl"
++ class="transition-colors duration-150 hover:bg-[--surface-2] hover:border-[--rule-strong]"
+```
+Never animate layout properties (width/height/margin/padding); save spring
+easing for things that genuinely move through space.
+
+### 25 The all-caps card grid
 Replace the grid of equal-weight cards with the single most important point,
 told fully; drop the ALL-CAPS micro-labels.
 ```diff
@@ -201,7 +235,51 @@ told fully; drop the ALL-CAPS micro-labels.
 + three-line summary.</p>
 ```
 
-### 23 The tasteful terminal
+### 26 The invented stat row
+Keep only measured, sourced numbers; delete the set dressing.
+```diff
+- <div class="stats"><b>10k+</b> Developers <b>99.9%</b> Uptime <b>24/7</b> Support</div>
++ <p><b>1,847</b> CI runs yesterday, median 3m 12s — from the public status page.</p>
+```
+One real, checkable figure beats three round ones. No numbers yet? Say what the
+product does instead.
+
+### 27 The 01 / 02 / 03 section markers
+Delete ornamental ordinals on unordered sections; number only real sequences.
+```diff
+- <span class="text-8xl font-extrabold text-gray-100">01</span><h2>Collaborate</h2>
+- <span class="text-8xl font-extrabold text-gray-100">02</span><h2>Innovate</h2>
++ <h2>Collaborate</h2>            /* sections distinguished by scale and space */
+```
+Install steps, changelogs, and catalogues have earned their numbers; keep those.
+
+### 28 Cards inside cards
+One surface per region; group inside it with spacing and hairlines.
+```diff
+- <div class="card"><div class="card"><div class="card">Pro — $8/mo</div></div></div>
++ <div class="card">
++   <h3>Billing</h3>
++   <div class="row">Plan <b>Pro — $8/mo</b></div>    /* rows split by hairlines */
++   <div class="row">Renews <b>May 3</b></div>
++ </div>
+```
+A child keeps its own surface only when it's genuinely a separate object (a
+preview, an embed).
+
+### 29 Inter everywhere
+Choose a face like you'd choose a logo: try a few, set your own copy in each,
+and be able to say why this one.
+```diff
+- font-family: "Space Grotesk", sans-serif;   /* display */
+- font-family: "Inter", sans-serif;           /* body — the stock pairing */
++ font-family: var(--font-sans);   /* one face, compared and chosen — with the
++                                     reason recorded in the tokens file */
+```
+Landing back on Inter after comparing is a choice; starting there isn't. A
+system stack picked for a reason is a choice too. Propose candidates; let the
+user pick — never swap a brand font silently.
+
+### 30 The tasteful terminal
 Move monospace back to code; use terminal metaphors only where they serve the
 product.
 ```diff

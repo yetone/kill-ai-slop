@@ -98,7 +98,28 @@ rg -n -i 'text-decoration:\s*(line-through|underline)'
 a link, a highlighter swipe under a heading — decoration, not annotation. Real
 edits, links, and annotations are fine.
 
-### 10 Highlighted keywords
+### 10 The kicker above every heading
+```
+rg -n -i 'uppercase[\s\S]{0,40}tracking-(wide|wider|widest)|tracking-(wide|wider|widest)[\s\S]{0,40}uppercase'
+rg -n -i '\b(eyebrow|kicker|overline)\b' -g '*.{css,scss,tsx,jsx,vue,svelte,astro,html}'
+rg -n -i 'text-transform:\s*uppercase[\s\S]{0,80}letter-spacing:\s*0?\.[0-9]+em'
+```
+*Confirm:* the same tracked-caps micro-label above the hero *and* every section
+heading, saying what the heading already says (FEATURES over features). A
+kicker that adds a real dimension — a category, a date, a number in a genuine
+sequence — is an editorial device doing its job.
+
+### 11 Full-sentence display headline
+```
+rg -n 'text-(5|6|7|8|9)xl' -g '*.{tsx,jsx,vue,svelte,astro,html}'
+rg -n -i 'tracking-tighter?\b[\s\S]{0,40}font-(extrabold|black)|font-(extrabold|black)[\s\S]{0,40}tracking-tighter?\b'
+rg -n -i 'font-size:\s*(clamp\([^)]*[4-9](rem|\.[0-9]+rem)|[5-9][0-9]px|[4-9]rem)'
+```
+*Confirm:* a full sentence (10+ words) at display size, usually extrabold with
+crushed tracking, wrapping to 3+ lines. Two or three words at display size is
+what display sizes are for.
+
+### 12 Highlighted keywords
 ```
 rg -n '<mark' -g '*.{md,mdx,html,tsx,jsx,vue,svelte,astro}'
 rg -n 'text-(primary|indigo|purple|violet)-[0-9]+' -g '*.{tsx,jsx,vue,svelte,astro,html}'
@@ -107,7 +128,7 @@ rg -n -i 'font-semibold|font-bold' -g '*.{md,mdx}'
 *Confirm:* multiple colored/`font-semibold` spans inside one paragraph of body
 copy. One accented phrase is fine.
 
-### 11 AI copywriting voice
+### 13 AI copywriting voice
 ```
 rg -n -i "not just .{1,40}\bit'?s\b|say goodbye to|meet your new|supercharge|unlock the power|in seconds, not"
 rg -n -i '\b(blazing[- ]fast|effortless|seamless|game[- ]changer|next[- ]level)\b'
@@ -116,7 +137,7 @@ Also flag paragraphs built from three-word sentences ("Fast. Beautiful. Yours.")
 and em-dash triplets. *False positives:* a genuine quote; a doc that discusses
 these phrases (like this one).
 
-### 12 Emoji everywhere
+### 14 Emoji everywhere
 ```
 rg -n '[\x{1F000}-\x{1FAFF}\x{2600}-\x{27BF}\x{2190}-\x{21FF}\x{2B00}-\x{2BFF}]' -g '*.{md,mdx,html,tsx,jsx,vue,svelte,astro}'
 rg -n -i '(🚀|✨|⚡|🔒|🎉).{0,40}(<|$)'  # emoji leading a heading/button/bullet
@@ -125,7 +146,7 @@ rg -n -i '(🚀|✨|⚡|🔒|🎉).{0,40}(<|$)'  # emoji leading a heading/butto
 feature; user-generated content. Slop is an emoji stuck on *every* heading,
 button, and bullet in your chrome.
 
-### 13 Glowing status dot
+### 15 Glowing status dot
 ```
 rg -n -i 'animate-ping|animate-pulse'
 rg -n -i 'shadow-(green|emerald|lime)-[0-9]+/[0-9]+|box-shadow:[^;]*(0 0|glow)'
@@ -134,7 +155,7 @@ rg -n -i '(ready|online|live)[\s\S]{0,40}(●|rounded-full)'
 *Confirm:* a status dot with a pulsing halo or coloured glow — usually saturated
 green "● Ready / Online." A small flat dot is fine.
 
-### 14 Rounded card, colored left border
+### 16 Rounded card, colored left border
 ```
 rg -n -i 'border-l-4 .*rounded|rounded.* border-l-4'
 rg -n -i 'border-left:\s*[0-9]+px .*;.*border-radius|admonition|callout|\bnote-box\b'
@@ -142,14 +163,14 @@ rg -n -i 'border-left:\s*[0-9]+px .*;.*border-radius|admonition|callout|\bnote-b
 *Confirm:* stacked callouts used as decoration on plain list items, not one
 semantic aside.
 
-### 15 Rounded-square icon tiles
+### 17 Rounded-square icon tiles
 ```
 rg -n -i 'rounded-(lg|xl|2xl) bg-(indigo|purple|blue|green|amber|pink)-(50|100)'
 rg -n -i '(lucide|heroicons|@tabler/icons|react-icons)'
 ```
 *Confirm:* one icon-in-a-tile per feature, in a grid, icons unrelated to content.
 
-### 16 Max radius + glassmorphism
+### 18 Max radius + glassmorphism
 ```
 rg -n 'rounded-full' -g '*.{tsx,jsx,vue,svelte,astro,html}'
 rg -n -i 'backdrop-blur|backdrop-filter:\s*blur|bg-white/(5|10|20|30)|bg-black/(5|10|20|30)'
@@ -158,7 +179,7 @@ rg -n -i 'border-radius:\s*(9999px|50%|2rem|24px)'
 *Confirm:* `rounded-full` on cards/inputs (not just avatars/pills); blur used as
 the default surface; radius values that don't agree with each other.
 
-### 17 Oversized drop shadow
+### 19 Oversized drop shadow
 ```
 rg -n -i 'box-shadow:[^;{}]*\b([6-9][0-9]|[0-9]{3,})px'   # a 60px+ blur/spread
 rg -n -i 'shadow-\[[^\]]*\b([6-9][0-9]|[0-9]{3,})px'      # tailwind arbitrary shadow
@@ -169,7 +190,7 @@ a small card/icon under a huge, faint, barely-offset blur (a fog, not a drop).
 A genuinely large surface (a modal, a full hero) with a proportionate shadow is
 fine; so is one small, tight elevation shadow.
 
-### 18 Corners that don't nest
+### 20 Corners that don't nest
 Hard to grep with certainty; flag the same radius token on nested containers.
 ```
 rg -n -i 'rounded-(xl|2xl|3xl)' -g '*.{tsx,jsx,vue,svelte,astro,html}'  # then check for nesting
@@ -179,14 +200,14 @@ rg -n -i 'border-radius:\s*(1rem|1\.5rem|24px|32px)'
 corners don't sit concentric. Inner radius should be outer minus the padding; a
 single flat radius scale that already nests correctly is fine.
 
-### 19 Badge & pill spam
+### 21 Badge & pill spam
 ```
 rg -n -i 'rounded-full .*(bg-(indigo|purple|green|amber|pink)-(50|100|200))'
 rg -n -i '>(\s*[✨🔥🎉🚀]\s*)?(new|beta|hot|popular|pro|coming soon)\s*<'
 ```
 *Confirm:* several decorative pills in chrome. A real version tag is fine.
 
-### 20 AI-drawn SVG icons
+### 22 AI-drawn SVG icons
 Grep finds inline SVG; the judgment is visual.
 ```
 rg -n '<svg' -g '*.{tsx,jsx,vue,svelte,astro,html,svg}'
@@ -197,7 +218,7 @@ rg -n -i '(mascot|blob|logo)\.svg'
 built from primitive shapes, shipped as the product's mark. A drawn icon set or
 a real designed logo is fine.
 
-### 21 Icon in a tint of itself
+### 23 Icon in a tint of itself
 ```
 rg -n -i 'bg-(indigo|blue|green|amber|red|purple|pink)-[0-9]+/(5|10|15|20)[\s\S]{0,60}text-\1-'
 rg -n -i 'text-(indigo|blue|green|amber|red|purple|pink)-[0-9]+[\s\S]{0,60}bg-\1-[0-9]+/(5|10|15|20)'
@@ -207,7 +228,20 @@ rg -n -i 'rounded-(md|lg|xl)\s+bg-(indigo|blue|green|amber|red)-[0-9]+/(5|10|15|
 inside it — every glyph wrapped in a soft colored square. A deliberate opaque
 button surface is fine.
 
-### 22 The all-caps card grid
+### 24 The springy hover
+```
+rg -n -i 'hover:(scale-1[01][0-9]|-translate-y-)'
+rg -n '\btransition-all\b'
+rg -n -i 'cubic-bezier\([^)]*,\s*1\.[2-9][0-9]*'   # overshoot easing = bounce
+rg -n -i 'animate-bounce|transition:[^;]*\b(width|height|margin|padding)\b'
+```
+*Confirm:* scale/lift/bounce on hover across cards, buttons, and images, and
+`transition-all` as the default. A drawer that springs as it physically slides
+in is motion doing a job; a card that jumps when the cursor grazes it is not.
+Also flag animating layout properties (width/height/margin/padding) — jank on
+top of the decoration.
+
+### 25 The all-caps card grid
 ```
 rg -n -i 'grid-cols-3'
 rg -n -i 'uppercase[\s\S]{0,30}(text-xs|tracking-wide|tracking-wider)|text-transform:\s*uppercase'
@@ -216,7 +250,49 @@ rg -n -i 'everything you need|why (you.?ll love|choose|teams)'
 *Confirm:* an ALL-CAPS micro-label + number/icon repeated across interchangeable
 cards — a feature grid or a stat-card grid — points unrelated.
 
-### 23 The tasteful terminal (evolved)
+### 26 The invented stat row
+```
+rg -n -i '\b[0-9]+[km]\+'
+rg -n '99\.9%|24/7'
+rg -n -i '(10k|50k|99\.9|24/7)[\s\S]{0,60}(developers|users|teams|uptime|support|countries)'
+```
+*Confirm:* three big round numbers in a row — a `Nk+`, a `99.9%`, a `24/7` —
+with tiny uppercase labels, in the hero or above the fold. A real, odd,
+sourced figure ("1,847 CI runs yesterday") is the fix, not a hit.
+
+### 27 The 01 / 02 / 03 section markers
+```
+rg -n '["'\''>`]0[1-9]["'\''<`]' -g '*.{tsx,jsx,vue,svelte,astro,html}'
+rg -n -i 'text-(7|8|9)xl[\s\S]{0,50}(text-(gray|slate|zinc|neutral)-(100|200)|opacity-(5|10|20))'
+rg -n -i 'step[- ](one|two|three)'
+```
+*Confirm:* giant faint ordinals stapled to *unordered* marketing sections. A
+genuinely ordered sequence — install steps, a changelog, an indexed catalogue —
+has earned its numbers.
+
+### 28 Cards inside cards
+Grep gives leads; the judgment is in the rendered DOM.
+```
+rg -n '<(Card|Panel|Box)[^>]*>\s*<\1' -g '*.{tsx,jsx,vue,svelte}'
+rg -n -i 'rounded[^"]*border[^"]*"[\s\S]{0,120}rounded[^"]*border' -g '*.{tsx,jsx,vue,svelte,astro,html}'
+```
+*Confirm:* three or more nested surfaces each with its own border/radius/shadow
+and shrinking padding. A child that is genuinely a separate object (a preview,
+an embed) may keep its own surface.
+
+### 29 Inter everywhere (evolved)
+```
+rg -n -i 'fonts\.googleapis\.com/css2\?family=(Inter|Space\+Grotesk|Manrope|Plus\+Jakarta)'
+rg -n -i 'font-family:\s*[^;]*("?Inter"?|"?Space Grotesk"?|"?Manrope"?|"?Plus Jakarta Sans"?|"?Geist"?)'
+rg -n 'from ["'\'']next/font/google' -g '*.{ts,tsx,js,jsx}'
+```
+*Confirm:* judgment tell — the faces themselves are good. Slop is the stock
+pairing (Space Grotesk display + Inter body) or Inter-by-default with no sign
+anyone compared alternatives. A team that tried others and landed on Inter made
+a choice; check for any evidence of one (a comment, a brand doc, a deliberate
+fallback stack).
+
+### 30 The tasteful terminal (evolved)
 ```
 rg -n -i 'font-mono' -g '*.{tsx,jsx,vue,svelte,astro,html}'
 rg -n -i 'font-family:\s*[^;]*(mono|jetbrains|fira code|ibm plex mono|geist mono)'

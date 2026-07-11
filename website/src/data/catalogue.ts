@@ -12,7 +12,7 @@
   screenshots of the reference product; those were removed in favour of demos.)
 */
 
-export type Group = "color" | "type" | "copy" | "component" | "layout" | "evolved";
+export type Group = "color" | "type" | "copy" | "component" | "motion" | "layout" | "evolved";
 
 // Localized string. English is the source of truth and always present; the
 // other languages are optional and fall back to English at the <T> layer.
@@ -42,6 +42,7 @@ export const GROUPS: Record<Group, Bi> = {
   type: { en: "Type", zh: "字体", ja: "書体", ko: "타이포" },
   copy: { en: "Copy", zh: "文案", ja: "コピー", ko: "카피" },
   component: { en: "Components", zh: "组件", ja: "コンポーネント", ko: "컴포넌트" },
+  motion: { en: "Motion", zh: "动效", ja: "モーション", ko: "모션" },
   layout: { en: "Layout", zh: "版式", ja: "レイアウト", ko: "레이아웃" },
   evolved: { en: "Evolved slop", zh: "进化型 slop", ja: "進化型 slop", ko: "진화형 slop" },
 };
@@ -244,6 +245,46 @@ const rawEntries: Omit<Entry, "n">[] = [
     },
     detect: ["text-decoration: line-through on non-deleted text", "<mark>/<u>/<s> for emphasis", "gradient/box-shadow ‘highlight’ under a heading"],
     demo: "decorative-text-lines",
+  },
+  {
+    id: "section-kicker",
+    tier: 1,
+    group: "type",
+    title: { zh: "每个标题头上的小眉标", en: "The kicker above every heading" },
+    what: {
+      zh: "hero 大标题上方一行加宽字距的全大写小标签，然后每个区块的标题上也来一个：FEATURES、HOW IT WORKS、TESTIMONIALS。",
+      en: "A tiny uppercase, letter-spaced label above the hero headline — then another above every section heading: FEATURES, HOW IT WORKS, TESTIMONIALS.",
+    },
+    why: {
+      zh: "眉标本是编辑排版的工具：真正的出版物用它补充信息——栏目、日期、分类。AI 页面把它当反射动作，每个标题上盖一个，而标签说的就是标题已经说的：功能列表上方写 FEATURES 等于零信息。当每个标题都戴同一顶帽子，那是模板的节奏，不是谁的决定。",
+      en: "The kicker is an editorial device: a real publication uses it to add information — a section, a date, a category. The AI page stamps it as a reflex, and the label says what the heading already says: FEATURES above a list of features carries zero information. When every heading wears the same hat, that's a template's rhythm, not anyone's decision.",
+    },
+    fix: {
+      zh: "凡是复述标题的眉标，删掉。只有当它补充真实的信息——分类、真实序列里的编号、日期——才保留；其余的区块，让字号和留白来开场。",
+      en: "Delete any kicker that restates its heading. Keep one only where it adds a real dimension — a category, a number in a genuine sequence, a date. Everywhere else, let scale and space introduce the section.",
+    },
+    detect: ["text-xs uppercase tracking-widest above an h1/h2", "the same eyebrow pattern on every section", "✨-prefixed chip above the hero headline", "kicker that restates the heading (FEATURES / features)"],
+    demo: "section-kicker",
+  },
+  {
+    id: "oversized-hero-headline",
+    tier: 1,
+    group: "type",
+    title: { zh: "一整句话的巨型标题", en: "The full-sentence display headline" },
+    what: {
+      zh: "把一整句营销话术排到展示字号——text-6xl、font-extrabold、tracking-tight——折成三四行，吃掉整个首屏。",
+      en: "A whole marketing sentence set at display size — text-6xl, font-extrabold, tracking-tight — wrapping to three or four lines and eating the first viewport.",
+    },
+    why: {
+      zh: "展示字号是给展示用的：两三个撑得起这个尺寸的词。模型不知道你的产品那两个词是什么，于是把整段推销词都放大，再把字距压死来装作『设计过』。字号在替『什么最重要』这个决定顶班——而 72px 的十四个字只会更难读，不会更笃定。（这个网站自己也犯过：定义区曾把一整句论述排在展示字号上，写下这一条才被迫改掉。）",
+      en: "Display sizes are for display: the two or three words that can carry that scale. The model doesn't know which two words yours are, so it sets the whole pitch huge and crushes the tracking to look ‘designed’. The size is standing in for the decision about what matters — and fourteen words at 72px read as less sure, not more. (This very site did it: the definition section set a whole sentence at display size, until writing this entry forced the fix.)",
+    },
+    fix: {
+      zh: "把最重要的那件事压成几个词，让它大；其余放回正常字号的副标题里说清楚。字距只收到字体本身设计允许的范围。",
+      en: "Compress the one thing into a few words and let those be big; say the rest in a normal-size subline. Tighten tracking only as far as the face was designed to go.",
+    },
+    detect: ["text-5xl md:text-7xl on a full sentence", "font-extrabold tracking-tight hero", "display headline wrapping to 3+ lines"],
+    demo: "oversized-hero-headline",
   },
 
   // ── Copy ─────────────────────────────────────────────────────────────────
@@ -495,6 +536,29 @@ const rawEntries: Omit<Entry, "n">[] = [
     detect: ["bg-{color}-500/10 behind text-{color}-500 icon", "rounded tile tinted to match the icon", "translucent same-hue icon container", "every glyph wrapped in a soft colored square"],
     demo: "tinted-icon-tile",
   },
+
+  // ── Motion ─────────────────────────────────────────────────────────────
+  {
+    id: "springy-hover",
+    tier: 1,
+    group: "motion",
+    title: { zh: "一碰就弹的悬停", en: "The springy hover" },
+    what: {
+      zh: "每张卡片、按钮、图片都挂着 hover:scale-105 和 transition-all：光标一碰就放大、上浮、弹一下，缓动还是 bounce 的。",
+      en: "Every card, button, and image wearing hover:scale-105 and transition-all: the cursor touches it and it grows, lifts, and bounces on an elastic ease.",
+    },
+    why: {
+      zh: "动效是信息：它该说明什么变了、东西去了哪、哪里可以交互。悬停放大什么都没说明——卡片并没有变大，用户也早知道光标在它上面。transition-all 是这个 tell 里的 tell：让所有属性一起动，就是没决定哪个属性有意义。再给界面套上 bounce 缓动，工具就成了讨好人的玩具。",
+      en: "Motion is information: it should say what changed, where a thing went, what's interactive. Scaling a card on hover says nothing — the card isn't growing, and the user already knows the cursor is on it. transition-all is the tell inside the tell: animating every property at once is the absence of deciding which one means something. Add bounce easing to UI chrome and a tool turns into a toy asking to be liked.",
+    },
+    fix: {
+      zh: "只过渡承载状态变化的属性——背景、边框、透明度——120 到 200 毫秒，标准缓动。悬停反馈是表面的变化，不是体积的变化；弹簧物理留给真正在空间里移动的东西。",
+      en: "Transition only the properties that carry the state change — background, border, opacity — at 120–200ms with a standard ease. Hover feedback is a surface shift, not growth; save spring physics for things that genuinely move through space.",
+    },
+    detect: ["hover:scale-105 / hover:-translate-y-*", "transition-all on cards and buttons", "cubic-bezier with overshoot (…, 1.5+, …) on UI", "img scale/rotate on hover"],
+    demo: "springy-hover",
+  },
+
   // ── Layout ─────────────────────────────────────────────────────────────
   {
     id: "feature-grid",
@@ -516,8 +580,88 @@ const rawEntries: Omit<Entry, "n">[] = [
     detect: ["grid-cols-3 gap-8 cards", "UPPERCASE label + number ×6", "dashboard stat-card grid"],
     demo: "feature-grid",
   },
+  {
+    id: "fake-stat-trio",
+    tier: 1,
+    group: "layout",
+    title: { zh: "编出来的数据三连", en: "The invented stat row" },
+    what: {
+      zh: "三个大数字排成一排：10k+ 开发者、99.9% 在线率、24/7 支持。产品可能昨天才上线。",
+      en: "Three big numbers in a row — 10k+ developers, 99.9% uptime, 24/7 support — on a product that launched yesterday.",
+    },
+    why: {
+      zh: "数据行是把『社会证明』做成了版式，于是模型不管证明存不存在，都会把版式填满。数字永远是那几个，因为它们不是测量结果，是布景：一个整数的 10k+、两个 9、一个 24/7。真实的数字零碎而具体；这些只是远看像可信的东西。而一个编造的数字，会把旁边每个真数字都拖下水。",
+      en: "The stat row is social proof turned into a layout, so the model fills the layout whether or not the proof exists. The numbers are always the same because they aren't measurements, they're set dressing: a round 10k+, two nines, a 24/7. Real numbers are odd and specific; these are what credibility looks like from a distance. And one invented figure poisons every true one beside it.",
+    },
+    fix: {
+      zh: "只展示你真正量过的数字，并说明它从哪来；一个可查证的真数字，胜过三个整数。还没有数字，就说产品做了什么。",
+      en: "Show a number only if you measured it, and say where it came from — one real, checkable figure beats three round ones. No numbers yet? Say what the product does instead.",
+    },
+    detect: ["10k+ / 99.9% / 24/7 near each other", "big number + tiny label ×3 in the hero", "count-up animation on marketing stats"],
+    demo: "fake-stat-trio",
+  },
+  {
+    id: "numbered-sections",
+    tier: 1,
+    group: "layout",
+    title: { zh: "01 / 02 / 03 章节编号", en: "The 01 / 02 / 03 section markers" },
+    what: {
+      zh: "每个营销区块旁边一个巨大的浅色序号：01 协作、02 创新、03 规模化，仿佛它们是一串有顺序的步骤。",
+      en: "A giant faint ordinal beside every marketing section — 01 Collaborate, 02 Innovate, 03 Scale — as if they were steps in a sequence.",
+    },
+    why: {
+      zh: "编号是一种断言：这些事按这个顺序发生。功能区块之间没有顺序——没有人先协作、再创新、然后规模化——所以这些序号纯粹是戏服，从编号真有含义的编辑设计里借来的。这是让页面看起来有结构、又不用真正决定结构的最廉价手法。",
+      en: "Numbering is a claim: these things happen in this order. Feature sections have no order — nobody collaborates, then innovates, then scales — so the numerals are pure costume, borrowed from editorial design where an index means something. It's the cheapest way to make a page look structured without deciding on a structure.",
+    },
+    fix: {
+      zh: "给真正有顺序的东西编号——安装步骤、更新日志、一本图鉴——其余地方的装饰序号删掉。区块要区分，交给字号和留白。",
+      en: "Number what's genuinely ordered — install steps, a changelog, a catalogue — and delete the ornamental ordinals everywhere else. If sections need telling apart, scale and space do it.",
+    },
+    detect: ["huge low-opacity 01/02/03 numerals", "ordinals on unordered feature sections", "text-8xl text-gray-100 section number"],
+    demo: "numbered-sections",
+  },
+  {
+    id: "nested-cards",
+    tier: 1,
+    group: "layout",
+    title: { zh: "卡片套卡片", en: "Cards inside cards" },
+    what: {
+      zh: "一张带边框、圆角、阴影的卡片，里面又是一张，再里面还有一张——每一层都有自己的底色和内边距。",
+      en: "A bordered, rounded, shadowed card holding another card holding another — every layer with its own surface and its own padding.",
+    },
+    why: {
+      zh: "卡片是一个断言：里面的内容是一个自足的整体。层层嵌套之后断言就塌了：三层边框下去，什么都没被『装住』，内边距一层层叠到内容只剩一条缝。模型爱套盒子，因为盒子是它唯一信得过的分组手段——用间距和对齐来分组，得先决定什么属于什么；而给一切都包一层表面，不用。",
+      en: "A card is a claim: what's inside is one self-contained thing. Nest them and the claim collapses — three borders deep, nothing is contained, and the padding stacks until the content is a sliver. The model boxes things because a box is the only grouping move it trusts: grouping with spacing and alignment means deciding what belongs together; wrapping everything in a surface doesn't.",
+    },
+    fix: {
+      zh: "一个区域一层表面。表面之内用间距、对齐和细分隔线来分组；只有当子内容真的是一个独立对象——一段预览、一个嵌入——才配自己的表面。",
+      en: "One surface per region. Inside it, group with spacing, alignment, and hairline dividers; a child earns its own surface only when it's genuinely a separate object — a preview, an embed.",
+    },
+    detect: ["3+ nested rounded/bordered boxes", "<Card> wrapping <Card>", "border inside border inside border"],
+    demo: "nested-cards",
+  },
 
   // ── Evolved slop ─────────────────────────────────────────────────────────
+  {
+    id: "overused-font",
+    tier: 2,
+    group: "evolved",
+    title: { zh: "满世界的 Inter", en: "Inter everywhere" },
+    what: {
+      zh: "标题 Space Grotesk，正文 Inter——或者 Geist、Manrope、Plus Jakarta Sans。每个 AI 生成的页面都在同样五款字体里抽签。",
+      en: "Space Grotesk for display, Inter for body — or Geist, Manrope, Plus Jakarta Sans. Every AI-built page draws from the same five faces.",
+    },
+    why: {
+      zh: "它们都是好字体，这正是陷阱：模型伸手拿它们，是因为所有人都在用，于是每个穿着它们的产品都溶成同一张页面。字体是『这是谁做的』最响亮的单一信号——把它外包给训练数据的平均值，就和当年蓝紫渐变回避配色决定一样，是在回避身份决定。",
+      en: "They're good typefaces, which is exactly the trap: the model reaches for them because everyone did, and every product wearing them dissolves into the same page. A typeface is the loudest single signal of who made this — outsourcing it to the training-data average dodges the identity decision the same way the indigo gradient dodged the color one.",
+    },
+    fix: {
+      zh: "像挑 logo 一样挑字体：多试几款，用自己的文案排一页读一读，说得出为什么是它。比较过后回到 Inter，是选择；上来就是 Inter，不是。（有理由地用系统字体栈，同样是选择。）",
+      en: "Choose a face the way you'd choose a logo: try a few, set a page of your own copy in each, and be able to say why this one. Landing back on Inter after that is a choice; starting there isn't. (A system stack, picked for a reason, is a choice too.)",
+    },
+    detect: ["Inter + Space Grotesk pairing", "fonts.googleapis.com/css2?family=Inter", "Geist / Manrope / Plus Jakarta Sans as the default", "next/font/google Inter boilerplate"],
+    demo: "overused-font",
+  },
   {
     id: "tasteful-terminal",
     tier: 2,

@@ -1225,3 +1225,298 @@
 }
 .demo-oversized-shadow .clean .h { color: #e3e3e5; }
 .demo-oversized-shadow .clean .s { color: #949496; }
+
+/* 10 kicker above every heading ---------------------------------------------
+   before: three sections, each opening with the same tracked-caps hat that
+   restates its heading. after: the headings carry themselves. */
+.demo-section-kicker .secs {
+  display: grid;
+  gap: 1.15rem;
+  width: 100%;
+  max-width: 21rem;
+  margin-inline: auto;
+  text-align: left;
+}
+.demo-section-kicker .hd {
+  margin: 0;
+  font-size: var(--step-1);
+  font-weight: 640;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+.demo-section-kicker .bd {
+  margin: 0.2rem 0 0;
+  font-size: var(--step--1);
+  color: var(--ink-2);
+}
+.demo-section-kicker .kick {
+  margin: 0 0 0.35rem;
+  font-size: 0.62rem;
+  font-weight: 640;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #6366f1;
+}
+
+/* 11 full-sentence display headline ------------------------------------------
+   before: the whole vague pitch at display size, tracking crushed, wrapping
+   until it fills the pane. after: three words big, the specifics at body size. */
+.demo-oversized-hero-headline .hero {
+  width: 100%;
+  max-width: 23rem;
+  margin-inline: auto;
+  text-align: left;
+}
+.demo-oversized-hero-headline .big {
+  margin: 0;
+  font-size: clamp(1.9rem, 1.5rem + 2.4vw, 2.8rem);
+  line-height: 1.04;
+  letter-spacing: -0.05em;
+  font-weight: 800;
+  color: var(--ink);
+}
+.demo-oversized-hero-headline .clean h5 {
+  font-size: var(--step-2);
+}
+.demo-oversized-hero-headline .clean .sub {
+  max-width: 36ch;
+}
+
+/* 24 springy hover ------------------------------------------------------------
+   Identical cards; only the motion differs. before: transition-all with an
+   overshoot bezier — and a periodic idle bounce so the tell reads without a
+   pointer. after: the surface answers in 140ms and nothing moves. */
+.demo-springy-hover .hv {
+  display: grid;
+  justify-items: center;
+  gap: 0.9rem;
+}
+.demo-springy-hover .jcard {
+  width: 100%;
+  max-width: 15rem;
+  padding: 1rem 1.15rem;
+  text-align: left;
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+}
+.demo-springy-hover .h {
+  margin: 0;
+  font-size: var(--step-0);
+  font-weight: 640;
+  color: var(--ink);
+}
+.demo-springy-hover .s {
+  margin: 0.25rem 0 0;
+  font-size: var(--step--1);
+  color: var(--ink-2);
+}
+.demo-springy-hover .cap {
+  margin: 0;
+  font-size: 0.72rem;
+  color: var(--ink-3);
+}
+.demo-springy-hover .slop .jcard {
+  transition: all 0.45s cubic-bezier(0.34, 1.8, 0.64, 1);
+  animation: demo-spring-idle 3.2s infinite;
+}
+.demo-springy-hover .slop .jcard:hover {
+  transform: scale(1.07) translateY(-6px);
+  box-shadow: 0 18px 40px -12px rgba(0, 0, 0, 0.35);
+  animation: none;
+}
+@keyframes demo-spring-idle {
+  0%, 72%, 100% { transform: none; }
+  79% { transform: scale(1.05) translateY(-5px); }
+  87% { transform: scale(0.99) translateY(1px); }
+  93% { transform: scale(1.02) translateY(-2px); }
+}
+.demo-springy-hover .clean .jcard {
+  transition:
+    background-color 0.14s var(--ease),
+    border-color 0.14s var(--ease);
+}
+.demo-springy-hover .clean .jcard:hover {
+  background: var(--paper-2);
+  border-color: var(--rule-strong);
+}
+@media (prefers-reduced-motion: reduce) {
+  .demo-springy-hover .slop .jcard {
+    animation: none;
+  }
+}
+
+/* 26 invented stat row -------------------------------------------------------- */
+.demo-fake-stat-trio .stats.slop {
+  display: flex;
+  gap: clamp(1.2rem, 5vw, 2.6rem);
+  justify-content: center;
+  text-align: center;
+}
+.demo-fake-stat-trio .st {
+  display: grid;
+  gap: 0.2rem;
+}
+.demo-fake-stat-trio .st b {
+  font-size: var(--step-3);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+.demo-fake-stat-trio .st span {
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+/* after: one odd, checkable number with its source, at body size */
+.demo-fake-stat-trio .real {
+  margin: 0 auto;
+  max-width: 36ch;
+  font-size: var(--step-0);
+  line-height: 1.55;
+  color: var(--ink);
+}
+.demo-fake-stat-trio .real b {
+  font-variant-numeric: tabular-nums;
+}
+
+/* 27 numbered section markers -------------------------------------------------
+   before: ghost ordinals stapled to unordered marketing nouns. after: small,
+   real numbers on a genuinely ordered sequence. */
+.demo-numbered-sections .nums {
+  width: 100%;
+  max-width: 21rem;
+  margin-inline: auto;
+  text-align: left;
+}
+.demo-numbered-sections .slop {
+  display: grid;
+  gap: 1rem;
+}
+.demo-numbered-sections .slop .sec {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+.demo-numbered-sections .slop .no {
+  font-size: clamp(2.2rem, 6vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: color-mix(in oklab, var(--ink) 14%, transparent);
+}
+.demo-numbered-sections .hd {
+  margin: 0;
+  font-size: var(--step-1);
+  font-weight: 640;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+.demo-numbered-sections .bd {
+  margin: 0.15rem 0 0;
+  font-size: var(--step--1);
+  color: var(--ink-2);
+}
+.demo-numbered-sections .clean ol {
+  margin: 0.6rem 0 0;
+  padding-left: 1.25rem;
+  display: grid;
+  gap: 0.45rem;
+  color: var(--ink);
+  font-size: var(--step-0);
+  line-height: 1.5;
+}
+.demo-numbered-sections .clean code {
+  font-family: var(--font-mono);
+  font-size: 0.82em;
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 0.08rem 0.3rem;
+}
+
+/* 28 cards inside cards --------------------------------------------------------
+   before: three surfaces deep — border, radius, shadow, and padding at every
+   layer (and the same 16px radius stamped on all three, so the corners fight
+   too). after: one surface; rows separated by hairlines. */
+.demo-nested-cards .nest {
+  width: 100%;
+  max-width: 20rem;
+  margin-inline: auto;
+  text-align: left;
+}
+.demo-nested-cards .t {
+  margin: 0;
+  font-size: var(--step-0);
+  font-weight: 640;
+  color: var(--ink);
+}
+.demo-nested-cards .s {
+  margin: 0.15rem 0 0;
+  font-size: var(--step--1);
+  color: var(--ink-2);
+}
+.demo-nested-cards .slop .c1,
+.demo-nested-cards .slop .c2,
+.demo-nested-cards .slop .c3 {
+  border: 1px solid var(--rule);
+  border-radius: 16px;
+  padding: 0.85rem;
+  box-shadow: var(--shadow-e1);
+}
+.demo-nested-cards .slop .c1 { background: var(--paper-2); }
+.demo-nested-cards .slop .c2 { background: var(--card); margin-top: 0.6rem; }
+.demo-nested-cards .slop .c3 { background: var(--paper-2); margin-top: 0.6rem; }
+.demo-nested-cards .clean .c1 {
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.15rem;
+  box-shadow: var(--shadow-e1);
+}
+.demo-nested-cards .clean .row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.55rem 0;
+  border-top: 1px solid var(--rule);
+  font-size: var(--step--1);
+}
+.demo-nested-cards .clean .row:first-of-type {
+  margin-top: 0.7rem;
+}
+.demo-nested-cards .clean .row span { color: var(--ink-2); }
+.demo-nested-cards .clean .row b {
+  color: var(--ink);
+  font-weight: 560;
+}
+
+/* 29 Inter everywhere (evolved) ------------------------------------------------
+   Shown as the tokens that encode the choice, not a specimen — loading Space
+   Grotesk and Inter just to exhibit them would hand the tell a webfont request.
+   Mono is fine here: this is actual code. */
+.demo-overused-font .ff {
+  display: grid;
+  justify-items: center;
+  gap: 0.8rem;
+}
+.demo-overused-font pre {
+  margin: 0;
+  padding: 0.85rem 1rem;
+  max-width: 100%;
+  overflow-x: auto;
+  text-align: left;
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: var(--ink);
+}
+.demo-overused-font .cap {
+  margin: 0;
+  font-size: 0.72rem;
+  color: var(--ink-3);
+}

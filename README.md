@@ -10,7 +10,7 @@ so common you've stopped seeing it.
 **Kill AI Slop** is two things:
 
 1. **A website**, a multilingual field guide (English, Chinese, Japanese, and
-   Korean) that catalogues 23 AI-slop tells, each with an interactive
+   Korean) that catalogues 30 AI-slop tells, each with an interactive
    before→after demo showing the clean fix. The site is itself built as a
    rebuttal to everything it catalogues.
 2. **An Agent Skill**, `kill-ai-slop`, which turns that catalogue into action:
