@@ -4,21 +4,16 @@ description: >-
   Find and remove AI slop — the generic, machine-default visual and copy tics of
   vibe-coded products — from a web project. Use when the user asks to "kill AI
   slop", "de-slop", "remove the AI look", "make this not look AI-generated", or
-  clean up a landing page / UI / docs that feels templated. Detects and fixes:
-  indigo→violet gradients, gradient-clip headline text, warm amber/stone "cozy"
-  palettes, the default semantic palette (info-blue / tip-amber / success-green /
-  error-red), one-hue status boxes, atmospheric/ambient gradients, serif-italic
-  emphasis on one word, serif where sans belongs, decorative strikes and
-  highlights, highlighted keywords in copy, AI copywriting voice ("not just X —
-  it's Y"), emoji everywhere, glowing status dots, rounded colored-left-border
-  callouts, pastel rounded-square icon tiles, glassmorphism and over-rounding,
-  oversized drop shadows, corners that don't nest, badge & pill spam, AI-drawn
-  SVG icons, icons in a tint of themselves, kickers over every heading,
-  full-sentence display headlines, flat type hierarchies, springy hover
-  effects, all-caps card grids, invented stat rows (10k+ / 99.9% / 24/7),
-  01/02/03 section markers, cards nested in cards, monotone one-gap spacing,
-  the default Inter/Space Grotesk look, and the "tasteful terminal". Works on
-  HTML/CSS, React/Vue/Svelte/Astro, Tailwind, and Markdown copy.
+  clean up a landing page / UI / docs that feels templated. Detects and fixes
+  the catalogue of tells: indigo→violet gradients, gradient-clip headlines, the
+  default semantic palette, one-hue status boxes, atmospheric gradients,
+  serif-italic emphasis, highlighted keywords, AI copywriting voice ("not just
+  X — it's Y"), emoji everywhere, glowing status dots, colored-left-border
+  callouts, pastel icon tiles, glassmorphism, over-rounding, oversized shadows,
+  badge & pill spam, AI-drawn SVG icons, kickers over every heading, flat type
+  hierarchies, invented stat rows (10k+ / 99.9% / 24/7), 01/02/03 section
+  markers, cards nested in cards, the default Inter/Space Grotesk look, and
+  more. Works on HTML/CSS, React/Vue/Svelte/Astro, Tailwind, and Markdown copy.
 ---
 
 # Kill AI Slop
