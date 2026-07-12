@@ -134,6 +134,17 @@ const num = String(entry.n).padStart(2, "0");
     color: var(--ink-2);
     letter-spacing: -0.01em;
   }
+  /* CJK optical compensation, same treatment as the global .lede rule: glyphs
+     fill the em box, so step-1 reads a size larger than the Latin original and
+     ties with the entry's h3. 0.92 restores the intended contrast; drop the
+     Latin tracking and loosen the leading for the denser glyphs. */
+  :global([data-lang="zh"]) .what,
+  :global([data-lang="ja"]) .what,
+  :global([data-lang="ko"]) .what {
+    font-size: calc(var(--step-1) * 0.92);
+    letter-spacing: 0;
+    line-height: 1.6;
+  }
 
   .evidence {
     margin-top: var(--s-6);

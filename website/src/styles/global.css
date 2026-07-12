@@ -142,11 +142,18 @@ img { max-width: 100%; display: block; }
   text-wrap: pretty;
 }
 /* The lede's 1.3 is tuned for Latin; CJK glyphs fill the em box, so a large
-   multi-line CJK lede reads cramped. Loosen it for CJK locales only. */
+   multi-line CJK lede reads cramped. Loosen it for CJK locales only.
+   Weight and tracking too: 480 is a variable-font value — PingFang/YaHei only
+   have discrete weights, and CSS matching rounds 480 UP to Medium (500), so
+   the CJK lede rendered a half-step heavier than designed, competing with the
+   h1. Negative tracking likewise squeezes glyphs that already fill the em box. */
 [data-lang="zh"] .lede,
 [data-lang="ja"] .lede,
 [data-lang="ko"] .lede {
   line-height: 1.5;
+  font-weight: 400;
+  letter-spacing: 0;
+  font-size: calc(var(--step-2) * 0.92);
 }
 
 /* --- Localized visibility -------------------------------------------------- */
