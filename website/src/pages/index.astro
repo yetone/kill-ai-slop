@@ -259,10 +259,26 @@ const principles = [
           </div>
           <p class="sc-note">
             <T
-              zh="放进 Claude Code 或支持 Agent Skills 的环境，调用："
-              en="Drop it into Claude Code / any Agent-Skills host, then call:"
-              ja="Claude Code / Agent Skills 対応の環境に入れて、呼び出す："
-              ko="Claude Code / Agent Skills 를 지원하는 환경에 넣고 호출한다:"
+              zh="一条命令，装进 Claude Code 或任何支持 Agent Skills 的环境："
+              en="One command installs it into Claude Code / any Agent-Skills host:"
+              ja="ワンコマンドで Claude Code / Agent Skills 対応の環境にインストール："
+              ko="명령 한 줄로 Claude Code / Agent Skills 지원 환경에 설치한다:"
+            />
+          </p>
+          <div class="sc-install-wrap">
+            <pre class="sc-pre sc-install"><code>npx skills add yetone/kill-ai-slop</code></pre>
+            <button
+              class="sc-copy"
+              type="button"
+              data-copy="npx skills add yetone/kill-ai-slop"
+              aria-label="Copy install command">copy</button>
+          </div>
+          <p class="sc-note">
+            <T
+              zh="然后调用："
+              en="Then call:"
+              ja="そして呼び出す："
+              ko="그다음 호출한다:"
             />
           </p>
           <pre class="sc-pre"><code>&gt; /kill-ai-slop
@@ -274,7 +290,7 @@ const principles = [
 <span class="hit">slop  copy.md:1</span>       "not just X — it's Y"
 <span class="ok">→ 4 groups, 11 hits. Apply fixes? [y/scope]</span></code></pre>
           <p class="sc-foot">
-            <a href="https://github.com/yetone/kill-ai-slop/tree/main/skill" rel="noopener"><T zh="在 GitHub 上获取完整 skill →" en="Get the full skill on GitHub →" ja="GitHub で完全な skill を入手 →" ko="GitHub 에서 전체 skill 받기 →" /></a>
+            <a href="https://github.com/yetone/kill-ai-slop#the-skill" rel="noopener"><T zh="在 GitHub 上获取完整 skill →" en="Get the full skill on GitHub →" ja="GitHub で完全な skill を入手 →" ko="GitHub 에서 전체 skill 받기 →" /></a>
           </p>
         </aside>
       </div>
@@ -501,6 +517,50 @@ const principles = [
     font-size: 0.78rem;
     line-height: 1.6;
   }
+  .sc-install-wrap {
+    position: relative;
+    margin: var(--s-3) var(--s-4) 0;
+  }
+  .sc-install {
+    margin: 0;
+    padding-block: var(--s-3);
+    color: #eceae4;
+    white-space: nowrap;
+  }
+  .sc-copy {
+    position: absolute;
+    top: 50%;
+    right: var(--s-3);
+    translate: 0 -50%;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    color: #7f8894;
+    background: #0e0f12;
+    border: 1px solid #2a2c31;
+    border-radius: 0;
+    padding: 0.15rem 0.5rem;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.12s var(--ease);
+  }
+  .sc-install-wrap:hover .sc-copy,
+  .sc-copy:focus-visible {
+    opacity: 1;
+  }
+  .sc-copy:hover {
+    color: #eceae4;
+    border-color: #7f8894;
+  }
+  .sc-copy.copied,
+  .sc-copy.copied:hover {
+    color: #6fcf9a;
+    border-color: #2a2c31;
+    opacity: 1;
+  }
+  @media (hover: none) {
+    .sc-copy { opacity: 1; }
+  }
   .sc-pre .c { color: #7f8894; }
   .sc-pre .hit { color: var(--slop); }
   .sc-pre .ok { color: #6fcf9a; }
@@ -520,3 +580,21 @@ const principles = [
     text-decoration-color: var(--ink);
   }
 </style>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>("button.sc-copy").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      navigator.clipboard
+        ?.writeText(btn.dataset.copy ?? "")
+        .then(() => {
+          btn.classList.add("copied");
+          btn.textContent = "copied ✓";
+          window.setTimeout(() => {
+            btn.classList.remove("copied");
+            btn.textContent = "copy";
+          }, 1400);
+        })
+        .catch(() => {});
+    });
+  });
+</script>
