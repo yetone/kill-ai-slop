@@ -499,6 +499,31 @@ const rawEntries: Omit<Entry, "n">[] = [
     demo: "nested-radius",
   },
   {
+    id: "broken-corner-border",
+    tier: 1,
+    group: "component",
+    title: { en: "The border that dies at the corner", zh: "一到圆角就断的边框" },
+    what: {
+      zh: "一个圆角矩形，直边上有 1px 描边，四个角上没有：轮廓沿直线走到切点就断了，圆弧光着——填充是圆的，描边环却缺了四个角。",
+      en: "A rounded rectangle with a 1px hairline on its straight edges and nothing at the corners: the outline runs to the tangent points and stops, the arcs go naked — the fill is rounded, but the stroke ring is missing its four corners.",
+    },
+    why: {
+      zh: "因为圆角和边框住在两个盒子上。模型背下了一个配方：内容自己圆不了角（表格、图片、列表、滚动区）就套一层 rounded-xl overflow-hidden 的壳；而里面的组件自带自己的 1px 边框或分隔线。每一行代码单独看都对——壳负责圆角，孩子负责描边。但方角的描边环在四个角上落在圆形裁剪之外，被整块剪掉；直边在裁剪之内，活了下来。合成的结果没人看：模型不渲染自己的输出，永远看不到那个角，而人看一眼角就知道边断了。这是「每行都对、整体是错的」的典型指纹。",
+      en: "Because the radius and the border live on different boxes. The model has a memorized recipe: content that can't round its own corners (a table, an image, a list, a scroll area) gets wrapped in rounded-xl overflow-hidden — while the child component ships with its own 1px border or dividers. Every line is locally correct: the wrapper owns the radius, the child owns the stroke. But the square stroke ring falls outside the rounded clip at all four corners and gets erased; the straight runs sit inside and survive. Nobody looks at the composition — the model never renders its own output, so it never sees the corner; a human sees the broken edge in one glance. It's the fingerprint of code that's right line by line and wrong as a whole.",
+    },
+    fix: {
+      zh: "让圆角和边框住进同一个盒子：border 和 border-radius 写在同一个元素上，描边自动跟着弧线走；外层真需要裁剪内容，就把边框也搬到裁剪层上。反过来也成立：那些线如果本是分隔线，就保持直线、贯通到边，填充别加圆角。",
+      en: "Put the radius and the border on the same box: border plus border-radius on one element, and the stroke wraps the arc for free. If an outer layer genuinely has to clip content, move the border up onto the clipping layer too. The inverse also holds: if the lines are really dividers, keep them straight, run them edge to edge, and don't round the fill.",
+    },
+    detect: [
+      "rounded-* overflow-hidden wrapper around a bordered child",
+      "border on the child, radius on the parent",
+      "clip-path: inset(… round …) on a bordered box",
+      "hairline on the straight edges, nothing along the arc",
+    ],
+    demo: "broken-corner-border",
+  },
+  {
     id: "badge-spam",
     tier: 1,
     group: "component",

@@ -867,6 +867,48 @@
   color: var(--ink-3);
 }
 
+/* 07d the border that dies at the corner (component) ------------------------
+   One plain rounded rectangle, shown twice. before is the real bug reproduced
+   by the exact code that causes it: the wrapper owns the radius (rounded +
+   overflow clip), the child owns the 1px border — a square ring. At every
+   corner the square ring falls outside the rounded clip and gets erased, so
+   the hairline survives on the straight runs and the four arcs go naked.
+   Nothing is faked; the browser breaks it exactly as it does in the wild.
+   after: border and radius on the same box, so the stroke wraps the arc. */
+.demo-broken-corner-border .rr {
+  width: 100%;
+  max-width: 15rem;
+  margin-inline: auto;
+}
+.demo-broken-corner-border .shape {
+  height: 6.5rem;
+  display: grid;
+  place-items: center;
+  font-size: var(--step--1);
+  color: var(--ink-2);
+  background: var(--card);
+}
+/* slop: radius on the clipping wrapper, border on the square child */
+.demo-broken-corner-border .slop .clip {
+  border-radius: 22px;
+  overflow: clip;
+}
+.demo-broken-corner-border .slop .shape {
+  border: 1px solid var(--rule-strong); /* square ring — clipped at every corner */
+}
+/* clean: border and radius on the same element */
+.demo-broken-corner-border .clean .shape {
+  border: 1px solid var(--rule-strong);
+  border-radius: 22px;
+}
+.demo-broken-corner-border .cap {
+  margin: 0.65rem 0 0;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--ink-3);
+}
+
 /* 03c atmosphere gradient (color) ------------------------------------------
    Our own invented "premium dark SaaS" overview panel — the tell applied to an
    original UI, not a clone of a real product. before: a glowing near-black page

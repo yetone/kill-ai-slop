@@ -4,6 +4,9 @@ import T from "../components/T.astro";
 import SlopEntry from "../components/SlopEntry.astro";
 import { catalogue } from "../data/catalogue";
 
+// Derive the count so the catalogue heading tracks the data — never hardcode it.
+const n = catalogue.length;
+
 const principles = [
   {
     head: {
@@ -159,7 +162,7 @@ const principles = [
     <div class="container">
       <header class="cat-head">
         <p class="eyebrow" data-index="01"><T zh="图鉴" en="The catalogue" ja="図鑑" ko="도감" /></p>
-        <h2><T zh="32 种 AI slop，逐条拆解" en="32 tells, taken apart one by one" ja="32 種類の AI slop を、一つずつ分解する" ko="32 가지 AI slop 을 하나씩 뜯어본다" /></h2>
+        <h2><T zh={`${n} 种 AI slop，逐条拆解`} en={`${n} tells, taken apart one by one`} ja={`${n} 種類の AI slop を、一つずつ分解する`} ko={`${n} 가지 AI slop 을 하나씩 뜯어본다`} /></h2>
         <p class="lede">
           <T
             zh="每一条都是一组 before → after 对照：slop 长什么样，换成干净做法又长什么样。全部用 HTML 重建，点按即可切换。"

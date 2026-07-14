@@ -1,6 +1,6 @@
 # The AI-slop taxonomy
 
-32 tells, in two tiers. **Classic** = widely recognised. **Evolved** = newer
+33 tells, in two tiers. **Classic** = widely recognised. **Evolved** = newer
 defaults that already read as templated. For each: what it is, why it reads as
 machine-made, and the fix. Detection patterns live in `detection.md`; code
 patches in `fixes.md`.
@@ -187,11 +187,29 @@ everything.
 *Fix:* compute the nested radius (inner = outer − padding), or don't round the
 inner element at all; keep a small, deliberate radius scale.
 
-**22 · Badge and pill spam** — "✨ New", "β Beta", "🔥 Popular" decorative pills
+**22 · The border that dies at the corner** — a rounded rectangle with a 1px
+hairline on its straight edges and nothing at the corners: the outline runs to
+the tangent points and stops, the arcs go naked. It happens because the radius
+and the border live on different boxes. The model memorized a recipe — content
+that can't round its own corners (a table, an image, a list, a scroll area)
+gets wrapped in `rounded-xl overflow-hidden` — while the child component ships
+with its own 1px border or dividers. Every line is locally correct: the
+wrapper owns the radius, the child owns the stroke. But the square stroke ring
+falls outside the rounded clip at all four corners and gets erased; the
+straight runs survive inside the clip. The model never renders its own output,
+so it never sees the corner; a human sees the broken edge in one glance. The
+fingerprint of code that's right line by line and wrong as a whole.
+*Fix:* put the radius and the border on the same box — border + border-radius
+on one element, and the stroke wraps the arc for free. If an outer layer
+genuinely must clip content, move the border up onto the clipping layer too.
+Inverse holds: if the lines are really dividers, keep them straight, run them
+edge to edge, and don't round the fill.
+
+**23 · Badge and pill spam** — "✨ New", "β Beta", "🔥 Popular" decorative pills
 everywhere. Manufacturing fake buzz; in bulk each stops meaning anything.
 *Fix:* a badge only for real status (a version, stock).
 
-**23 · AI-drawn SVG icons** — asking a model to "draw an icon" and shipping what
+**24 · AI-drawn SVG icons** — asking a model to "draw an icon" and shipping what
 comes back: a round blob with two dot eyes, a mascot of primitive shapes, a logo
 that's a rounded square with a face. Vector art the machine can't really draw,
 used as the product's mark; it looks like placeholder art that never got
@@ -200,7 +218,7 @@ replaced.
 with the best image model and refine it until it's crisp and on-brand. A crude
 SVG the model sketched, or a bare fallback letter, isn't a mark worth shipping.
 
-**24 · Icon in a tint of itself** — every icon wrapped in a rounded square
+**25 · Icon in a tint of itself** — every icon wrapped in a rounded square
 filled with a see-through tint of its own color: a blue icon on faint blue, a
 green one on faint green (`bg-{color}/10` behind `text-{color}`). A one-line
 reflex — pad, round, wash in 10% of the icon's hue — so the page becomes a grid
@@ -211,7 +229,7 @@ palette, not a tint of the icon it holds.
 
 ## Motion
 
-**25 · The springy hover** — every card, button, and image wearing
+**26 · The springy hover** — every card, button, and image wearing
 `hover:scale-105` and `transition-all`: touch it and it grows, lifts, and
 bounces on an elastic ease. Motion is information — what changed, where a thing
 went, what's interactive — and scaling a card on hover says nothing; the card
@@ -224,7 +242,7 @@ not growth; save spring physics for things that genuinely move through space.
 
 ## Layout
 
-**26 · The all-caps card grid** — an ALL-CAPS label plus a number or icon,
+**27 · The all-caps card grid** — an ALL-CAPS label plus a number or icon,
 copied into rows of interchangeable cards: feature grids and dashboard
 stat-cards alike. It fakes structure while stuffing unrelated things into
 identical boxes; the ALL-CAPS micro-label is the default costume for "looks
@@ -232,7 +250,7 @@ designed."
 *Fix:* decide the single most important thing and show it fully; if you must
 list, use real hierarchy and contrast, not a grid of equal-weight cards.
 
-**27 · The invented stat row** — three big numbers in a row: 10k+ developers,
+**28 · The invented stat row** — three big numbers in a row: 10k+ developers,
 99.9% uptime, 24/7 support, on a product that launched yesterday. Social proof
 turned into a layout, filled whether or not the proof exists; the numbers are
 set dressing (a round 10k+, two nines, a 24/7), not measurements. Real numbers
@@ -241,7 +259,7 @@ are odd and specific — and one invented figure poisons every true one beside i
 real, checkable figure beats three round ones. No numbers yet? Say what the
 product does.
 
-**28 · The 01 / 02 / 03 section markers** — a giant faint ordinal beside every
+**29 · The 01 / 02 / 03 section markers** — a giant faint ordinal beside every
 marketing section (01 Collaborate, 02 Innovate, 03 Scale) as if they were steps
 in a sequence. Numbering is a claim that these things happen in this order;
 feature sections have no order, so the numerals are costume borrowed from
@@ -250,7 +268,7 @@ structured without deciding on a structure.
 *Fix:* number what's genuinely ordered — install steps, a changelog, a
 catalogue — and delete the ornamental ordinals everywhere else.
 
-**29 · Cards inside cards** — a bordered, rounded, shadowed card holding
+**30 · Cards inside cards** — a bordered, rounded, shadowed card holding
 another card holding another, every layer with its own surface and padding. A
 card claims its content is one self-contained thing; nested three deep, nothing
 is contained and the padding stacks until content is a sliver. The model boxes
@@ -260,7 +278,7 @@ alignment requires deciding what belongs together.
 hairline dividers. A child earns its own surface only when it's genuinely a
 separate object (a preview, an embed).
 
-**30 · One gap everywhere** — `gap-4`, `p-4`, `space-y-4`: one spacing value
+**31 · One gap everywhere** — `gap-4`, `p-4`, `space-y-4`: one spacing value
 stamped across the page, so a heading sits exactly as far from its own body as
 from the previous, unrelated section. Spacing is how a layout says what belongs
 together — tight inside a group, generous between groups. One value everywhere
@@ -272,7 +290,7 @@ unevenly on purpose.
 
 ## Evolved slop
 
-**31 · Inter everywhere** — Space Grotesk for display, Inter for body; or
+**32 · Inter everywhere** — Space Grotesk for display, Inter for body; or
 Geist, Manrope, Plus Jakarta Sans. Every AI-built page draws from the same five
 faces. They're good typefaces — that's the trap: the model reaches for them
 because everyone did, and every product wearing them dissolves into the same
@@ -284,7 +302,7 @@ in each, be able to say why this one. Landing back on Inter after that is a
 choice; starting there isn't. (A system stack, picked for a reason, is a choice
 too.)
 
-**32 · The "tasteful terminal"** — mono everywhere, a near-black background, one
+**33 · The "tasteful terminal"** — mono everywhere, a near-black background, one
 warm accent, ASCII art: the look of "an AI that read one Vercel blog post." It
 isn't ugly, that's the trap; it's polished enough to have become the new
 default, dodging the design decision exactly like the indigo gradient did, in

@@ -256,6 +256,23 @@ export const demos: Record<string, { before: string; after: string }> = {
       </div>`,
   },
 
+  /* One plain rounded rectangle, twice. before is not a mock-up of the bug —
+     it IS the bug, produced by the code that causes it in the wild: the
+     wrapper owns the radius (rounded + overflow clip), the child owns the 1px
+     border. The child's ring is square, so the clip erases it at every corner
+     and the hairline survives only on the straight runs. after: border and
+     radius on the same box; the stroke wraps the arc. */
+  "broken-corner-border": {
+    before: `<div class="rr slop">
+        <div class="clip"><div class="shape"><span>panel</span></div></div>
+        <p class="cap">radius on the wrapper, border on the child — clipped at the corners</p>
+      </div>`,
+    after: `<div class="rr clean">
+        <div class="shape"><span>panel</span></div>
+        <p class="cap">border + radius on one box — the stroke wraps the arc</p>
+      </div>`,
+  },
+
   /* An original "premium dark SaaS" overview panel — the atmosphere-gradient
      tell applied to our own invented UI (not a clone of any real product): a
      glowing near-black page holding a glass card whose surface is a top-lighter

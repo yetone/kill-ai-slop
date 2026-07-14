@@ -10,7 +10,8 @@ description: >-
   serif-italic emphasis, highlighted keywords, AI copywriting voice ("not just
   X — it's Y"), emoji everywhere, glowing status dots, colored-left-border
   callouts, pastel icon tiles, glassmorphism, over-rounding, oversized shadows,
-  badge & pill spam, AI-drawn SVG icons, kickers over every heading, flat type
+  borders that die at corners, badge & pill spam, AI-drawn SVG icons, kickers
+  over every heading, flat type
   hierarchies, invented stat rows (10k+ / 99.9% / 24/7), 01/02/03 section
   markers, cards nested in cards, the default Inter/Space Grotesk look, and
   more. Works on HTML/CSS, React/Vue/Svelte/Astro, Tailwind, and Markdown copy.
@@ -104,7 +105,7 @@ function. Use `references/fixes.md` for the before→after pattern per tell.
 
 ## References
 
-- `references/taxonomy.md` — the 32 tells: what each is, why it's slop, the fix.
+- `references/taxonomy.md` — the 33 tells: what each is, why it's slop, the fix.
 - `references/detection.md` — concrete ripgrep/regex patterns + false positives.
 - `references/fixes.md` — before→after remediation patterns.
 - `scripts/scan.mjs` — the dependency-free scanner.
