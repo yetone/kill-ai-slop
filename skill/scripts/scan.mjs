@@ -12,13 +12,19 @@
 */
 
 import { readFileSync, readdirSync, statSync } from "node:fs";
-import { join, extname, relative } from "node:path";
+import { fileURLToPath } from "node:url";
+import { dirname, extname, join, relative, resolve } from "node:path";
 
 const args = process.argv.slice(2);
 const root = args.find((a) => !a.startsWith("-")) || ".";
 const asJson = args.includes("--json");
 const useColor =
   !args.includes("--no-color") && process.stdout.isTTY && !asJson;
+const resolvedRoot = resolve(root);
+const skillRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const escapeTerminal = (text) => text.replace(/[\0-\x1f\x7f-\x9f]/g, (char) =>
+  `\\x${char.codePointAt(0).toString(16).padStart(2, "0")}`,
+);
 
 const SKIP_DIRS = new Set([
   "node_modules", ".git", "dist", "build", "out", ".next", ".astro",
@@ -70,6 +76,8 @@ const TELLS = [
       /linear-gradient[^;)]*(?:to bottom|180deg|to top)/i,
       /bg-gradient-to-[bt]\b[\s\S]{0,40}?from-/i,
       /repeating-(?:linear|radial)-gradient/i,
+      /bg-gradient-to-(?:br|tr|bl|tl)\b[\s\S]{0,40}?from-(?:emerald|green|teal|cyan|purple|violet|fuchsia)-\d+\/(?:5|10|15|20|25)/i,
+      /box-shadow:[^;{}]*(?:#(?:6366f1|8b5cf6|a855f7|22d3ee|06b6d4)|rgba?\(\s*(?:139|168))/i,
     ] },
   { id: "07", group: "type", name: "serif-italic emphasis", fix: "emphasise by weight, one voice",
     patterns: [
@@ -92,6 +100,7 @@ const TELLS = [
     patterns: [
       /\buppercase\b[\s\S]{0,40}?tracking-(?:wide|wider|widest)\b|tracking-(?:wide|wider|widest)\b[\s\S]{0,40}?\buppercase\b/i,
       /\b(?:eyebrow|kicker|overline)\b/i,
+      /text-transform:\s*uppercase[\s\S]{0,80}?letter-spacing:\s*0?\.\d+em/i,
     ] },
   { id: "11", group: "type", name: "full-sentence display headline", fix: "few words big; specifics in a subline",
     patterns: [
@@ -113,7 +122,7 @@ const TELLS = [
   { id: "14", group: "copy", name: "AI copywriting voice", fix: "say the specific thing",
     copy: true,
     patterns: [
-      /not just .{1,40}\bit'?s\b/i,
+      /not just .{1,40}\bit(?:['’])?s\b/i,
       /\b(say goodbye to|meet your new|supercharge|unlock the power of|in seconds,? not)\b/i,
       /\b(blazing[- ]fast|effortless(?:ly)?|seamless(?:ly)?|game[- ]?changer|next[- ]level)\b/i,
       /\b(?:growth|security|process|privacy|productivity|compliance|feature|innovation) theater\b/i,
@@ -185,6 +194,7 @@ const TELLS = [
       /\btransition-all\b/,
       /cubic-bezier\([^)]*,\s*1\.[2-9]/,
       /\banimate-bounce\b/,
+      /transition:[^;{}]*\b(?:width|height|margin|padding)\b/i,
     ] },
   { id: "27", group: "layout", name: "all-caps card grid", fix: "show the one key thing fully",
     patterns: [
@@ -203,6 +213,7 @@ const TELLS = [
     patterns: [
       /['"`>]0[1-9]['"`<]/,
       /text-[789]xl[\s\S]{0,50}?(?:text-(?:gray|slate|zinc|neutral)-(?:100|200)|opacity-(?:5|10|20))/i,
+      /\bstep[- ](?:one|two|three)\b/i,
     ] },
   { id: "30", group: "layout", name: "cards inside cards", fix: "one surface per region; hairlines inside",
     patterns: [
@@ -215,7 +226,7 @@ const TELLS = [
   { id: "32", group: "evolved", name: "Inter everywhere", fix: "compare faces; be able to say why this one",
     patterns: [
       /fonts\.googleapis\.com\/css2\?family=(?:Inter|Space\+Grotesk|Manrope|Plus\+Jakarta)/i,
-      /font-family:\s*[^;]*(?:\bInter\b|Space Grotesk|Manrope|Plus Jakarta Sans)/,
+      /font-family:\s*[^;]*(?:\bInter\b|Space Grotesk|Manrope|Plus Jakarta Sans|\bGeist\b)/,
       /\b(?:Inter|Space_Grotesk|Manrope|Plus_Jakarta_Sans)\b[\s\S]{0,60}?next\/font\/google|next\/font\/google[\s\S]{0,60}?\b(?:Inter|Space_Grotesk|Manrope|Plus_Jakarta_Sans)\b/,
     ] },
   { id: "33", group: "evolved", name: "tasteful-terminal", fix: "mono for code only",
@@ -227,6 +238,7 @@ const TELLS = [
 ];
 
 function walk(dir, files = []) {
+  if (resolve(dir) === skillRoot) return files;
   let entries;
   try {
     entries = readdirSync(dir, { withFileTypes: true });
@@ -239,7 +251,7 @@ function walk(dir, files = []) {
     }
     const full = join(dir, e.name);
     if (e.isDirectory()) {
-      if (SKIP_DIRS.has(e.name)) continue;
+      if (SKIP_DIRS.has(e.name) || resolve(full) === skillRoot) continue;
       walk(full, files);
     } else if (e.isFile()) {
       const base = e.name;
@@ -261,16 +273,36 @@ function scanFile(path) {
   } catch {
     return [];
   }
-  const isCode = ![".md", ".mdx"].includes(extname(path));
+  const isCode = extname(path) !== ".md";
   const lines = text.split(/\r?\n/);
+  const lineStarts = [0];
+  for (let index = text.indexOf("\n"); index !== -1; index = text.indexOf("\n", index + 1)) {
+    lineStarts.push(index + 1);
+  }
   const hits = [];
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
-    if (line.length > 2000) continue; // minified-ish
-    for (const tell of TELLS) {
-      if (!tell.copy && !isCode) continue; // code-only tell in a prose file
-      if (tell.patterns.some((re) => re.test(line))) {
-        hits.push({ tell, line: i + 1, text: line.trim().slice(0, 100) });
+  const seen = new Set();
+  for (const tell of TELLS) {
+    if (!tell.copy && !isCode) continue; // code-only tell in a prose file
+    for (const pattern of tell.patterns) {
+      const matcher = new RegExp(pattern.source, `${pattern.flags}g`);
+      let match;
+      while ((match = matcher.exec(text))) {
+        let low = 0;
+        let high = lineStarts.length - 1;
+        while (low < high) {
+          const middle = Math.ceil((low + high) / 2);
+          if (lineStarts[middle] <= match.index) low = middle;
+          else high = middle - 1;
+        }
+        const lineIndex = low;
+        const line = lines[lineIndex];
+        if (line.length > 2000) continue; // minified-ish
+        const key = `${tell.id}:${lineIndex}`;
+        if (!seen.has(key)) {
+          seen.add(key);
+          hits.push({ tell, line: lineIndex + 1, text: line.trim().slice(0, 100) });
+        }
+        if (match[0] === "") matcher.lastIndex += 1;
       }
     }
   }
@@ -278,12 +310,21 @@ function scanFile(path) {
 }
 
 // ---- run ----
-const files = walk(root);
+try {
+  if (!statSync(resolvedRoot).isDirectory()) {
+    throw new Error("not a directory");
+  }
+} catch {
+  console.error(`Scan root must be an existing directory: ${escapeTerminal(root)}`);
+  process.exit(1);
+}
+
+const files = walk(resolvedRoot);
 const byTell = new Map(); // id -> { tell, hits: [{file,line,text}] }
 for (const f of files) {
   for (const h of scanFile(f)) {
     if (!byTell.has(h.tell.id)) byTell.set(h.tell.id, { tell: h.tell, hits: [] });
-    byTell.get(h.tell.id).hits.push({ file: relative(root, f) || f, line: h.line, text: h.text });
+    byTell.get(h.tell.id).hits.push({ file: relative(resolvedRoot, f) || f, line: h.line, text: h.text });
   }
 }
 
@@ -318,7 +359,7 @@ const red = (s) => c("31", s);
 const dim = (s) => c("2", s);
 const bold = (s) => c("1", s);
 
-console.log(`\n${bold("kill-ai-slop")} — scanned ${files.length} files under ${root}\n`);
+console.log(`\n${bold("kill-ai-slop")} — scanned ${files.length} files under ${escapeTerminal(root)}\n`);
 if (groups.length === 0) {
   console.log("No slop signals found. (Still trust your eyes — open the pages.)\n");
   process.exit(0);
@@ -328,7 +369,7 @@ for (const g of groups) {
   console.log(`${red("slop")} ${bold(g.tell.id)} ${g.tell.name}  ${dim("→ " + g.tell.fix)}`);
   const shown = g.hits.slice(0, 12);
   for (const h of shown) {
-    console.log(`     ${dim(h.file + ":" + h.line)}  ${h.text}`);
+    console.log(`     ${dim(escapeTerminal(h.file + ":" + h.line))}  ${escapeTerminal(h.text)}`);
   }
   if (g.hits.length > shown.length) {
     console.log(dim(`     … and ${g.hits.length - shown.length} more`));

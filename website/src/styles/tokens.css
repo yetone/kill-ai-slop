@@ -29,7 +29,7 @@
   --card: #fafcfe;         /* soft white — never clinical pure #fff */
   --ink: #1a1b1d;          /* rich near-black, faintly cool */
   --ink-2: #5e5f61;        /* secondary text */
-  --ink-3: #8e8f91;        /* meta, captions */
+  --ink-3: #6e7072;        /* meta, captions */
   --rule: #e1e3e5;         /* hairline rules & borders */
   --rule-strong: #c5c7c9;
 
@@ -132,7 +132,7 @@
     --card: #202127;
     --ink: #ecebe6;
     --ink-2: #a9a8a2;
-    --ink-3: #74736e;
+    --ink-3: #7f7d78;
     --rule: #2c2d33;
     --rule-strong: #3d3e45;
     --mark: #6faa8e;
@@ -147,7 +147,7 @@
   --card: #202127;
   --ink: #ecebe6;
   --ink-2: #a9a8a2;
-  --ink-3: #74736e;
+  --ink-3: #7f7d78;
   --rule: #2c2d33;
   --rule-strong: #3d3e45;
   --mark: #6faa8e;

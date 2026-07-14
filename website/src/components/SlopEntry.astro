@@ -222,7 +222,12 @@ const num = String(entry.n).padStart(2, "0");
       history.replaceState(null, "", "#" + id);
       document
         .getElementById(id)
-        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+        ?.scrollIntoView({
+          behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+            ? "auto"
+            : "smooth",
+          block: "start",
+        });
       const url = location.origin + location.pathname + "#" + id;
       navigator.clipboard
         ?.writeText(url)

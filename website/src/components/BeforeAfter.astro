@@ -12,16 +12,16 @@ if (!demo) throw new Error(`No demo for id "${id}"`);
 
 <figure class="ba" data-demo={id} data-show="before">
   <div class="ba-head">
-    <div class="ba-switch" role="tablist" aria-label="Before / after">
+    <div class="ba-switch" role="group" aria-label="Before / after">
       <span class="ba-thumb no-anim" aria-hidden="true"></span>
-      <button type="button" role="tab" data-ba="before" aria-selected="true">
+      <button type="button" data-ba="before" aria-pressed="true">
         <span class="dot slop" aria-hidden="true"></span>
         <span class="ba-lbl">
           <span class="ba-lbl-live"><T zh="slop" en="Slop" ja="Slop" ko="Slop" /></span>
           <span class="ba-lbl-ghost" aria-hidden="true"><T zh="slop" en="Slop" ja="Slop" ko="Slop" /></span>
         </span>
       </button>
-      <button type="button" role="tab" data-ba="after" aria-selected="false">
+      <button type="button" data-ba="after" aria-pressed="false">
         <span class="dot clean" aria-hidden="true"></span>
         <span class="ba-lbl">
           <span class="ba-lbl-live"><T zh="清理后" en="Clean" ja="クリーン" ko="정리 후" /></span>
@@ -111,7 +111,7 @@ if (!demo) throw new Error(`No demo for id "${id}"`);
   .ba-switch button + button {
     border-left: var(--hair) solid var(--rule);
   }
-  .ba-switch button[aria-selected="true"] {
+  .ba-switch button[aria-pressed="true"] {
     color: var(--ink);
     font-weight: 600;
     background: color-mix(in oklab, var(--ink) 5%, transparent);
@@ -145,7 +145,7 @@ if (!demo) throw new Error(`No demo for id "${id}"`);
   }
   /* The inactive side recedes: its dot dims so only the selected segment reads
      as lit. */
-  .ba-switch button:not([aria-selected="true"]) .dot {
+  .ba-switch button:not([aria-pressed="true"]) .dot {
     opacity: 0.4;
   }
   .dot.slop {
@@ -504,7 +504,7 @@ if (!demo) throw new Error(`No demo for id "${id}"`);
     const thumb = ba.querySelector<HTMLElement>(".ba-thumb");
     function positionThumb() {
       const active = ba.querySelector<HTMLElement>(
-        '[data-ba][aria-selected="true"]',
+        '[data-ba][aria-pressed="true"]',
       );
       if (!thumb || !active) return;
       // offsetLeft/Width are relative to .ba-switch (the positioned ancestor),
@@ -530,7 +530,7 @@ if (!demo) throw new Error(`No demo for id "${id}"`);
         const wasClean = ba.dataset.show === "after";
         ba.dataset.show = mode;
         ba.querySelectorAll<HTMLButtonElement>("[data-ba]").forEach((b) =>
-          b.setAttribute("aria-selected", String(b.dataset.ba === mode)),
+          b.setAttribute("aria-pressed", String(b.dataset.ba === mode)),
         );
         positionThumb(); // glide the pill onto the newly selected tab
         // Sweep only when actually cleaning (slop → clean), never in reverse.
