@@ -33,11 +33,20 @@ if (!demo) throw new Error(`No demo for id "${id}"`);
 
   <div class={`ba-stage demo-${id}`}>
 
+    {/* .ba-clip / .ba-unclip are inert block wrappers except while the sweep
+        plays: then a static feathered mask hangs on .ba-clip and the pair
+        translate in opposite directions — the mask window sweeps across
+        stationary content. See the sweep CSS below for why (Safari can't
+        animate mask-position; it CAN animate transforms). */}
     <div class="ba-pane" data-pane="before">
-      <Fragment set:html={demo.before} />
+      <div class="ba-clip"><div class="ba-unclip">
+        <Fragment set:html={demo.before} />
+      </div></div>
     </div>
     <div class="ba-pane" data-pane="after">
-      <Fragment set:html={demo.after} />
+      <div class="ba-clip"><div class="ba-unclip">
+        <Fragment set:html={demo.after} />
+      </div></div>
     </div>
 
     {/* Dust-sweep transition overlay — plays only on Slop → Clean. */}
@@ -62,6 +71,11 @@ if (!demo) throw new Error(`No demo for id "${id}"`);
   .ba {
     margin: 0;
     background: transparent;
+    /* Tempo multiplier for the whole sweep (band, masks, dust, total run).
+       1 is the original 840ms wipe; 1.35 (~1.13s wipe, ~1.4s total) lingers
+       just long enough that the reveal registers as a crafted moment without
+       ever feeling like it's making the user wait. */
+    --sweep-t: 1.35;
   }
   .ba-head {
     display: flex;
@@ -194,6 +208,72 @@ if (!demo) throw new Error(`No demo for id "${id}"`);
   .ba[data-show="after"] [data-pane="before"] {
     visibility: hidden;
   }
+  /* While the sweep plays, both panes are visible and share one wipe edge:
+     right of the edge only slop is painted, left of it only clean, so demos
+     with transparent backgrounds can't leak the clean pane through the slop
+     before the broom arrives. The two masks are exact complements (alphas sum
+     to 1 across the ~10%-of-pane feather).
+
+     Mechanism: the masks themselves are STATIC — WebKit/Safari cannot animate
+     mask-position (the computed value interpolates but the paint doesn't
+     follow) — so each pane's mask hangs on a .ba-clip wrapper whose gradient
+     edge sits at the wrapper's left border, and the wrapper slides via
+     translateX while .ba-unclip counter-slides by the exact inverse. Both are
+     the pane's width, so the percentages cancel to the pixel: content stays
+     put, only the mask window moves. Transforms interpolate everywhere.
+
+     The edge is locked to the wipe front's TRAILING edge: the band's
+     translateX spans -130%…300% of its own 45% width, i.e. -58.5% → 135% in
+     stage terms — the same values the wrappers run, on the same bezier and
+     clock, so band and reveal stay in lockstep throughout. `forwards` holds
+     the end state (slop swept off, clean fully shown) until the overlay's
+     fade removes .sweeping and the plain visibility rules take over — they
+     show exactly the same thing, so nothing pops. */
+  .ba.sweeping[data-show="after"] [data-pane="before"] {
+    visibility: visible;
+    z-index: 2;
+  }
+  .ba.sweeping[data-show="after"] .ba-clip {
+    /* A mask's painting area is clipped to the element's BORDER BOX
+       (mask-clip: border-box — WebKit enforces this strictly), so anything
+       the counter-slide pushes outside the box would vanish, shadows
+       included. Instead of relying on mask-clip: no-clip (patchy support),
+       grow the border box itself: -200% side margins + the same padding make
+       it 5 panes wide with the content area back in place, and -50%/50%
+       vertically (margin/padding percentages all resolve against the pane's
+       width) add half-a-pane of shadow headroom above and below. Net layout
+       size is unchanged, so nothing jumps when the sweep starts. The mask
+       then just covers the whole enlarged box; its 39–41% feather (2% of
+       5 panes = 10% of the pane) sits exactly at the content area's left
+       edge, and the box slides 1 pane's width = 20% of itself per 100%. */
+    margin: -50% -200%;
+    padding: 50% 200%;
+    mask-size: 100% 100%;
+    mask-position: 0 0;
+    mask-repeat: no-repeat;
+    animation: clip-slide calc(840ms * var(--sweep-t, 1))
+      cubic-bezier(0.36, 0, 0.3, 1) forwards;
+  }
+  .ba.sweeping[data-show="after"] .ba-unclip {
+    animation: unclip-slide calc(840ms * var(--sweep-t, 1))
+      cubic-bezier(0.36, 0, 0.3, 1) forwards;
+  }
+  .ba.sweeping[data-show="after"] [data-pane="before"] .ba-clip {
+    mask-image: linear-gradient(90deg, transparent 39%, #000 41%);
+  }
+  .ba.sweeping[data-show="after"] [data-pane="after"] .ba-clip {
+    mask-image: linear-gradient(90deg, #000 39%, transparent 41%);
+  }
+  /* clip-slide percentages are of the ENLARGED (5-pane-wide) box: the pane
+     travel of -58.5% → 135% divides by 5. unclip-slide stays in pane units. */
+  @keyframes clip-slide {
+    from { transform: translateX(-11.7%); }
+    to   { transform: translateX(27%); }
+  }
+  @keyframes unclip-slide {
+    from { transform: translateX(58.5%); }
+    to   { transform: translateX(-135%); }
+  }
   /* Tags are absolutely positioned, so display:none here has no height impact. */
   .ba[data-show="before"] .ba-tag.after,
   .ba[data-show="after"] .ba-tag.before {
@@ -224,8 +304,10 @@ if (!demo) throw new Error(`No demo for id "${id}"`);
      Switching Slop → Clean sweeps the pane: a faint wipe front slides left →
      right and carries the dust off with it. The specks start visible, then
      get pushed sideways with a little motion blur — so it reads as being
-     swept, not twinkling. No rise, no reveal; just the sweep. Removed under
-     reduced-motion. `.ba-sweep`'s own fade is the JS end-signal. */
+     swept, not twinkling. Behind the front, the slop pane itself is masked
+     away (see slop-erase above), so the clean pane surfaces in its wake.
+     Removed under reduced-motion. `.ba-sweep`'s own fade is the JS
+     end-signal. */
   .ba-sweep {
     position: absolute;
     inset: 0;
@@ -282,33 +364,35 @@ if (!demo) throw new Error(`No demo for id "${id}"`);
   .m18 { left: 91%; top: 36%; }
 
   .ba.sweeping .ba-sweep {
-    animation: sweep-run 1040ms linear;
+    animation: sweep-run calc(1040ms * var(--sweep-t, 1)) linear;
   }
   .ba.sweeping .ba-sweep::before {
-    animation: wipe-front 840ms cubic-bezier(0.36, 0, 0.3, 1) forwards;
+    animation: wipe-front calc(840ms * var(--sweep-t, 1))
+      cubic-bezier(0.36, 0, 0.3, 1) forwards;
   }
   .ba.sweeping .mote {
     /* ease-in: sit, then accelerate off — like being flicked by the sweep */
-    animation: dust-sweep 430ms cubic-bezier(0.42, 0, 0.7, 0.4) forwards;
+    animation: dust-sweep calc(430ms * var(--sweep-t, 1))
+      cubic-bezier(0.42, 0, 0.7, 0.4) forwards;
   }
-  .ba.sweeping .m1  { animation-delay: 20ms; }
-  .ba.sweeping .m2  { animation-delay: 50ms; }
-  .ba.sweeping .m3  { animation-delay: 80ms; }
-  .ba.sweeping .m4  { animation-delay: 110ms; }
-  .ba.sweeping .m5  { animation-delay: 145ms; }
-  .ba.sweeping .m6  { animation-delay: 180ms; }
-  .ba.sweeping .m7  { animation-delay: 215ms; }
-  .ba.sweeping .m8  { animation-delay: 250ms; }
-  .ba.sweeping .m9  { animation-delay: 285ms; }
-  .ba.sweeping .m10 { animation-delay: 320ms; }
-  .ba.sweeping .m11 { animation-delay: 355ms; }
-  .ba.sweeping .m12 { animation-delay: 390ms; }
-  .ba.sweeping .m13 { animation-delay: 425ms; }
-  .ba.sweeping .m14 { animation-delay: 455ms; }
-  .ba.sweeping .m15 { animation-delay: 485ms; }
-  .ba.sweeping .m16 { animation-delay: 510ms; }
-  .ba.sweeping .m17 { animation-delay: 535ms; }
-  .ba.sweeping .m18 { animation-delay: 560ms; }
+  .ba.sweeping .m1  { animation-delay: calc(20ms * var(--sweep-t, 1)); }
+  .ba.sweeping .m2  { animation-delay: calc(50ms * var(--sweep-t, 1)); }
+  .ba.sweeping .m3  { animation-delay: calc(80ms * var(--sweep-t, 1)); }
+  .ba.sweeping .m4  { animation-delay: calc(110ms * var(--sweep-t, 1)); }
+  .ba.sweeping .m5  { animation-delay: calc(145ms * var(--sweep-t, 1)); }
+  .ba.sweeping .m6  { animation-delay: calc(180ms * var(--sweep-t, 1)); }
+  .ba.sweeping .m7  { animation-delay: calc(215ms * var(--sweep-t, 1)); }
+  .ba.sweeping .m8  { animation-delay: calc(250ms * var(--sweep-t, 1)); }
+  .ba.sweeping .m9  { animation-delay: calc(285ms * var(--sweep-t, 1)); }
+  .ba.sweeping .m10 { animation-delay: calc(320ms * var(--sweep-t, 1)); }
+  .ba.sweeping .m11 { animation-delay: calc(355ms * var(--sweep-t, 1)); }
+  .ba.sweeping .m12 { animation-delay: calc(390ms * var(--sweep-t, 1)); }
+  .ba.sweeping .m13 { animation-delay: calc(425ms * var(--sweep-t, 1)); }
+  .ba.sweeping .m14 { animation-delay: calc(455ms * var(--sweep-t, 1)); }
+  .ba.sweeping .m15 { animation-delay: calc(485ms * var(--sweep-t, 1)); }
+  .ba.sweeping .m16 { animation-delay: calc(510ms * var(--sweep-t, 1)); }
+  .ba.sweeping .m17 { animation-delay: calc(535ms * var(--sweep-t, 1)); }
+  .ba.sweeping .m18 { animation-delay: calc(560ms * var(--sweep-t, 1)); }
 
   @keyframes sweep-run {
     0%   { opacity: 0; }
@@ -349,7 +433,7 @@ if (!demo) throw new Error(`No demo for id "${id}"`);
      so it inherits the reduced-motion gate too. */
   let audioCtx: AudioContext | null = null;
 
-  function playSweepSound() {
+  function playSweepSound(tempo = 1) {
     // Muted by the top-right speaker toggle? Stay silent. (data-sound is the
     // single source of truth, resolved pre-paint and persisted to localStorage.)
     if (document.documentElement.dataset.sound === "off") return;
@@ -368,15 +452,15 @@ if (!demo) throw new Error(`No demo for id "${id}"`);
       // One soft, lightly low-passed noise bed, reused by every layer below at
       // different read offsets — so nothing is a raw hiss and no two strokes
       // sound identical.
-      const secs = 1.4;
+      const secs = 2.2;
       const frames = Math.floor(ctx.sampleRate * secs);
       const buf = ctx.createBuffer(1, frames, ctx.sampleRate);
       const ch = buf.getChannelData(0);
       let lp = 0;
       for (let i = 0; i < frames; i++) {
         const w = Math.random() * 2 - 1;
-        lp = lp * 0.55 + w * 0.45; // gentle low-pass — airy "shhh", not harsh hiss
-        ch[i] = lp;
+        lp = lp * 0.65 + w * 0.35; // darker low-pass — a soft "shhh" bed with
+        ch[i] = lp; // the abrasive top end already gone at the source
       }
       const pan = (node: AudioNode, amount: number): AudioNode => {
         if (!ctx.createStereoPanner) return node;
@@ -386,85 +470,67 @@ if (!demo) throw new Error(`No demo for id "${id}"`);
         return p;
       };
 
-      // ── Three brush strokes ──────────────────────────────────────────────
-      // Real sweeping isn't one whoosh — it's shhk · shhk · shhk. Each stroke is
-      // a short noise burst, band-passed with a centre that rises as the bristles
-      // catch then falls as they lift, softly enveloped so there's no click, and
-      // nudged further right than the last — a hand brushing across, left → right,
-      // in time with the wipe front.
-      const strokes = [
-        { at: 0.0,  dur: 0.26, off: 0.1,  span: -0.5, peak: 2100, gain: 0.14 },
-        { at: 0.18, dur: 0.25, off: 0.5,  span: 0.0,  peak: 2500, gain: 0.13 },
-        { at: 0.35, dur: 0.28, off: 0.95, span: 0.5,  peak: 2900, gain: 0.12 },
-      ];
-      for (const s of strokes) {
-        const at = now + s.at;
-        const src = ctx.createBufferSource();
-        src.buffer = buf;
-
-        const hp = ctx.createBiquadFilter();
-        hp.type = "highpass";
-        hp.frequency.value = 650; // keep it airy, drop the low rumble
-
-        const band = ctx.createBiquadFilter();
-        band.type = "bandpass";
-        band.Q.value = 0.9;
-        band.frequency.setValueAtTime(s.peak * 0.55, at);
-        band.frequency.linearRampToValueAtTime(s.peak, at + s.dur * 0.45);
-        band.frequency.exponentialRampToValueAtTime(s.peak * 0.6, at + s.dur);
-
-        const g = ctx.createGain();
-        g.gain.setValueAtTime(0.0001, at);
-        g.gain.exponentialRampToValueAtTime(s.gain, at + 0.03); // soft attack
-        g.gain.exponentialRampToValueAtTime(0.0001, at + s.dur); // gentle release
-
-        src.connect(hp).connect(band).connect(g);
-        pan(g, s.span).connect(out);
-        src.start(at, s.off, s.dur + 0.05);
-        src.stop(at + s.dur + 0.06);
-      }
-
-      // ── Low body ─────────────────────────────────────────────────────────
-      // A warm low "whoom" under the strokes — the weight of the surface being
-      // brushed — so the sweep has body instead of thin top-end hiss.
+      // ── One soft breath of air ───────────────────────────────────────────
+      // The broom itself is nearly subliminal now: a single dark, low-passed
+      // swell of air that glides across the stereo field with the wipe —
+      // motion, not noise. Literal brush-noise kept reading as clatter no
+      // matter how it was filtered, so for a UI flourish "pleasant" wins over
+      // "realistic" and all the character moves into the pitched run below.
       {
+        const dur = 0.8 * tempo;
         const src = ctx.createBufferSource();
         src.buffer = buf;
         const low = ctx.createBiquadFilter();
         low.type = "lowpass";
-        low.Q.value = 0.4;
-        low.frequency.setValueAtTime(480, now);
-        low.frequency.linearRampToValueAtTime(820, now + 0.42);
-        low.frequency.linearRampToValueAtTime(380, now + 0.72);
+        low.Q.value = 0.5;
+        low.frequency.value = 950;
         const g = ctx.createGain();
         g.gain.setValueAtTime(0.0001, now);
-        g.gain.exponentialRampToValueAtTime(0.055, now + 0.12);
-        g.gain.exponentialRampToValueAtTime(0.0001, now + 0.72);
-        src.connect(low).connect(g).connect(out);
-        src.start(now, 0.2, 0.75);
-        src.stop(now + 0.76);
+        g.gain.linearRampToValueAtTime(0.05, now + dur * 0.45);
+        g.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+        src.connect(low).connect(g);
+        let tail: AudioNode = g;
+        if (ctx.createStereoPanner) {
+          const p = ctx.createStereoPanner();
+          p.pan.setValueAtTime(-0.6, now);
+          p.pan.linearRampToValueAtTime(0.6, now + dur);
+          g.connect(p);
+          tail = p;
+        }
+        tail.connect(out);
+        src.start(now, 0.1, dur + 0.05);
+        src.stop(now + dur + 0.06);
       }
 
-      // ── Clean gleam ──────────────────────────────────────────────────────
-      // A light, airy two-note lift as the dust clears — soft and consonant, a
-      // gentle "all clean", not a bell ping.
-      const gleam = [
-        { f: 2093.0, t: 0.46 }, // C7
-        { f: 2637.0, t: 0.55 }, // E7
+      // ── Sparkle run ──────────────────────────────────────────────────────
+      // The sweep itself is melody: dust lifting off as a quick pentatonic
+      // run, C5 climbing to C6 in six soft plucks under the wipe, panning
+      // left → right with the band. Pentatonic means every interval lands
+      // consonant, and closing on the octave (C5 → C6) already resolves the
+      // phrase — no separate end-chime needed, the last pluck IS the "clean".
+      const run = [
+        { f: 523.25, at: 0.05 }, // C5
+        { f: 587.33, at: 0.14 }, // D5
+        { f: 659.25, at: 0.23 }, // E5
+        { f: 783.99, at: 0.32 }, // G5
+        { f: 880.0, at: 0.41 }, // A5
+        { f: 1046.5, at: 0.5 }, // C6
       ];
-      for (const { f, t } of gleam) {
-        const at = now + t;
+      run.forEach(({ f, at }, i) => {
+        const t0 = now + at * tempo;
         const osc = ctx.createOscillator();
         osc.type = "sine";
         osc.frequency.value = f;
         const g = ctx.createGain();
-        g.gain.setValueAtTime(0.0001, at);
-        g.gain.exponentialRampToValueAtTime(0.03, at + 0.04); // soft, no ping
-        g.gain.exponentialRampToValueAtTime(0.0001, at + 0.5); // airy decay
-        osc.connect(g).connect(out);
-        osc.start(at);
-        osc.stop(at + 0.52);
-      }
+        const peak = 0.012 + i * 0.0016; // a gentle crescendo up the scale
+        g.gain.setValueAtTime(0.0001, t0);
+        g.gain.exponentialRampToValueAtTime(peak, t0 + 0.025);
+        g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.4);
+        osc.connect(g);
+        pan(g, -0.55 + (i / (run.length - 1)) * 1.1).connect(out);
+        osc.start(t0);
+        osc.stop(t0 + 0.42);
+      });
     } catch {
       /* audio is a nicety — never let it break the toggle */
     }
@@ -538,7 +604,14 @@ if (!demo) throw new Error(`No demo for id "${id}"`);
           ba.classList.remove("sweeping");
           void ba.offsetWidth; // reflow so the animation restarts on re-click
           ba.classList.add("sweeping");
-          playSweepSound(); // whoosh + gleam, timed to the visual wipe
+          // Match the sound's pace to the CSS tempo so strokes ride the band.
+          const tempo =
+            parseFloat(getComputedStyle(ba).getPropertyValue("--sweep-t")) || 1;
+          playSweepSound(tempo); // brush strokes + gleam, timed to the wipe
+        } else if (mode === "before") {
+          // Flipping back mid-sweep: cancel it, or the returning slop pane
+          // would still be wearing the half-finished erase mask.
+          ba.classList.remove("sweeping");
         }
       });
     });

@@ -1317,22 +1317,24 @@
    visible concentric steps, a blocky halo behind the card that no real light
    would cast. So (like the atmosphere/alert demos) this one pins a fixed DARK
    surface in both site themes; literal colours, not tokens, so the sample
-   never flips to light. before: a small dark card under a huge, spread-out
-   pure-black shadow that blocks up into banded rings. after: a hairline plus
-   one tight contact shadow — believable elevation, no fog. */
+   never flips to light. Both panes share the SAME stage, card, ring, and ink
+   (Linear's real dark surfaces) so the comparison isolates the one variable
+   that is the tell: before, a huge spread-out fog of shadow; after, the tight
+   contact shadow Linear actually uses. */
 .demo-oversized-shadow .sha {
   width: 100%;
   display: grid;
   place-items: center;
   padding: clamp(2.75rem, 9vw, 4.5rem) 1.5rem;
-  background: #1a1b21;
+  background: #0f1010;
   border-radius: var(--radius-lg);
 }
 .demo-oversized-shadow .card {
   width: 100%;
   max-width: 15rem;
   padding: 1rem 1.15rem;
-  background: #24262e;
+  background: #1d1e22;
+  border: 1px solid #212224;
   border-radius: var(--radius-lg);
   text-align: left;
 }
@@ -1341,12 +1343,12 @@
   font-size: var(--step-1);
   font-weight: 640;
   letter-spacing: -0.01em;
-  color: #eaeef5;
+  color: #e3e3e5;
 }
 .demo-oversized-shadow .s {
   margin: 0.3rem 0 0;
   font-size: var(--step--1);
-  color: #98a1b2;
+  color: #949496;
 }
 /* before: a big spread + blur pure-black shadow on near-black renders as an
    oversized dark rounded-rect whose fade posterises into visible steps. */
@@ -1355,20 +1357,12 @@
     0 6px 18px 2px rgba(0, 0, 0, 0.5),
     0 16px 44px 16px rgba(0, 0, 0, 0.48);
 }
-/* after: Linear's real dark surfaces + its actual elevation — stage #0f1010,
-   card raised to #1d1e22 with a #212224 ring, lifted by the same tight contact
-   shadow Linear uses (a 4px blur pulled in with negative spread + a 1px seat).
-   Believable elevation, no fog, no banding. */
-.demo-oversized-shadow .clean.sha {
-  background: #0f1010;
-}
+/* after: identical card, believable elevation — the same tight contact shadow
+   Linear uses (a 4px blur pulled in with negative spread + a 1px seat). No
+   fog, no banding. */
 .demo-oversized-shadow .clean .card {
-  background: #1d1e22;
-  border: 1px solid #212224;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5), 0 4px 4px -1px rgba(0, 0, 0, 0.3);
 }
-.demo-oversized-shadow .clean .h { color: #e3e3e5; }
-.demo-oversized-shadow .clean .s { color: #949496; }
 
 /* 10 kicker above every heading ---------------------------------------------
    before: three sections, each opening with the same tracked-caps hat that
