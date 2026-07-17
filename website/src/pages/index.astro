@@ -542,7 +542,10 @@ const principles = [
     background: #0e0f12;
     border: 1px solid #2a2c31;
     border-radius: 0;
-    padding: 0.15rem 0.5rem;
+    /* SF Mono's ascent overshoots its x-height far more than its descent
+       hangs, so a `normal` line box parks the word ~1px low — split the
+       vertical padding unevenly to re-center it optically. */
+    padding: 0.09rem 0.5rem 0.21rem;
     cursor: pointer;
     opacity: 0;
     transition: opacity 0.12s var(--ease);
