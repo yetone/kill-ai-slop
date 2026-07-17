@@ -79,6 +79,15 @@ node skill/scripts/scan.mjs path/to/project          # grouped report
 node skill/scripts/scan.mjs path/to/project --json    # machine-readable
 ```
 
+`--only=` / `--skip=` filter by tell id, `--exclude=` drops paths,
+`--rules=extra.mjs` loads your own language- or stack-specific tells, and
+`deslop-ignore` comment directives suppress hits you've confirmed as
+intentional — see `skill/README.md`.
+
+## License
+
+[Apache-2.0](LICENSE).
+
 The scanner is dependency-free and never edits files. In an Agent-Skills host
 (e.g. Claude Code), invoke the skill and it will scan, triage, report, then fix,
 following `skill/SKILL.md`. See `skill/references/` for the taxonomy, detection

@@ -17,8 +17,8 @@ tiles, kickers over every heading, full-sentence display headlines, flat type
 hierarchies, springy hover effects, all-caps stat-card grids, invented stat
 rows, 01/02/03 section markers, cards nested in cards, monotone one-gap
 spacing, the default Inter/Space Grotesk look, and the "tasteful terminal"
-default. It works across HTML/CSS, React/Vue/Svelte/Astro, Tailwind, and
-Markdown copy.
+default. It works across HTML/CSS, React/Vue/Svelte/Astro, Tailwind, PHP/Twig
+templates (WordPress themes and plugins included), and Markdown copy.
 
 ## Install — just ask your agent
 
@@ -82,6 +82,23 @@ Every hit is a lead to confirm by reading the code, not a verdict. A gradient, a
 serif, or an emoji can be a real, defended choice. The skill flags defaults and
 keeps anything you clearly decided.
 
+For hits you've confirmed as intentional, and for narrower scans, the scanner
+supports:
+
+```bash
+node scripts/scan.mjs src --only=01,06        # scan just these tells
+node scripts/scan.mjs src --skip=19,26        # everything but these
+node scripts/scan.mjs src --exclude=legacy    # drop paths (substring match)
+node scripts/scan.mjs src --rules=my.mjs      # load extra project/language tells
+```
+
+and comment directives in source: `deslop-ignore` (this line),
+`deslop-ignore-next-line`, and `deslop-ignore-file` — each optionally scoped to
+tell ids, e.g. `/* deslop-ignore-next-line 06 */`. Prefer the id-scoped forms so
+new tells still surface. `scripts/rules.ru.mjs` ships as a working example of a
+`--rules` module (Russian AI-copywriting tells) and the template for your own
+language- or stack-specific rules.
+
 ## What's inside
 
 | File | |
@@ -91,3 +108,4 @@ keeps anything you clearly decided.
 | `references/detection.md` | The code patterns per tell, and their false positives. |
 | `references/fixes.md` | Before→after remediation patterns. |
 | `scripts/scan.mjs` | The dependency-free scanner. |
+| `scripts/rules.ru.mjs` | Example `--rules` module: Russian copy tells. |

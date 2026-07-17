@@ -14,7 +14,8 @@ description: >-
   over every heading, flat type
   hierarchies, invented stat rows (10k+ / 99.9% / 24/7), 01/02/03 section
   markers, cards nested in cards, the default Inter/Space Grotesk look, and
-  more. Works on HTML/CSS, React/Vue/Svelte/Astro, Tailwind, and Markdown copy.
+  more. Works on HTML/CSS, React/Vue/Svelte/Astro, Tailwind, PHP, and Markdown
+  copy.
 ---
 
 # Kill AI Slop
@@ -55,6 +56,14 @@ node scripts/scan.mjs <root> --json   # machine-readable, for triage
 
 It is pure Node (no dependencies) and never edits files. Use its output as a
 starting map, not gospel — confirm each hit by reading the code.
+
+To narrow a scan: `--only=01,06` / `--skip=19` filter by tell id, and
+`--exclude=legacy` drops paths (substring match on the project-relative path).
+`--rules=extra.mjs` loads additional project- or language-specific tells
+(`scripts/rules.ru.mjs` is a shipped Russian-copy example and the template for
+your own). Hits the user has confirmed as intentional can be pinned in source
+with `deslop-ignore`, `deslop-ignore-next-line 06`, or `deslop-ignore-file`
+comments — prefer the id-scoped forms so new tells still surface.
 
 ### 3. Triage
 For every hit, open the file and decide **slop vs. intentional**. This is the

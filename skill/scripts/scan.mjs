@@ -9,19 +9,46 @@
 
   Usage:
     node scan.mjs [root] [--json] [--no-color]
+                  [--only=01,06] [--skip=19] [--exclude=path] [--rules=extra.mjs]
+
+  Suppressing confirmed-intentional hits, in source comments:
+    deslop-ignore [ids…]            suppress hits on the same line
+    deslop-ignore-next-line [ids…]  suppress hits on the next line
+    deslop-ignore-file [ids…]       suppress hits in the whole file
+  Without ids the directive suppresses every tell; with ids (e.g. 06 19) only those.
 */
 
-import { readFileSync, readdirSync, statSync } from "node:fs";
-import { fileURLToPath } from "node:url";
+import { readFileSync, readdirSync, realpathSync, statSync } from "node:fs";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { dirname, extname, join, relative, resolve } from "node:path";
 
 const args = process.argv.slice(2);
 const root = args.find((a) => !a.startsWith("-")) || ".";
 const asJson = args.includes("--json");
+const normalizeId = (value) => (/^\d+$/.test(value) ? value.padStart(2, "0") : value);
+const flagValues = (name) =>
+  args
+    .filter((a) => a.startsWith(`--${name}=`))
+    .flatMap((a) => a.slice(name.length + 3).split(","))
+    .map((s) => s.trim())
+    .filter(Boolean);
+const onlyIds = new Set(flagValues("only").map(normalizeId));
+const skipIds = new Set(flagValues("skip").map(normalizeId));
+const excludes = flagValues("exclude");
+const rulesFiles = flagValues("rules");
 const useColor =
   !args.includes("--no-color") && process.stdout.isTTY && !asJson;
-const resolvedRoot = resolve(root);
-const skillRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+// realpath both roots so the "skip the skill's own files" check still works
+// when one path arrives through a symlink (macOS /var/folders vs /private/var).
+const realpathOr = (p) => {
+  try {
+    return realpathSync(p);
+  } catch {
+    return p;
+  }
+};
+const resolvedRoot = realpathOr(resolve(root));
+const skillRoot = realpathOr(resolve(dirname(fileURLToPath(import.meta.url)), ".."));
 const escapeTerminal = (text) => text.replace(/[\0-\x1f\x7f-\x9f]/g, (char) =>
   `\\x${char.codePointAt(0).toString(16).padStart(2, "0")}`,
 );
@@ -35,6 +62,7 @@ const EXTS = new Set([
   ".html", ".css", ".scss", ".sass", ".less",
   ".tsx", ".jsx", ".ts", ".js", ".mjs", ".cjs",
   ".vue", ".svelte", ".astro", ".md", ".mdx",
+  ".php", ".twig",
 ]);
 
 // A tell: id, human name, one-line fix, and the line patterns that flag it.
@@ -237,6 +265,45 @@ const TELLS = [
     ] },
 ];
 
+// Extra rule modules (--rules=file.mjs): each exports an array of tells shaped
+// like the entries above. Patterns may be RegExp or plain strings (compiled
+// case-insensitive). Lets language- or stack-specific rules live outside core.
+for (const rulesPath of rulesFiles) {
+  let extra;
+  try {
+    const mod = await import(pathToFileURL(resolve(rulesPath)).href);
+    extra = mod.default ?? mod.tells;
+  } catch (err) {
+    console.error(`Could not load rules file ${escapeTerminal(rulesPath)}: ${err.message}`);
+    process.exit(1);
+  }
+  if (!Array.isArray(extra)) {
+    console.error(`Rules file ${escapeTerminal(rulesPath)} must export an array of tells`);
+    process.exit(1);
+  }
+  for (const tell of extra) {
+    if (!tell || typeof tell.id !== "string" || typeof tell.name !== "string" ||
+        !Array.isArray(tell.patterns) || tell.patterns.length === 0) {
+      console.error(`Rules file ${escapeTerminal(rulesPath)}: each tell needs a string id, a name, and a non-empty patterns array`);
+      process.exit(1);
+    }
+    TELLS.push({
+      id: tell.id,
+      group: tell.group || "custom",
+      name: tell.name,
+      fix: tell.fix || "",
+      copy: Boolean(tell.copy),
+      patterns: tell.patterns.map((p) => (p instanceof RegExp ? p : new RegExp(p, "iu"))),
+    });
+  }
+}
+
+const isExcluded = (path) => {
+  if (excludes.length === 0) return false;
+  const rel = relative(resolvedRoot, path);
+  return excludes.some((token) => rel.includes(token));
+};
+
 function walk(dir, files = []) {
   if (resolve(dir) === skillRoot) return files;
   let entries;
@@ -250,6 +317,7 @@ function walk(dir, files = []) {
       if (SKIP_DIRS.has(e.name)) continue;
     }
     const full = join(dir, e.name);
+    if (isExcluded(full)) continue;
     if (e.isDirectory()) {
       if (SKIP_DIRS.has(e.name) || resolve(full) === skillRoot) continue;
       walk(full, files);
@@ -275,6 +343,42 @@ function scanFile(path) {
   }
   const isCode = extname(path) !== ".md";
   const lines = text.split(/\r?\n/);
+
+  // deslop-ignore directives, parsed once per file. Ids are the tokens after
+  // the directive that contain a digit ("06", "ru-14"); none means all tells.
+  const parseIds = (tail) => {
+    const ids = (tail.match(/[\w-]+/g) || []).filter((t) => /\d/.test(t)).map(normalizeId);
+    return ids.length ? new Set(ids) : null; // null = every tell
+  };
+  const lineIgnores = new Map(); // lineIndex -> null (all) | Set of ids
+  let fileIgnore; // undefined | null (all) | Set of ids
+  const addLineIgnore = (idx, ids) => {
+    if (idx < 0 || idx >= lines.length || lineIgnores.get(idx) === null) return;
+    if (ids === null) return void lineIgnores.set(idx, null);
+    const set = lineIgnores.get(idx) || new Set();
+    for (const id of ids) set.add(id);
+    lineIgnores.set(idx, set);
+  };
+  for (let i = 0; i < lines.length; i++) {
+    const m = lines[i].match(/deslop-ignore(-file|-next-line)?\b(.*)$/);
+    if (!m) continue;
+    const ids = parseIds(m[2]);
+    if (m[1] === "-file") {
+      if (ids === null) fileIgnore = null;
+      else if (fileIgnore !== null) {
+        fileIgnore = fileIgnore || new Set();
+        for (const id of ids) fileIgnore.add(id);
+      }
+    } else if (m[1] === "-next-line") addLineIgnore(i + 1, ids);
+    else addLineIgnore(i, ids);
+  }
+  if (fileIgnore === null) return [];
+  const isSuppressed = (id, lineIndex) => {
+    if (fileIgnore && fileIgnore.has(id)) return true;
+    const ig = lineIgnores.get(lineIndex);
+    return ig === null || (ig !== undefined && ig.has(id));
+  };
+
   const lineStarts = [0];
   for (let index = text.indexOf("\n"); index !== -1; index = text.indexOf("\n", index + 1)) {
     lineStarts.push(index + 1);
@@ -282,6 +386,8 @@ function scanFile(path) {
   const hits = [];
   const seen = new Set();
   for (const tell of TELLS) {
+    if (onlyIds.size > 0 && !onlyIds.has(tell.id)) continue;
+    if (skipIds.has(tell.id)) continue;
     if (!tell.copy && !isCode) continue; // code-only tell in a prose file
     for (const pattern of tell.patterns) {
       const matcher = new RegExp(pattern.source, `${pattern.flags}g`);
@@ -298,7 +404,7 @@ function scanFile(path) {
         const line = lines[lineIndex];
         if (line.length > 2000) continue; // minified-ish
         const key = `${tell.id}:${lineIndex}`;
-        if (!seen.has(key)) {
+        if (!seen.has(key) && !isSuppressed(tell.id, lineIndex)) {
           seen.add(key);
           hits.push({ tell, line: lineIndex + 1, text: line.trim().slice(0, 100) });
         }

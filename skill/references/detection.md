@@ -4,11 +4,26 @@ Concrete signals for each tell. `scripts/scan.mjs` encodes these; this file is
 the human reference and the place to widen patterns for a specific stack.
 
 **Scan scope.** Frontend source only: `.html .css .scss .tsx .jsx .ts .js .vue
-.svelte .astro .md .mdx` plus `tailwind.config.*`. Skip `node_modules dist build
-.git out .next .astro coverage vendor` and anything `*.min.*` or a lockfile.
+.svelte .astro .md .mdx .php .twig` plus `tailwind.config.*`. Skip
+`node_modules dist build .git out .next .astro coverage vendor` and anything
+`*.min.*` or a lockfile.
 
 **Every match is a lead, not a verdict.** Open the file and confirm. The false
 positives noted below are the usual ways a pattern lies.
+
+**Suppression.** Once the user has defended a hit, pin the decision so re-scans
+stay quiet: `--only=` / `--skip=` filter by tell id, `--exclude=` drops paths,
+and comment directives suppress in source — `deslop-ignore` (this line),
+`deslop-ignore-next-line`, `deslop-ignore-file`, each optionally followed by
+tell ids (`/* deslop-ignore-next-line 06 */`). Prefer id-scoped directives so
+other tells still surface on those lines.
+
+**Extension.** `--rules=extra.mjs` loads additional tells (same shape as the
+core ones; string patterns compile case-insensitive). Use it for
+language-specific copy rules — English patterns like tell 14's don't fire on
+non-English slop. `scripts/rules.ru.mjs` is a shipped Russian example. Remember
+JavaScript's `\b` is ASCII-only: it never matches next to Cyrillic and most
+non-Latin scripts, so write plain substrings instead.
 
 ---
 
