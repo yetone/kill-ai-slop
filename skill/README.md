@@ -2,7 +2,7 @@
 
 Scan a web project for **AI slop**, the generic machine-default visual and copy
 tics of vibe-coded products, and strip it out. This skill turns the catalogue at
-**[killaislop.com](https://killaislop.com)** into action: it detects 33 tells
+**[killaislop.com](https://killaislop.com)** into action: it detects 34 tells
 from their code-level signals, explains why each reads as machine-made, and
 proposes or applies the clean fix.
 
@@ -16,8 +16,9 @@ AI-drawn SVG icons, icon-in-a-tint-of-itself
 tiles, kickers over every heading, full-sentence display headlines, flat type
 hierarchies, springy hover effects, all-caps stat-card grids, invented stat
 rows, 01/02/03 section markers, cards nested in cards, monotone one-gap
-spacing, the default Inter/Space Grotesk look, and the "tasteful terminal"
-default. It works across HTML/CSS, React/Vue/Svelte/Astro, Tailwind, PHP/Twig
+spacing, the default Inter/Space Grotesk look, the "tasteful terminal"
+default, and the editorial-serif dashboard costume. It works across
+HTML/CSS, React/Vue/Svelte/Astro, Tailwind, PHP/Twig
 templates (WordPress themes and plugins included), and Markdown copy.
 
 ## Install — just ask your agent
@@ -104,7 +105,7 @@ language- or stack-specific rules.
 | File | |
 |---|---|
 | `SKILL.md` | The skill definition, workflow, and guardrails. |
-| `references/taxonomy.md` | The 33 tells: what each is, why it's slop, the fix. |
+| `references/taxonomy.md` | The 34 tells: what each is, why it's slop, the fix. |
 | `references/detection.md` | The code patterns per tell, and their false positives. |
 | `references/fixes.md` | Before→after remediation patterns. |
 | `scripts/scan.mjs` | The dependency-free scanner. |

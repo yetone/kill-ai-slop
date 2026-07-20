@@ -749,6 +749,31 @@ const rawEntries: Omit<Entry, "n">[] = [
     detect: ["mono font on all UI chrome", "ASCII-art hero banner", "near-black + single warm accent", "everything looks like a CLI"],
     demo: "tasteful-terminal",
   },
+  {
+    id: "editorial-dashboard",
+    tier: 2,
+    group: "evolved",
+    title: { zh: "杂志风仪表盘", en: "The editorial dashboard" },
+    what: {
+      zh: "把操作界面穿成杂志：衬线大字的「Good evening」问候标题，stat 卡片里连数字都是衬线，奶油纸底，每块内容头上一行拉宽字距的眉标。",
+      en: "An operational UI dressed as a magazine: a giant serif ‘Good evening’ greeting, serif numerals in the stat cards, cream paper, a tracked-caps kicker over every block.",
+    },
+    why: {
+      zh: "这是第二波制服：蓝紫渐变挨过骂之后，模型对「品味」的新速记就是奶油纸底 + 展示衬线 + 一个深色点缀，不管界面是干什么的都往上套。衬线问候语抄自聊天助手的首页——在那里问候语本身就是内容；而仪表盘的内容是数字。展示衬线和它的不等宽旧体数字恰恰是为正文排版生的，是你没法竖着扫读的那种数字。杂志是从头到尾读一遍的，控制台是一天扫无数遍的。把后者打扮成前者，是穿戏服，不是做决定。",
+      en: "The second-wave uniform: scolded out of indigo gradients, the model's new shorthand for ‘taste’ is cream paper + display serif + one deep accent, stamped on any surface regardless of its job. The serif greeting is lifted from a chat assistant's home screen, where the greeting is the content; a dashboard's content is its numbers. Display serifs with their proportional oldstyle figures are prose type — precisely the numerals you can't scan down a column. A magazine is read once, top to bottom; a console is scanned all day. Dressing one as the other is a costume, not a decision.",
+    },
+    fix: {
+      zh: "让字体服从用途。要被反复扫读的界面，用好读的无衬线加等宽对齐数字，层级靠字号和留白。展示衬线留给真正的编辑型页面：文档、长文、杂志。想要温度，就做一个材质决定——纸色或一味油墨色——而不是整套戏服。",
+      en: "Match the type to the job. A scanned interface takes a legible sans with tabular lining numerals; hierarchy comes from scale and space. Display serif belongs to genuinely editorial surfaces — docs, essays, a magazine. For warmth, make one material decision (a paper tint, an ink accent), not the full costume.",
+    },
+    detect: [
+      "font-serif on a dashboard h1",
+      '"Good evening, {name}" as an app headline',
+      "serif / oldstyle-nums stat numerals",
+      "cream bg + tracked-caps kicker + display serif",
+    ],
+    demo: "editorial-dashboard",
+  },
 ];
 
 // Merge in the Japanese/Korean translations (kept in a separate file so the

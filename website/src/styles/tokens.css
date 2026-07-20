@@ -24,14 +24,20 @@
      grey. Each value keeps its original lightness; only the hue shifts from a
      faint yellow to a faint blue. Ink is close to black but not pure, for a
      printed feel. (Dark mode is intentionally left as-is.) */
-  --paper: #f2f4f6;        /* refined neutral paper, a hair cool off pure white */
-  --paper-2: #e9ebed;      /* recessed panels */
-  --card: #fafcfe;         /* soft white — never clinical pure #fff */
-  --ink: #1a1b1d;          /* rich near-black, faintly cool */
-  --ink-2: #5e5f61;        /* secondary text */
-  --ink-3: #6e7072;        /* meta, captions */
-  --rule: #e1e3e5;         /* hairline rules & borders */
-  --rule-strong: #c5c7c9;
+  --paper: #f6f7fb;        /* luminous paper — lifted out of the old muddy cool
+                              grey so it reads as lit paper, not an admin panel.
+                              Same faint-cool hue, more light in it. */
+  --paper-2: #ebedf3;      /* recessed panels */
+  --card: #ffffff;         /* crisp true white — the card now genuinely lifts off
+                              the paper on its hairline + tight contact shadow,
+                              the way a printed card sits on a page. (Was a soft
+                              off-white that barely separated from the ground.) */
+  --ink: #14151a;          /* deep near-black, faintly cool — deepened for the
+                              crisp ink-on-paper contrast that reads as premium */
+  --ink-2: #53555d;        /* secondary text, pulled out of grey washout */
+  --ink-3: #797c86;        /* meta, captions */
+  --rule: #e6e8ef;         /* hairline rules & borders */
+  --rule-strong: #cccfd9;
 
   /* --- The mark ---------------------------------------------------------
      Ink on bone paper is the identity; the one colour is a deep, muted pine
@@ -83,10 +89,17 @@
   /* --- Structure --------------------------------------------------------- */
   --measure: 68ch;         /* readable prose width */
   --container: 76rem;
+  --radius-sm: 5px;        /* chips, tags, code pills, small controls — the
+                              inner tier of the nesting scale (see the
+                              "corners that don't nest" tell: inner < outer). */
   --radius: 8px;           /* Linear's control radius. Reverse-engineered from
                               the running app: 8px is by far its dominant corner
                               (buttons, segmented controls, list rows, nav).
-                              Not a pill for chrome — a modest, consistent 8. */
+                              Not a pill for chrome — a modest, consistent 8.
+                              These tokens existed but the site's own chrome was
+                              hardcoding `border-radius: 0` against them; the
+                              corners are now wired back to the scale they define
+                              — softened edges are where restraint turns elegant. */
   --radius-lg: 12px;        /* Linear's larger surfaces — its modal/dialog radius */
   --hair: 1px;
 
@@ -96,11 +109,23 @@
      faintly recessed canvas. Never a diffuse drop, never a glow. Its own popover
      shadow resolves to `0 4px 4px -1px rgba(0,0,0,.04), 0 1px 1px rgba(0,0,0,.08)`;
      e2 mirrors that shape. */
-  --shadow-e1: 0 1px 1px rgba(18, 19, 22, 0.06);
+  --shadow-e1: 0 1px 2px rgba(20, 21, 26, 0.05);
   --shadow-e2:
-    0 1px 1px rgba(18, 19, 22, 0.08), 0 4px 4px -1px rgba(18, 19, 22, 0.05);
+    0 1px 1px rgba(20, 21, 26, 0.07), 0 4px 10px -3px rgba(20, 21, 26, 0.07);
 
   --ease: cubic-bezier(0.2, 0, 0, 1);
+  /* A softer decelerate for entrances — content arrives quickly then settles,
+     the unmistakable cadence of a considered interface. */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* On high-density displays a CSS half-pixel resolves to a single device pixel —
+   the finest rule the panel can draw. Every hairline on the site sharpens at
+   once; 1x screens keep the 1px fallback. */
+@media (min-resolution: 1.5dppx) {
+  :root {
+    --hair: 0.5px;
+  }
 }
 
 /*

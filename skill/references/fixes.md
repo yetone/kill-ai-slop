@@ -338,3 +338,16 @@ product.
 + <body class="font-sans bg-[--bg] text-[--ink]">
 +   <h1>Welcome</h1>          /* mono stays in <code>/<pre> for actual code */
 ```
+
+### 34 The editorial dashboard
+Type follows the job: sans + tabular lining numerals for scanned surfaces;
+serif display only where the surface is genuinely editorial.
+```diff
+- <h1 class="font-serif text-5xl text-emerald-950">Good evening, Mara.</h1>
+- <p class="italic font-serif text-emerald-800/70">The quiet rhythm of your services.</p>
+- <div class="stat font-serif text-4xl">3</div>
++ <header class="flex items-baseline justify-between">
++   <h1 class="text-sm font-semibold">On-call — payments</h1><time>22:41 UTC</time>
++ </header>
++ <div class="stat text-3xl font-bold tabular-nums">3</div>
+```

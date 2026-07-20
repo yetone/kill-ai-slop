@@ -1772,3 +1772,132 @@
   font-size: 0.72rem;
   color: var(--ink-3);
 }
+
+/* 34 the editorial dashboard (evolved) -------------------------------------- */
+/* before: the second-wave "taste" costume — cream paper, deep-green ink, a
+   display-serif greeting, serif oldstyle numerals in the stat cards. Georgia
+   is used deliberately: its default figures ARE oldstyle, so the misaligned,
+   unscannable numerals demo themselves. */
+.demo-editorial-dashboard .mag {
+  width: 100%;
+  max-width: 25rem;
+  margin-inline: auto;
+  padding: 1.2rem 1.3rem 1.3rem;
+  background: #f4efe4;
+  border: 1px solid #e7dfcd;
+  border-radius: 14px;
+  color: #233a2f;
+  text-align: left;
+}
+.demo-editorial-dashboard .mag .ey {
+  margin: 0 0 0.45rem;
+  font-size: 0.6rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 640;
+  color: #3e6b52;
+}
+.demo-editorial-dashboard .greet {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: var(--step-3);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+.demo-editorial-dashboard .mood {
+  margin: 0.3rem 0 0.9rem;
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-size: 0.8rem;
+  color: #5d7263;
+}
+.demo-editorial-dashboard .mag .row,
+.demo-editorial-dashboard .ops .row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+.demo-editorial-dashboard .mag .kpi {
+  background: #fcf9f2;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(60, 50, 20, 0.08);
+  padding: 0.75rem 0.85rem;
+  display: grid;
+  gap: 0.1rem;
+}
+.demo-editorial-dashboard .mag .k {
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 640;
+  color: #6d7f72;
+}
+.demo-editorial-dashboard .mag .v {
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 400;
+  font-size: 1.5rem;
+  line-height: 1.15;
+}
+.demo-editorial-dashboard .mag .c {
+  font-size: 0.7rem;
+  color: #5d7263;
+}
+/* after: the same console designed for scanning — sans, tabular lining
+   numerals, hierarchy from scale, bold only where it's earned. */
+.demo-editorial-dashboard .ops {
+  width: 100%;
+  max-width: 25rem;
+  margin-inline: auto;
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-e1);
+  text-align: left;
+  overflow: clip;
+}
+.demo-editorial-dashboard .top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.6rem;
+  padding: 0.6rem 0.9rem;
+  border-bottom: 1px solid var(--rule);
+  background: var(--paper-2);
+}
+.demo-editorial-dashboard .top b {
+  font-size: 0.78rem;
+  font-weight: 640;
+}
+.demo-editorial-dashboard .tm {
+  font-size: 0.7rem;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+.demo-editorial-dashboard .ops .row {
+  padding: 0.8rem 0.9rem 0.9rem;
+}
+.demo-editorial-dashboard .ops .kpi {
+  display: grid;
+  gap: 0.12rem;
+}
+.demo-editorial-dashboard .ops .k {
+  font-size: 0.64rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.demo-editorial-dashboard .ops .v {
+  font-size: var(--step-3);
+  font-weight: 680;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+.demo-editorial-dashboard .ops .c {
+  font-size: 0.72rem;
+  color: var(--ink-2);
+}
+.demo-editorial-dashboard .ops .c b {
+  font-weight: 680;
+  color: var(--ink);
+}

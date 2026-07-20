@@ -114,7 +114,7 @@ function. Use `references/fixes.md` for the before→after pattern per tell.
 
 ## References
 
-- `references/taxonomy.md` — the 33 tells: what each is, why it's slop, the fix.
+- `references/taxonomy.md` — the 34 tells: what each is, why it's slop, the fix.
 - `references/detection.md` — concrete ripgrep/regex patterns + false positives.
 - `references/fixes.md` — before→after remediation patterns.
 - `scripts/scan.mjs` — the dependency-free scanner.

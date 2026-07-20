@@ -1,6 +1,6 @@
 # The AI-slop taxonomy
 
-33 tells, in two tiers. **Classic** = widely recognised. **Evolved** = newer
+34 tells, in two tiers. **Classic** = widely recognised. **Evolved** = newer
 defaults that already read as templated. For each: what it is, why it reads as
 machine-made, and the fix. Detection patterns live in `detection.md`; code
 patches in `fixes.md`.
@@ -310,3 +310,19 @@ cooler clothing.
 *Fix:* keep monospace for code, not UI chrome; use ASCII art and terminal
 metaphors only where they serve the product. Real taste is a choice you can
 explain, not this season's safest template.
+
+**34 · The editorial dashboard** — an operational UI dressed as a magazine: a
+giant serif "Good evening" greeting, serif numerals in the stat cards, cream
+paper, a tracked-caps kicker over every block. The second-wave uniform:
+scolded out of indigo gradients, the model's new shorthand for "taste" is
+cream + display serif + one deep accent, stamped on any surface regardless of
+its job. The greeting is lifted from a chat assistant's home screen, where the
+greeting is the content; a dashboard's content is its numbers, and display
+serifs with proportional oldstyle figures are prose type — the numerals you
+can't scan down a column. A magazine is read once; a console is scanned all
+day.
+*Fix:* match the type to the job — a scanned interface takes a legible sans
+with tabular lining numerals, hierarchy from scale and space. Display serif
+belongs to genuinely editorial surfaces (docs, essays, a magazine). For
+warmth, one material decision — a paper tint or an ink accent — not the full
+costume.

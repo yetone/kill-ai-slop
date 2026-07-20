@@ -102,6 +102,18 @@ const ogAlt =
         } catch (e) {}
       })();
     </script>
+    {/* Pre-paint: arm the entrance animation only when motion is welcome. Adding
+        the class before first paint means the hidden initial state is applied
+        with no flash; a reduced-motion or no-JS visitor never gets it and sees
+        everything immediately. */}
+    <script is:inline>
+      (function () {
+        try {
+          if (!matchMedia("(prefers-reduced-motion: reduce)").matches)
+            document.documentElement.classList.add("reveal-ready");
+        } catch (e) {}
+      })();
+    </script>
     {/* Deep-link landing: scroll-behavior is `auto` until this runs, so an
         incoming /#entry link jumps straight to the entry. After the page has
         loaded and we've re-landed on the target (correcting for any layout
@@ -142,6 +154,41 @@ const ogAlt =
       <slot />
     </main>
     <Footer />
+
+    <script>
+      // Entrance motion. Reveals every [data-reveal] block as it enters view.
+      // Fully defensive: reduced-motion or a missing IntersectionObserver
+      // reveals everything at once, and a load-time fallback guarantees nothing
+      // is ever left stranded in the hidden state.
+      const nodes = Array.from(
+        document.querySelectorAll<HTMLElement>("[data-reveal]"),
+      );
+      const revealAll = () => nodes.forEach((n) => n.classList.add("is-in"));
+      const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      if (reduced || !("IntersectionObserver" in window) || !nodes.length) {
+        revealAll();
+      } else {
+        const io = new IntersectionObserver(
+          (entries, obs) => {
+            for (const e of entries) {
+              if (e.isIntersecting) {
+                (e.target as HTMLElement).classList.add("is-in");
+                obs.unobserve(e.target);
+              }
+            }
+          },
+          // Bias slightly into the viewport so a block settles just before it's
+          // fully on screen, never mid-read.
+          { rootMargin: "0px 0px -8% 0px", threshold: 0.01 },
+        );
+        nodes.forEach((n) => io.observe(n));
+        // Safety net: anything still hidden a beat after load gets revealed.
+        window.addEventListener("load", () =>
+          window.setTimeout(revealAll, 1200),
+        );
+      }
+    </script>
     <style>
       .skip {
         position: fixed;
@@ -151,7 +198,7 @@ const ogAlt =
         background: var(--ink);
         color: var(--paper);
         padding: 0.5rem 0.9rem;
-        border-radius: 0;
+        border-radius: var(--radius);
         transition: top 0.15s var(--ease);
       }
       .skip:focus {

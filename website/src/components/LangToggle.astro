@@ -141,7 +141,7 @@ const langs = [
     gap: 0.4rem;
     background: none;
     border: var(--hair) solid var(--rule);
-    border-radius: 0;
+    border-radius: var(--radius);
     color: var(--ink);
     font: inherit;
     font-size: var(--step--1);
@@ -160,7 +160,9 @@ const langs = [
     transform: rotate(180deg);
   }
 
-  /* The menu — a square, ink-on-card panel, matching the site's chrome. */
+  /* The menu — a soft-cornered ink-on-card panel, matching the site's chrome.
+     overflow:clip so the item hover fills clip to the panel's rounded corners
+     instead of poking square past them. */
   .lm-list {
     position: absolute;
     top: calc(100% + 4px);
@@ -171,7 +173,8 @@ const langs = [
     min-width: 100%;
     background: var(--card);
     border: var(--hair) solid var(--rule);
-    border-radius: 0;
+    border-radius: var(--radius);
+    overflow: clip;
     box-shadow: var(--shadow-e2);
   }
   .lm-list[hidden] {

@@ -37,8 +37,16 @@ body {
   font-size: var(--step-0);
   line-height: 1.6;
   font-feature-settings: "kern", "liga", "cv11";
+  /* Optical sizing lets the system face (SF, and others that carry it) render
+     its display cut at large sizes and its text cut small — the single most
+     "typeset, not defaulted" detail available without shipping a font. */
+  font-optical-sizing: auto;
+  /* Punctuation hangs into the margin where the engine supports it (Safari), so
+     the text block reads as an optically straight edge, not a ragged one. */
+  hanging-punctuation: first last;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 h1, h2, h3, h4 {
@@ -56,19 +64,28 @@ h3 { font-size: var(--step-1); letter-spacing: -0.018em; }
 /* CJK display type needs more leading than Latin. The 1.04 above suits Latin
    headings — ascenders/descenders keep stacked lines apart — but CJK glyphs
    fill the em box edge to edge, so at 1.04 the lines nearly touch. Loosen
-   headings for CJK locales only; the Latin look is unchanged. */
+   headings for CJK locales only; the Latin look is unchanged. The negative
+   Latin tracking comes off too: CJK glyphs already fill the em box, so
+   tightening them just makes strokes collide (same fix the .lede got). */
 [data-lang="zh"] :is(h1, h2, h3, h4),
 [data-lang="ja"] :is(h1, h2, h3, h4),
 [data-lang="ko"] :is(h1, h2, h3, h4) {
   line-height: 1.4;
+  letter-spacing: 0;
 }
 
-p { margin: 0; }
+/* `pretty` spends a little layout time to avoid orphans — a lone word on a
+   paragraph's last line is the kind of ragged edge no one typesets on purpose. */
+p { margin: 0; text-wrap: pretty; }
 
 a {
   color: inherit;
   text-decoration-color: var(--rule-strong);
+  text-decoration-thickness: 1px;
   text-underline-offset: 3px;
+  transition:
+    color 0.15s var(--ease),
+    text-decoration-color 0.15s var(--ease);
 }
 a:hover { text-decoration-color: var(--ink); }
 
@@ -82,7 +99,9 @@ code, kbd, samp, pre {
 :focus-visible {
   outline: 2px solid var(--ink);
   outline-offset: 2px;
-  border-radius: 0;
+  /* No radius override: the focus ring follows the element's own corner now
+     that the chrome is rounded, instead of snapping every focused control to a
+     hard square. */
 }
 
 ::selection {
@@ -109,14 +128,17 @@ img { max-width: 100%; display: block; }
 
 /* --- Small shared pieces --------------------------------------------------- */
 
-/* Section eyebrow: a numbered, tracked label. Restrained, not a mono badge. */
+/* Section eyebrow: a numbered, tracked label. Restrained, not a mono badge.
+   Tracking calmed from 0.14em to 0.11em (0.14 shouts; 0.11 is composed), the
+   label lightened to a fine weight so the ink number reads as the anchor. */
 .eyebrow {
   display: flex;
   align-items: baseline;
   gap: var(--s-3);
-  font-size: var(--step--1);
-  letter-spacing: 0.14em;
+  font-size: 0.72rem;
+  letter-spacing: 0.11em;
   text-transform: uppercase;
+  font-weight: 500;
   color: var(--ink-3);
   margin-bottom: var(--s-5);
 }
@@ -124,8 +146,8 @@ img { max-width: 100%; display: block; }
   content: attr(data-index);
   color: var(--ink);
   font-variant-numeric: tabular-nums;
-  font-weight: 620;
-  letter-spacing: 0;
+  font-weight: 640;
+  letter-spacing: 0.02em;
 }
 
 /* Deliberately does nothing: emphasis by weight and structure, not by drawing
@@ -154,6 +176,25 @@ img { max-width: 100%; display: block; }
   font-weight: 400;
   letter-spacing: 0;
   font-size: calc(var(--step-2) * 0.92);
+}
+
+/* --- Entrance motion ------------------------------------------------------- */
+/* Content is fully visible by default, so a no-JS or reduced-motion visitor
+   loses nothing. Only the pre-paint script — and only when motion is welcome —
+   arms the hidden initial state by adding `reveal-ready` before first paint, so
+   there's never a flash of visible-then-hidden. The observer then settles each
+   block in as it enters the viewport. */
+html.reveal-ready [data-reveal] {
+  opacity: 0;
+  transform: translateY(12px);
+  will-change: opacity, transform;
+}
+html.reveal-ready [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.7s var(--ease-out),
+    transform 0.7s var(--ease-out);
 }
 
 /* --- Localized visibility -------------------------------------------------- */

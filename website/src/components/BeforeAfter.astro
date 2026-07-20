@@ -91,7 +91,7 @@ if (!demo) throw new Error(`No demo for id "${id}"`);
   .ba-switch {
     display: inline-flex;
     border: var(--hair) solid var(--rule);
-    border-radius: 0;
+    border-radius: var(--radius);
     overflow: clip;
   }
   /* No sliding thumb in the flat design — the selected segment is marked in
@@ -192,8 +192,10 @@ if (!demo) throw new Error(`No demo for id "${id}"`);
     place-items: center;
     /* Faintly recessed inset plate — with the outer card gone, this subtle
        step down from the page is what sets the specimen apart, no border or
-       shadow needed. */
+       shadow needed. Softened to the large-surface radius so the specimen reads
+       as an inset plate, not a cut rectangle. */
     background: var(--paper-2);
+    border-radius: var(--radius-lg);
   }
   /* Both panes share one grid cell, so the stage always reserves the height of
      the taller pane — toggling slop ⇄ clean never resizes it, so the page
@@ -288,7 +290,7 @@ if (!demo) throw new Error(`No demo for id "${id}"`);
     letter-spacing: 0.14em;
     font-weight: 700;
     padding: 0.15rem 0.4rem;
-    border-radius: 0;
+    border-radius: var(--radius-sm);
     z-index: 3;
   }
   .ba-tag.before {

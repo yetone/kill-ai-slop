@@ -562,4 +562,28 @@ export const demos: Record<string, { before: string; after: string }> = {
         <div class="btns"><button class="btn solid">Get started</button><code>brew install runner</code></div>
       </div>`,
   },
+
+  /* before: an on-call console in full magazine dress — serif greeting, purple
+     prose, serif oldstyle numerals — while two incidents sit unacknowledged.
+     after: the same console designed for scanning: sans, tabular numerals,
+     hierarchy from scale. The clean side must win the eye, not just the
+     argument: real number scale, hairline structure, bold where it's earned. */
+  "editorial-dashboard": {
+    before: `<div class="mag">
+        <p class="ey">On-call overview</p>
+        <p class="greet">Good evening, Mara.</p>
+        <p class="mood">The quiet rhythm of your services tonight.</p>
+        <div class="row">
+          <div class="kpi"><span class="k">Open incidents</span><b class="v">3</b><span class="c">2 unacknowledged</span></div>
+          <div class="kpi"><span class="k">P95 latency</span><b class="v">412ms</b><span class="c">Past hour</span></div>
+        </div>
+      </div>`,
+    after: `<div class="ops">
+        <div class="top"><b>On-call — payments</b><span class="tm">22:41 UTC</span></div>
+        <div class="row">
+          <div class="kpi"><span class="k">Open incidents</span><b class="v">3</b><span class="c"><b>2 unacknowledged</b></span></div>
+          <div class="kpi"><span class="k">p95 latency</span><b class="v">412 ms</b><span class="c">past hour</span></div>
+        </div>
+      </div>`,
+  },
 };

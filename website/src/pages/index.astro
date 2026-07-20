@@ -99,7 +99,7 @@ const principles = [
   {/* ── Hero ──────────────────────────────────────────────────────────── */}
   <section class="hero" id="top">
     <div class="container">
-      <p class="kicker">
+      <p class="kicker" data-reveal>
         <T
           zh="一份识别并清除 AI slop 的实战手册"
           en="A field guide to spotting and removing AI slop"
@@ -107,13 +107,13 @@ const principles = [
           ko="AI slop 을 알아보고 걷어내기 위한 실전 안내서"
         />
       </p>
-      <h1>
+      <h1 data-reveal>
         <span data-t="zh">杀死 <span class="strike">AI slop</span></span>
         <span data-t="en">Kill <span class="strike">AI slop</span></span>
         <span data-t="ja"><span class="strike">AI slop</span> を殺す</span>
         <span data-t="ko"><span class="strike">AI slop</span> 죽이기</span>
       </h1>
-      <p class="lede hero-lede">
+      <p class="lede hero-lede" data-reveal>
         <T
           zh="Vibe Coding 做出来的产品，丑得千篇一律：蓝紫渐变、发光玻璃卡片、每行挂个 emoji、什么都贴个徽章。这是机器没品位、又想装高级时捡来的东西。因为满大街都是，你早就看麻木了。这本手册让它重新变得扎眼，再教你怎么把它清干净。"
           en="Vibe-coded products are ugly in the same specific way: indigo gradients, glowing glass cards, emoji on every line, a badge on everything. It's what a machine reaches for when it has no taste but wants to look impressive. It's so common you've stopped seeing it. This guide makes it glaring again, then shows you how to strip it out."
@@ -121,7 +121,7 @@ const principles = [
           ko="Vibe Coding 으로 만든 제품은 하나같이 같은 방식으로 못생겼다. 남보라 그라데이션, 빛나는 유리 카드, 줄마다 붙은 emoji, 무엇에나 달린 배지. 취향 없는 기계가 그럼에도 고급스러워 보이려 할 때 집어 드는 것들이다. 너무 흔해서 이제는 눈에 들어오지도 않는다. 이 안내서는 그것을 다시 거슬리게 만들고, 그다음 걷어내는 법을 보여준다."
         />
       </p>
-      <div class="cta">
+      <div class="cta" data-reveal>
         <a class="button primary" href="#catalogue">
           <T zh="看 slop 图鉴" en="See the catalogue" ja="slop 図鑑を見る" ko="slop 도감 보기" />
         </a>
@@ -135,8 +135,8 @@ const principles = [
   {/* ── What is AI slop ──────────────────────────────────────────────── */}
   <section class="section" id="what">
     <div class="container what">
-      <p class="eyebrow" data-index="00"><T zh="定义" en="Definition" ja="定義" ko="정의" /></p>
-      <h2 class="def">
+      <p class="eyebrow" data-index="00" data-reveal><T zh="定义" en="Definition" ja="定義" ko="정의" /></p>
+      <h2 class="def" data-reveal>
         <T
           en="AI slop is ugly in a specific way."
           zh="AI slop 的难看很有辨识度。"
@@ -144,7 +144,7 @@ const principles = [
           ko="AI slop 은 아주 특정한 방식으로 못생겼다."
         />
       </h2>
-      <div class="what-cols">
+      <div class="what-cols" data-reveal>
         <p>
           <T
             zh="它把所有能加的风格和细节都往上堆，却始终定不下一个重点。模型没有品味，只会抓缩略图里看着「高级」的东西：一道渐变、一层光晕、一排徽章、一墙发光卡片。每样单拎出来都是俗套；全堆在一起、一样不删，就熬成了你见过一千遍的那种刺眼页面。"
@@ -160,7 +160,7 @@ const principles = [
   {/* ── Catalogue ────────────────────────────────────────────────────── */}
   <section class="section" id="catalogue">
     <div class="container">
-      <header class="cat-head">
+      <header class="cat-head" data-reveal>
         <p class="eyebrow" data-index="01"><T zh="图鉴" en="The catalogue" ja="図鑑" ko="도감" /></p>
         <h2><T zh={`${n} 种 AI slop，逐条拆解`} en={`${n} tells, taken apart one by one`} ja={`${n} 種類の AI slop を、一つずつ分解する`} ko={`${n} 가지 AI slop 을 하나씩 뜯어본다`} /></h2>
         <p class="lede">
@@ -186,8 +186,8 @@ const principles = [
   {/* ── Principles ──────────────────────────────────────────────────── */}
   <section class="section" id="principles">
     <div class="container">
-      <p class="eyebrow" data-index="02"><T zh="原则" en="Principles" ja="原則" ko="원칙" /></p>
-      <h2><T zh="避免 slop 的六条" en="Six ways to stay out of slop" ja="slop に陥らないための六か条" ko="slop 에 빠지지 않는 여섯 가지" /></h2>
+      <p class="eyebrow" data-index="02" data-reveal><T zh="原则" en="Principles" ja="原則" ko="원칙" /></p>
+      <h2 data-reveal><T zh="避免 slop 的六条" en="Six ways to stay out of slop" ja="slop に陥らないための六か条" ko="slop 에 빠지지 않는 여섯 가지" /></h2>
       <ol class="principles">
         {
           principles.map((p, i) => (
@@ -207,8 +207,8 @@ const principles = [
   {/* ── The Skill ───────────────────────────────────────────────────── */}
   <section class="section skill" id="skill">
     <div class="container">
-      <p class="eyebrow" data-index="03"><T zh="清理 Skill" en="The cleanup skill" ja="クリーンアップ Skill" ko="정리 Skill" /></p>
-      <div class="skill-grid">
+      <p class="eyebrow" data-index="03" data-reveal><T zh="清理 Skill" en="The cleanup skill" ja="クリーンアップ Skill" ko="정리 Skill" /></p>
+      <div class="skill-grid" data-reveal>
         <div class="skill-copy">
           <h2>
             <T
@@ -334,8 +334,8 @@ const principles = [
   .button {
     display: inline-flex;
     align-items: center;
-    padding: 0.6rem 1.05rem;
-    border-radius: 0;
+    padding: 0.65rem 1.2rem;
+    border-radius: var(--radius);
     text-decoration: none;
     font-size: var(--step-0);
     font-weight: 550;
@@ -344,25 +344,43 @@ const principles = [
     transition:
       transform 0.12s var(--ease),
       background 0.12s var(--ease),
-      border-color 0.12s var(--ease);
+      border-color 0.12s var(--ease),
+      box-shadow 0.12s var(--ease);
   }
   .button:active { transform: translateY(1px); }
   .button.primary {
     background: var(--ink);
     color: var(--paper);
-    box-shadow: var(--shadow-e1);
+    /* A one-pixel lighter top edge inside the slab — the machined bevel of a
+       physical key. Read at a glance as depth, never as a glow. */
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.14),
+      var(--shadow-e1);
   }
   .button.primary:hover {
     background: color-mix(in oklab, var(--ink) 85%, var(--paper));
   }
+  /* The secondary is a real surface now, not just an outline: a white card on
+     its own hairline + contact shadow, so the two CTAs read as a considered
+     primary/secondary pair rather than a filled box beside an empty one. */
   .button.ghost {
-    border-color: var(--rule-strong);
+    border-color: var(--rule);
+    background: var(--card);
     color: var(--ink);
+    box-shadow: var(--shadow-e1);
   }
   .button.ghost:hover {
-    border-color: var(--ink);
-    background: color-mix(in oklab, var(--ink) 4%, transparent);
+    border-color: var(--rule-strong);
+    box-shadow: var(--shadow-e2);
   }
+
+  /* Hero entrance: the block settles in as a short, staggered rise — a cadence
+     you feel more than see. Delays sit on the revealed state so they apply on
+     the way in; reduced-motion never arms it (see Base.astro). */
+  :global(html.reveal-ready) .kicker.is-in { transition-delay: 0.02s; }
+  :global(html.reveal-ready) .hero h1.is-in { transition-delay: 0.09s; }
+  :global(html.reveal-ready) .hero-lede.is-in { transition-delay: 0.17s; }
+  :global(html.reveal-ready) .cta.is-in { transition-delay: 0.25s; }
   .specimen {
     margin-top: var(--s-6);
     padding-top: var(--s-4);
@@ -398,7 +416,7 @@ const principles = [
   }
   .lg { display: inline-flex; align-items: center; gap: 0.5rem; }
   .sw {
-    width: 0.85rem; height: 0.85rem; border-radius: 0;
+    width: 0.85rem; height: 0.85rem; border-radius: 3px;
     border: 1px solid var(--rule-strong);
   }
   .sw.t2 { border-color: var(--ink); background: var(--ink); }
@@ -476,7 +494,7 @@ const principles = [
 
   .skill-card {
     border: var(--hair) solid var(--rule);
-    border-radius: 0;
+    border-radius: var(--radius-lg);
     overflow: clip;
     background: var(--card);
     box-shadow: var(--shadow-e2);
@@ -515,7 +533,7 @@ const principles = [
     padding: var(--s-4);
     background: #0e0f12;
     color: #d7d5cf;
-    border-radius: 0;
+    border-radius: var(--radius);
     overflow-x: auto;
     font-size: 0.78rem;
     line-height: 1.6;
@@ -541,7 +559,7 @@ const principles = [
     color: #7f8894;
     background: #0e0f12;
     border: 1px solid #2a2c31;
-    border-radius: 0;
+    border-radius: var(--radius-sm);
     /* SF Mono's ascent overshoots its x-height far more than its descent
        hangs, so a `normal` line box parks the word ~1px low — split the
        vertical padding unevenly to re-center it optically. */

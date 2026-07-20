@@ -263,6 +263,15 @@ const TELLS = [
       /font-family:\s*[^;]*(?:mono|jetbrains|fira code|ibm plex mono|geist mono)/i,
       /[╔╗╚╝║═▓▒░]/,
     ] },
+  // Editorial serif faces beyond tell 08's list, the greeting-as-headline, and
+  // opt-in oldstyle figures — the "magazine dashboard" kit. Serif on genuinely
+  // editorial surfaces (docs, essays) is not this tell; confirm before fixing.
+  { id: "34", group: "evolved", name: "editorial-dashboard", fix: "sans + tabular numerals for scanned UI",
+    patterns: [
+      />\s*Good (?:morning|afternoon|evening),/i,
+      /font-family:\s*[^;]*(?:fraunces|canela|tiempos|didot|freight|reckless|newsreader)/i,
+      /oldstyle-nums|font-variant-numeric:\s*oldstyle/i,
+    ] },
 ];
 
 // Extra rule modules (--rules=file.mjs): each exports an array of tells shaped

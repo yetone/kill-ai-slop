@@ -62,7 +62,14 @@ const links = [
     top: 0;
     z-index: 50;
     background: var(--paper);
-    border-bottom: var(--hair) solid var(--rule);
+    /* The hairline exists only once there is content to separate: at the top
+       of the page the header sits on the same unbroken sheet as the hero, and
+       the rule fades in on scroll. */
+    border-bottom: var(--hair) solid transparent;
+    transition: border-color 0.2s var(--ease);
+  }
+  .nav.scrolled {
+    border-bottom-color: var(--rule);
   }
   .inner {
     display: flex;
@@ -119,12 +126,31 @@ const links = [
     font-size: var(--step--1);
   }
   .links a {
+    position: relative;
     text-decoration: none;
     color: var(--ink-2);
     letter-spacing: 0.01em;
+    transition: color 0.15s var(--ease);
+  }
+  /* A hairline that grows from the left on hover — the quiet, exact detail a
+     considered header gets right. Not an underline sitting there by default. */
+  .links a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -0.28rem;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.28s var(--ease-out);
   }
   .links a:hover {
     color: var(--ink);
+  }
+  .links a:hover::after {
+    transform: scaleX(1);
   }
   .right {
     display: flex;
@@ -142,6 +168,7 @@ const links = [
     padding: 0.15rem;
     color: var(--ink-3);
     line-height: 0;
+    transition: color 0.15s var(--ease);
   }
   .gh:hover {
     color: var(--ink);
@@ -155,3 +182,11 @@ const links = [
     }
   }
 </style>
+
+<script>
+  // Fade the header hairline in once content actually scrolls beneath it.
+  const nav = document.querySelector<HTMLElement>("header.nav");
+  const update = () => nav?.classList.toggle("scrolled", window.scrollY > 8);
+  update();
+  window.addEventListener("scroll", update, { passive: true });
+</script>

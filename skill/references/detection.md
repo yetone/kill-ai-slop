@@ -381,3 +381,15 @@ rg -n '[╔╗╚╝║═▓▒░]|\$ [a-z]' -g '*.{tsx,jsx,vue,svelte,astro,h
 near-black with a single warm accent. This one needs judgment most — it's a
 current default, so weigh whether the terminal metaphor actually serves the
 product.
+
+### 34 The editorial dashboard (evolved)
+```
+rg -n -i '>\s*Good (morning|afternoon|evening),' -g '*.{tsx,jsx,vue,svelte,astro,html}'
+rg -n -i 'font-serif' -g '*.{tsx,jsx,vue,svelte,astro,html}'
+rg -n -i 'font-family:\s*[^;]*(fraunces|canela|tiempos|didot|freight|reckless|newsreader)'
+rg -n -i 'oldstyle-nums|font-variant-numeric:\s*oldstyle'
+```
+*Confirm:* the serif is on app chrome (a dashboard h1, stat-card numerals),
+not on genuinely editorial content; the greeting-as-headline sits on an
+operational surface; the cream + tracked-caps kicker + deep accent kit came
+as a set. A docs site or essay page in a text serif is not this tell.
