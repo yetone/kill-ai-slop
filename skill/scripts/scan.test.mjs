@@ -78,6 +78,28 @@ test("finds multiline patterns and documented runtime signals", () => {
   });
 });
 
+test("tell 09 keeps semantic <del> edits and still flags decorative markup", () => {
+  withTempProject((project) => {
+    writeFileSync(
+      join(project, "Price.jsx"),
+      `<p>Price: <del>$99</del> <ins>$79</ins></p>\n`,
+    );
+
+    const clean = reportFor(project);
+    assert.equal(finding(clean, "09"), undefined, "semantic <del>/<ins> must not be a tell 09 hit");
+
+    writeFileSync(
+      join(project, "Hero.jsx"),
+      `<h1>The <s>old</s> <mark>new</mark> way to <u>ship</u>.</h1>\n`,
+    );
+
+    const decorative = reportFor(project);
+    const hits = finding(decorative, "09")?.hits ?? [];
+    assert.equal(hits.length, 1, "decorative <s>/<mark>/<u> must still be a tell 09 hit");
+    assert.match(hits[0].file, /Hero\.jsx$/);
+  });
+});
+
 test("skips the installed skill's own files", () => {
   withTempProject((project) => {
     const installedScript = join(

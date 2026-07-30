@@ -121,7 +121,7 @@ const TELLS = [
   { id: "09", group: "type", name: "decorative strikes & highlights", fix: "strike for edits, underline for links",
     patterns: [
       /\bline-through\b/i,
-      /<(?:mark|s|u|del|strike)[\s>]/i,
+      /<(?:mark|s|u|strike)[\s>]/i,
       /text-decoration:\s*(?:line-through|underline)/i,
     ] },
   { id: "10", group: "type", name: "kicker above every heading", fix: "delete kickers that restate the heading",
