@@ -608,16 +608,20 @@ const principles = [
 </style>
 
 <script>
-  document.querySelectorAll<HTMLButtonElement>("button.sc-copy").forEach((btn) => {
+  // One handler for every copy control on the page. The install block says its
+  // state in words; the demo's command chip cross-fades a glyph in CSS off
+  // .copied, so only the worded one rewrites its own label.
+  document.querySelectorAll<HTMLButtonElement>("button[data-copy]").forEach((btn) => {
+    const worded = btn.classList.contains("sc-copy");
     btn.addEventListener("click", () => {
       navigator.clipboard
         ?.writeText(btn.dataset.copy ?? "")
         .then(() => {
           btn.classList.add("copied");
-          btn.textContent = "copied ✓";
+          if (worded) btn.textContent = "copied ✓";
           window.setTimeout(() => {
             btn.classList.remove("copied");
-            btn.textContent = "copy";
+            if (worded) btn.textContent = "copy";
           }, 1400);
         })
         .catch(() => {});

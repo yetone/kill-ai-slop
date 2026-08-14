@@ -574,6 +574,11 @@ export const demos: Record<string, { before: string; after: string }> = {
       </div>`,
   },
 
+  /* before: the terminal worn as chrome — the `$` stuck on things that are not
+     commands ("$ get started"), mono on every last label.
+     after: the same pitch in plain type, with mono left on the one string that
+     has earned it. That string is a command, so it gets a command's affordance:
+     the text stays selectable text and only the glyph beside it is a control. */
   "tasteful-terminal": {
     before: `<div class="term">
         <pre class="ascii">  /\\_/\\    ___ _ __
@@ -586,7 +591,13 @@ export const demos: Record<string, { before: string; after: string }> = {
         <p class="ey">Open source · runs locally</p>
         <h5>A local-first task runner</h5>
         <p class="sub">No account, works offline. Your data never leaves the machine.</p>
-        <div class="btns"><button class="btn solid">Get started</button><code>brew install runner</code></div>
+        <div class="btns">
+          <button class="btn solid">Get started</button>
+          <span class="cmd">
+            <code>brew install runner</code>
+            <button class="cmd-copy" type="button" data-copy="brew install runner" aria-label="Copy install command"><svg class="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><svg class="i-ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></button>
+          </span>
+        </div>
       </div>`,
   },
 
