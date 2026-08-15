@@ -62,7 +62,7 @@ const EXTS = new Set([
   ".html", ".css", ".scss", ".sass", ".less",
   ".tsx", ".jsx", ".ts", ".js", ".mjs", ".cjs",
   ".vue", ".svelte", ".astro", ".md", ".mdx",
-  ".php", ".twig",
+  ".php", ".twig", ".erb",
 ]);
 
 // A tell: id, human name, one-line fix, and the line patterns that flag it.

@@ -117,6 +117,24 @@ test("scans PHP and Twig templates", () => {
   });
 });
 
+test("scans ERB templates", () => {
+  withTempProject((project) => {
+    writeFileSync(
+      join(project, "hero.html.erb"),
+      `<h1 class="bg-clip-text text-transparent"><%= @title %></h1>\n`,
+    );
+    writeFileSync(
+      join(project, "_card.html.erb"),
+      `<div class="rounded-full backdrop-blur"><%= card.name %></div>\n`,
+    );
+
+    const report = reportFor(project);
+    assert.equal(report.filesScanned, 2);
+    assert.ok(finding(report, "02"), "expected tell 02 in the ERB template");
+    assert.ok(finding(report, "19"), "expected tell 19 in the ERB partial");
+  });
+});
+
 test("deslop-ignore directives suppress hits", () => {
   withTempProject((project) => {
     writeFileSync(

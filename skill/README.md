@@ -20,7 +20,8 @@ rows, 01/02/03 section markers, cards nested in cards, monotone one-gap
 spacing, the default Inter/Space Grotesk look, the "tasteful terminal"
 default, and the editorial-serif dashboard costume. It works across
 HTML/CSS, React/Vue/Svelte/Astro, Tailwind, PHP/Twig
-templates (WordPress themes and plugins included), and Markdown copy.
+templates (WordPress themes and plugins included), Rails ERB views, and
+Markdown copy.
 
 ## Install — just ask your agent
 

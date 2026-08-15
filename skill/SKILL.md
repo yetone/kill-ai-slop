@@ -15,8 +15,8 @@ description: >-
   over every heading, flat type
   hierarchies, invented stat rows, 01/02/03 section
   markers, cards nested in cards, the default Inter/Space Grotesk look, and
-  more. Works on HTML/CSS, React/Vue/Svelte/Astro, Tailwind, PHP, and Markdown
-  copy.
+  more. Works on HTML/CSS, React/Vue/Svelte/Astro, Tailwind, PHP, Rails ERB,
+  and Markdown copy.
 ---
 
 # Kill AI Slop
