@@ -713,24 +713,90 @@
 .demo-tasteful-terminal .designed .btns {
   display: flex;
   gap: 0.7rem;
-  align-items: baseline;
+  /* Two boxes in one action group align as boxes, not as text: stretch ties the
+     command surface to the CTA's height, so the pair can't drift apart when a
+     font size or a translation changes. (This was `baseline`, which is right for
+     text beside a button and wrong the moment that text carries a border of its
+     own — the row then reads as two controls with mismatched bottoms.) */
+  align-items: stretch;
   justify-content: center;
   flex-wrap: wrap;
 }
 /* The shared .ba-stage .btn rule adds margin-top: 1rem for stacked layouts;
-   in this centered row it would push the button's baseline below the code's,
-   so zero it out here and let baseline alignment line the two up. */
+   in this centered row it would drop the button below the command surface. */
 .demo-tasteful-terminal .designed .btns .btn {
   margin-top: 0;
 }
-.demo-tasteful-terminal .designed code {
-  padding: 0.32rem 0.55rem;
+/* The command is a surface, not a button. `brew install runner` stays real,
+   selectable text — this whole tell is about mono surviving only where the
+   string is literally a command, so swallowing it into a button (and its
+   user-select: none) would take away the thing the demo is arguing for. Only
+   the glyph is a control. */
+/* The glyph's plate sits in a gutter that is the same on all four sides. The row
+   takes its height from the CTA (36.88px at the default step), so the space above
+   and below a 1.5rem plate is fixed at (36.88 − 2 hairlines − 24) / 2 = 5.44px;
+   0.34rem gives the right padding and the gap to the command that same value, and
+   it also makes this surface 36.88px tall on its own, so the pair matches even on
+   the line where nothing stretches it. The text's left inset stays larger — a
+   string needs more room off an edge than a plate does. */
+.demo-tasteful-terminal .cmd {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.34rem;
+  padding: 0.34rem 0.34rem 0.34rem 0.6rem;
   background: var(--paper-2);
   border: 1px solid var(--rule);
   border-radius: var(--radius);
+}
+.demo-tasteful-terminal .cmd code {
   font-family: var(--font-mono);
   font-size: 0.76rem;
   color: var(--ink-2);
+}
+/* Quiet until wanted: the glyph sits at meta weight, picks up a faint plate when
+   the pointer is anywhere on the command, and goes to full ink on its own hover
+   or focus. It marks the interaction without competing with the CTA beside it. */
+.demo-tasteful-terminal .cmd-copy {
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: none;
+  color: var(--ink-3);
+  cursor: pointer;
+  transition:
+    color 150ms var(--ease),
+    background 150ms var(--ease);
+}
+.demo-tasteful-terminal .cmd:hover .cmd-copy {
+  background: color-mix(in oklab, var(--ink) 5%, transparent);
+}
+.demo-tasteful-terminal .cmd-copy:hover,
+.demo-tasteful-terminal .cmd-copy:focus-visible {
+  color: var(--ink);
+}
+/* Both glyphs share one cell and cross-fade, so the button never changes size
+   and the row can't twitch when the state flips. */
+.demo-tasteful-terminal .cmd-copy svg {
+  grid-area: 1 / 1;
+  width: 0.85rem;
+  height: 0.85rem;
+  transition: opacity 200ms var(--ease);
+}
+.demo-tasteful-terminal .cmd-copy .i-ok,
+.demo-tasteful-terminal .cmd-copy.copied .i-copy {
+  opacity: 0;
+}
+.demo-tasteful-terminal .cmd-copy.copied .i-ok {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .demo-tasteful-terminal .cmd-copy svg {
+    transition: none;
+  }
 }
 
 /* 07b glowing status dot (component) ---------------------------------------
