@@ -200,3 +200,104 @@ test("escapes control characters in human output", () => {
     assert.doesNotThrow(() => JSON.parse(jsonResult.stdout));
   });
 });
+
+test("finds oversized Tailwind arbitrary shadows separated by underscores", () => {
+  withTempProject((project) => {
+    writeFileSync(
+      join(project, "01-oversized.html"),
+      '<div class="shadow-[0_100px_80px_rgba(0,0,0,0.3)]">Card</div>\n',
+    );
+    writeFileSync(
+      join(project, "02-threshold.html"),
+      '<div class="shadow-[0_0_60px_black]">Card</div>\n',
+    );
+    writeFileSync(
+      join(project, "03-three-digits.html"),
+      '<div class="shadow-[0_0_100px_black]">Card</div>\n',
+    );
+
+    const result = scan(project, "--json", "--only=20", "--no-color");
+    assert.equal(result.status, 0, result.stderr);
+    assert.equal(result.stderr, "");
+    const report = JSON.parse(result.stdout);
+    assert.equal(report.filesScanned, 3);
+    assert.equal(report.hits, 3);
+    assert.equal(report.findings.length, 1);
+    const shadow = finding(report, "20");
+    assert.equal(shadow.hits.length, 3);
+    assert.deepEqual(
+      shadow.hits.map((hit) => hit.file + ":" + hit.line).sort(),
+      ["01-oversized.html:1", "02-threshold.html:1", "03-three-digits.html:1"],
+    );
+  });
+});
+
+test("preserves Tell 20 Tailwind shadow controls and numeric matching", () => {
+  withTempProject((project) => {
+    writeFileSync(
+      join(project, "04-restrained.html"),
+      '<div class="shadow-[0_2px_4px_rgba(0,0,0,0.2)]">Card</div>\n',
+    );
+    writeFileSync(
+      join(project, "05-below-threshold.html"),
+      '<div class="shadow-[0_0_59px_black]">Card</div>\n',
+    );
+    writeFileSync(
+      join(project, "06-decimal.html"),
+      '<div class="shadow-[0_10.80px_4px_rgba(0,0,0,0.2)]">Card</div>\n',
+    );
+    writeFileSync(
+      join(project, "07-negative.html"),
+      '<div class="shadow-[0_-80px_4px_rgba(0,0,0,0.2)]">Card</div>\n',
+    );
+    writeFileSync(
+      join(project, "08-first-value.html"),
+      '<div class="shadow-[80px_0_0_black]">Card</div>\n',
+    );
+    writeFileSync(
+      join(project, "09-word-prefixed.html"),
+      '<div class="shadow-[0_x80px_4px_black]">Card</div>\n',
+    );
+    writeFileSync(
+      join(project, "10-adjacent-size.html"),
+      '<div class="shadow-[0_2px_4px_black] text-[80px]">Card</div>\n',
+    );
+
+    const result = scan(project, "--json", "--only=20", "--no-color");
+    assert.equal(result.status, 0, result.stderr);
+    assert.equal(result.stderr, "");
+    const report = JSON.parse(result.stdout);
+    assert.equal(report.filesScanned, 7);
+    assert.equal(report.hits, 3);
+    assert.equal(report.findings.length, 1);
+    const shadow = finding(report, "20");
+    assert.equal(shadow.hits.length, 3);
+    assert.deepEqual(
+      shadow.hits.map((hit) => hit.file + ":" + hit.line).sort(),
+      ["06-decimal.html:1", "07-negative.html:1", "08-first-value.html:1"],
+    );
+  });
+});
+
+test("preserves Tell 20 detection of oversized CSS box shadows", () => {
+  withTempProject((project) => {
+    writeFileSync(
+      join(project, "11-css.css"),
+      ".card { box-shadow: 0 100px 80px rgba(0,0,0,0.3); }\n",
+    );
+
+    const result = scan(project, "--json", "--only=20", "--no-color");
+    assert.equal(result.status, 0, result.stderr);
+    assert.equal(result.stderr, "");
+    const report = JSON.parse(result.stdout);
+    assert.equal(report.filesScanned, 1);
+    assert.equal(report.hits, 1);
+    assert.equal(report.findings.length, 1);
+    const shadow = finding(report, "20");
+    assert.equal(shadow.hits.length, 1);
+    assert.deepEqual(
+      shadow.hits.map((hit) => hit.file + ":" + hit.line),
+      ["11-css.css:1"],
+    );
+  });
+});

@@ -186,7 +186,7 @@ const TELLS = [
   { id: "20", group: "component", name: "oversized drop shadow", fix: "tight elevation, never bigger than the element",
     patterns: [
       /box-shadow:[^;{}]*\b(?:[6-9]\d|\d{3,})px/i,
-      /shadow-\[[^\]]*\b(?:[6-9]\d|\d{3,})px/i,
+      /shadow-\[[^\]]*(?:\b|_)(?:[6-9]\d|\d{3,})px/i,
       /filter:[^;{}]*drop-shadow\([^)]*\b(?:[6-9]\d|\d{3,})px/i,
       /\bborder\b[\s\S]{0,40}?shadow-(?:xl|2xl)\b|shadow-(?:xl|2xl)\b[\s\S]{0,40}?\bborder\b/,
     ] },
