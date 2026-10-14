@@ -232,7 +232,7 @@ the default surface; radius values that don't agree with each other.
 ### 20 Oversized drop shadow
 ```
 rg -n -i 'box-shadow:[^;{}]*\b([6-9][0-9]|[0-9]{3,})px'   # a 60px+ blur/spread
-rg -n -i 'shadow-\[[^\]]*\b([6-9][0-9]|[0-9]{3,})px'      # tailwind arbitrary shadow
+rg -n -i 'shadow-\[[^\]]*(?:\b|_)([6-9][0-9]|[0-9]{3,})px'      # tailwind arbitrary shadow
 rg -n -i 'filter:[^;{}]*drop-shadow\([^)]*\b([6-9][0-9]|[0-9]{3,})px'
 rg -n -i '\bborder\b[\s\S]{0,40}shadow-(xl|2xl)|shadow-(xl|2xl)[\s\S]{0,40}\bborder\b'
 ```
